@@ -1,5 +1,5 @@
-import Login from "../pages/login/Login";
-import Signup from "../pages/signup/Signup";
+import Login from "../pages/auth/Login";
+import Signup from "../pages/auth/Signup";
 import Chat from "../pages/chat/Chat";
 import { Navigate } from "react-router";
 import ErrorNotFound from "../pages/error/ErrorNotFound";

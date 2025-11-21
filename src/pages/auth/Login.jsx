@@ -1,6 +1,6 @@
 import FormInput from "../../components/formComponents/FormInput";
 import FormButton from "../../components/formComponents/FormButton";
-import styles from "./login.module.css";
+import styles from "./auth.module.css";
 
 function Login() {
   return (
@@ -25,7 +25,7 @@ function Login() {
 
 function LoginForm({ onSubmit }) {
   return (
-    <form action="" onSubmit={onSubmit} className={styles.loginForm}>
+    <form action="" onSubmit={onSubmit} className={styles.form}>
       <div className={styles.inpContainer}>
         <FormInput type="email" label="Email" name="mail" />
       </div>
