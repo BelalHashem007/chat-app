@@ -1,0 +1,58 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.loginBody{
+    width: 60%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #ffffff;
+    padding: 20px 0;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+}
+
+header{
+    margin: 0 auto;
+    text-align: center;
+}
+
+header h1{
+    font-weight: lighter;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.loginForm{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+.createAccLink{
+    text-align: center;
+}
+.inpContainer{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-width: 350px;
+    width: 100%;
+}
+
+@media (max-width:680px){
+    .loginBody{
+        width: 90%;
+    }
+}

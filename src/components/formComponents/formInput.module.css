@@ -1,0 +1,9 @@
+.inp {
+  padding: 7px;
+  width: 100%;
+  appearance: none;
+  border: 1px solid black;
+}
+.inp:focus {
+  border-radius: 5px;
+}
