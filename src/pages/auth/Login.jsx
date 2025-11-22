@@ -10,7 +10,7 @@ function Login() {
           <div className={styles.logo}>
             Zap<span>Talk</span>
           </div>
-          <h1>Sign in</h1>
+          <h1 className={styles.pageHeader}>Sign in</h1>
         </header>
         <LoginForm onSubmit={() => {}} />
         <div className={styles.createAccLink}>

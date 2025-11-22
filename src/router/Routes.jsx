@@ -4,7 +4,7 @@ import Chat from "../pages/chat/Chat";
 import { Navigate } from "react-router";
 import ErrorNotFound from "../pages/error/ErrorNotFound";
 import OtherErrors from "../pages/error/OtherErrors";
-import Root from "../../Root";
+import Root from "../Root";
 
 const routes = [
   {

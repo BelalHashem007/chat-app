@@ -10,7 +10,7 @@ function Signup() {
           <div className={styles.logo}>
             Zap<span>Talk</span>
           </div>
-          <h1>Create a ZapTalk Account</h1>
+          <h1 className={styles.pageHeader}>Create a ZapTalk Account</h1>
         </header>
         <SignupForm onSubmit={() => {}} />
       </div>

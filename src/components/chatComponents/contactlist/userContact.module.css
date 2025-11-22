@@ -1,0 +1,29 @@
+.userContactWrapper {
+  display: flex;
+  gap: 10px;
+  padding: var(--space-lg);
+}
+
+.lastMsg,.lastMsgDate {
+  color: var(--color-faded);
+  font-size: var(--font-sm);
+}
+
+.name {
+  color: #011627;
+  font-weight: 600;
+}
+
+.userContactWrapper:hover {
+  background-color: var(--color-hover);
+  cursor: pointer;
+}
+
+.nameWrapper{
+  width: 100%;
+}
+
+.nameDateWrapper{
+  display: flex;
+  justify-content: space-between;
+}

@@ -16,7 +16,7 @@ body {
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background-color: white;
 }
 
 input,
@@ -24,4 +24,25 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+
+/*Variables declaration*/
+:root {
+  /*Space*/
+  --space-xl:20px;
+  --space-sm:8px;
+  --space-xs:4px;
+  --space-md:12px;
+  --space-lg:16px;
+
+  /*Color*/
+  --color-faded: #707991;
+  --color-hover:#F5F5F5;
+
+  /*Font*/
+  --font-sm:14px;
+  
+  /*SVG*/
+  --menu-icon-size: 20px
 }

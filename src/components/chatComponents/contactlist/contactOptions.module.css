@@ -1,0 +1,55 @@
+.bar1,
+.bar2,
+.bar3 {
+  width: 30px;
+  height: 3px;
+  background-color: black;
+  margin: 4px;
+  transition: 0.4s;
+}
+.menuIcon,.menuOpion {
+  background: none;
+  border: none;
+}
+.menuIcon:hover,.menuOpion:hover {
+  cursor: pointer;
+  background-color: var(--color-hover);
+}
+
+.bar1Open {
+  transform: translate(0, 8px) rotate(-45deg);
+}
+.bar2Open {
+  opacity: 0;
+}
+.bar3Open {
+  transform: translate(0, -6px) rotate(45deg);
+}
+.menu {
+  display: none;
+  background-color: white;
+  white-space: nowrap;
+  padding: var(--space-md) var(--space-sm);
+  border-radius: 10px;
+}
+.menuOpen {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  left: 0;
+  box-shadow: 1px 1px 6px #0000007a;
+  z-index: 1;
+}
+.menuWrapper {
+  position: relative;
+}
+
+.menuOpion{
+    text-align: left;
+}
+.menuOpion svg {
+    width: var(--menu-icon-size);
+    height: var(--menu-icon-size);
+    vertical-align: -3px;
+}

@@ -1,0 +1,19 @@
+.chatWrapper {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 0.35fr 1fr;
+  grid-template-areas:
+    "contactlist chatwindow";
+}
+
+.contactList {
+  grid-area: contactlist;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.chatWindow {
+  grid-area: chatwindow;
+  border-left: 1px solid black;
+}

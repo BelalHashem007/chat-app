@@ -1,0 +1,37 @@
+.searchInp:not(:focus, :active)::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchInp {
+  padding: 10px 5px 10px 40px;
+  border-radius: 20px;
+  border-width: 1px;
+  background-color: #f5f5f5;
+  width: 100%;
+  border: 1px solid #00000021;
+}
+
+.searchInp:focus{
+    outline: 2px solid #2196f3;
+}
+
+.searchWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  min-width: 190px;
+}
+
+.searchWrapper::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 12px;
+  width: 20px;
+  left: 15px;
+  height: 20px;
+  pointer-events: none;
+  background-image: url(../../../assets/search-icon.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
