@@ -3,6 +3,8 @@ import UserContact from "../../components/chatComponents/contactlist/UserContact
 import OptionsSearchWrapper from "../../components/chatComponents/contactlist/OptionsSearchWrapper";
 import userAvatar from "../../assets/Avatar.png";
 import Logo from "../../components/chatComponents/logo/LogoComponent";
+import UserInfoComponent from "../../components/chatComponents/chatwindow/UserInfoComponent";
+import Window from "../../components/chatComponents/chatwindow/Window";
 
 const users = [
   { id: 1, url: userAvatar, name: "Belal" },
@@ -16,11 +18,10 @@ function Chat() {
       <ContactList />
       <div className={styles.chatWindow}>
         <div className={styles.optionsUserWrapper}>
-          <div className={styles.userInfo}></div>
+          <UserInfoComponent user={users[0]}/>
            <div className={styles.options}>unfinished</div>
         </div>
-        <div className={styles.window}>messages...</div>
-        <div>Place to send messages</div>
+        <div className={styles.window}><Window/></div>
       </div>
     </div>
   );

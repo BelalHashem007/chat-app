@@ -1,6 +1,6 @@
 .userContactWrapper {
   display: flex;
-  gap: 10px;
+  gap: var(--space-g10);
   padding: var(--space-lg);
 }
 

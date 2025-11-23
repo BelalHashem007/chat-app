@@ -1,0 +1,9 @@
+.userContactWrapper {
+  display: flex;
+  gap: var(--space-g10);
+  padding: var(--space-lg);
+}
+.lastOnline {
+  color: var(--color-faded);
+  font-size: var(--font-sm);
+}

@@ -7,11 +7,13 @@
   margin: 4px;
   transition: 0.4s;
 }
-.menuIcon,.menuOpion {
+.menuIcon,
+.menuOpion {
   background: none;
   border: none;
 }
-.menuIcon:hover,.menuOpion:hover {
+.menuIcon:hover,
+.menuOpion:hover {
   cursor: pointer;
   background-color: var(--color-hover);
 }
@@ -45,11 +47,10 @@
   position: relative;
 }
 
-.menuOpion{
-    text-align: left;
+.menuOpion {
+  text-align: left;
+  padding: 0 var(--space-md);
 }
 .menuOpion svg {
-    width: var(--menu-icon-size);
-    height: var(--menu-icon-size);
-    vertical-align: -3px;
+  vertical-align: -5px;
 }

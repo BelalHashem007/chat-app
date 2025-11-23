@@ -16,4 +16,13 @@
 .chatWindow {
   grid-area: chatwindow;
   border-left: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.optionsUserWrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.window{
+  height: 100%;
 }

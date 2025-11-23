@@ -35,6 +35,7 @@ select {
   --space-xs:4px;
   --space-md:12px;
   --space-lg:16px;
+  --space-g10:10px;
 
   /*Color*/
   --color-faded: #707991;
