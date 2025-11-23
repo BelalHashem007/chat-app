@@ -1,54 +1,20 @@
-.sendBtn {
-  background: none;
-  border: none;
-}
-.sendBtn:hover {
-  cursor: pointer;
-}
 .windowbg {
   height: 100%;
   position: relative;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 100px;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.windowbg::before {
+  content: "";
+  position: absolute;
   background-color: #8babd8;
   background-image: url("https://twallpaper.js.org/patterns/math.svg");
+  inset: 0;
   opacity: 0.6;
-}
-.msgInputWrapper {
-  position: absolute;
-  bottom: 0;
-  width: 95%;
-  max-height: 200px;
-}
-.msgInput {
-  resize: none;
-  outline: none;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  padding: 10px 50px 10px 20px;
-  border-radius: 25px;
-  min-height: 50px;
-
-}
-.mirror {
-  visibility: hidden;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  padding: 10px 50px 10px 20px;
-  border-radius: 25px;
-  min-height: 50px;
-}
-.sendBtn {
-  position: absolute;
-  right: 10px;
-  bottom: 5px;
-  margin: 0;
-  padding: 5px;
-  background-color: rgb(33, 150, 243);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  z-index: 0;
 }

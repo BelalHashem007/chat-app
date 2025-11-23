@@ -1,0 +1,48 @@
+.msgInputWrapper {
+  position: absolute;
+  bottom: 0;
+  width: 95%;
+  max-height: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 20px;
+  z-index: 1;
+}
+.msgInput {
+  resize: none;
+  outline: none;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding: 10px 50px 10px 20px;
+  border-radius: 25px;
+  min-height: 50px;
+}
+.mirror {
+  visibility: hidden;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  padding: 10px 50px 10px 20px;
+  border-radius: 25px;
+  min-height: 50px;
+}
+.sendBtn:hover {
+  cursor: pointer;
+}
+.sendBtn {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  bottom: 5px;
+  margin: 0;
+  padding: 5px;
+  background-color: rgb(33, 150, 243);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

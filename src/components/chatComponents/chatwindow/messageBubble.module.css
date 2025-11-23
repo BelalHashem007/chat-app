@@ -1,0 +1,45 @@
+/*Styling others message*/
+.chatBubble {
+  display: flex;
+  position: relative;
+  z-index: 1;
+  padding-left: var(--space-bubble);
+}
+
+.message {
+  background: white;
+  color: black;
+  padding: 15px;
+  margin-left: 20px;
+  width: fit-content;
+  border-radius: 10px;
+  position: relative;
+}
+.message::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -4px;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 15px solid white;
+}
+/*Styling curUser messages*/
+
+.message.curUser {
+  background-color: #90caf9;
+  color: black;
+}
+.chatBubble.curUser {
+  align-self: flex-end;
+  padding-right: var(--space-bubble);
+  padding-left: 0;
+}
+.message.curUser::before {
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 15px solid #90caf9;
+  inset: unset;
+  top: 0;
+  right: -4px;
+}

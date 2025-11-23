@@ -7,6 +7,7 @@
 * {
   margin: 0;
 }
+
 html {
   font-size: 16px;
   color:black;
@@ -36,6 +37,7 @@ select {
   --space-md:12px;
   --space-lg:16px;
   --space-g10:10px;
+  --space-bubble:30px;
 
   /*Color*/
   --color-faded: #707991;
@@ -43,7 +45,7 @@ select {
 
   /*Font*/
   --font-sm:14px;
-  
+
   /*SVG*/
   --menu-icon-size: 20px
 }

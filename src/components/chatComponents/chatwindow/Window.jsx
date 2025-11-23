@@ -1,18 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import MessageInput from "./MessageInput";
+import MessageBubble from "./MessageBubble";
 import styles from "./window.module.css";
-import Icon from '@mdi/react';
-import { mdiSendVariantOutline } from '@mdi/js';
 
-function Window(messages = { userid: 1, userMessages: ["hello"] }) {
+const messages = [
+  { id: 1, text: "Oldest message" , user:1},
+  { id: 2, text: "Middle message" , user:1},
+  { id: 3, text: "newest message" , user:2},
+  { id: 4, text: "muahaha message" , user:2},
+  { id: 5, text: "1sdasde" , user:1},
+  { id: 6, text: "Oxxxxxxxxx" , user:1}
+];
+
+function Window() {
   //get current user messages
-  const [msg,setMsg] = useState("");
-  const textareaRef = useRef(null);
-  useEffect(()=>{
-    if (textareaRef.current){
-        textareaRef.current.style.height="auto"
-        textareaRef.current.style.height = textareaRef.current.scrollHeight+20 +"px";
-    }
-  },[msg])
+
   const currentUser = {
     userid: 2,
     userMessages: [
@@ -23,23 +24,11 @@ function Window(messages = { userid: 1, userMessages: ["hello"] }) {
 
   return (
     <div className={styles.windowbg}>
-      <div className={`${styles.chatBubble} `}></div>
+      {messages.map((msg) => (
+        <MessageBubble key={msg.id} msg={msg} />
+      ))}
 
-      <div className={styles.msgInputWrapper}>
-        <div className={styles.mirror}>{msg || " "}</div>
-        <textarea
-          name="message"
-          id="message"
-          className={styles.msgInput}
-          placeholder="Message"
-          value={msg}
-          onChange={(e)=>{setMsg(e.target.value)}}
-          
-        ></textarea>
-        <button className={styles.sendBtn} title="Send">
-          <Icon path={mdiSendVariantOutline} size={"30px"} color={"#2196f3"}/>
-        </button>
-      </div>
+      <MessageInput />
     </div>
   );
 }
