@@ -6,9 +6,10 @@ function SearchBar() {
       <input
         className={styles.searchInp}
         type="search"
-        name=""
+        name="contactList"
         id=""
         placeholder="Search"
+        aria-label="Search contacts"
       />
     </div>
   );

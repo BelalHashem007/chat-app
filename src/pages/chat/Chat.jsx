@@ -18,14 +18,16 @@ function Chat() {
       <ContactList />
       <div className={styles.chatWindow}>
         <div className={styles.optionsUserWrapper}>
-          <UserInfoComponent user={users[0]}/>
-           <div className={styles.options}>unfinished</div>
+          <UserInfoComponent user={users[0]} />
+          <div className={styles.options}>unfinished</div>
         </div>
-        <div className={styles.window}><Window/></div>
+        <div className={styles.window}>
+          <Window />
+        </div>
       </div>
     </div>
   );
-} 
+}
 
 function ContactList() {
   return (
@@ -33,14 +35,17 @@ function ContactList() {
       <header className={styles.logo}>
         <Logo />
       </header>
+      <h2 style={{ visibility: "hidden" }}>Contact List</h2>
       <div className={styles.options}>
         <OptionsSearchWrapper />
       </div>
-      <div className={styles.users}>
+      <ul className={styles.users}>
         {users.map((user) => (
-          <UserContact key={user.id} user={user}/>
+          <li key={user.id}>
+            <UserContact user={user} />
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }

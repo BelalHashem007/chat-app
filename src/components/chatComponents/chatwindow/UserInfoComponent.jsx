@@ -7,7 +7,7 @@ return (
       <Image url={user.url} />
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
-          <div className={styles.name}>{user.name}</div>
+          <h2 className={styles.name}>{user.name}</h2>
           <div className={styles.lastOnline}>Last online...</div>
         </div>
         

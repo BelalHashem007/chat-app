@@ -45,6 +45,7 @@ select {
 
   /*Font*/
   --font-sm:14px;
+  --font-xs:12px;
 
   /*SVG*/
   --menu-icon-size: 20px
