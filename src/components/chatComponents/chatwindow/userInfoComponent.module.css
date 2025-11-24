@@ -5,9 +5,27 @@
 }
 .lastOnline {
   color: var(--color-faded);
-  font-size: var(--font-sm);
+  font-size: 1rem;
 }
 .name {
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
+}
+.userImg{
+  width: 58px;
+  height: 58px;
+}
+
+@media (min-width:2560px) {
+  .userImg{
+    width: 78px;
+  height: 78px;
+  }
+}
+
+@media (min-width:3840px) {
+  .userImg{
+    width: 130px;
+  height: 130px;
+  }
 }

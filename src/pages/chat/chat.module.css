@@ -52,3 +52,7 @@ main{
   padding: 0;
   border: 0;
 }
+
+.activeContact{
+  background-color: var(--color-hover);
+}

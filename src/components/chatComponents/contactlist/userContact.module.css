@@ -1,14 +1,15 @@
 .userContactWrapper {
   display: flex;
   gap: var(--space-g10);
-  padding: var(--space-lg);
   background: none;
   border: none;
   width: 100%;
   text-align: left;
+  padding: clamp(8px, 0.7vw, 16px);
 }
 
-.lastMsg,.lastMsgDate {
+.lastMsg,
+.lastMsgDate {
   color: var(--color-faded);
   font-size: var(--font-sm);
 }
@@ -23,11 +24,39 @@
   cursor: pointer;
 }
 
-.nameWrapper{
+.userImg {
+  width: 48px;
+  height: 48px;
+}
+
+.nameWrapper {
   width: 100%;
 }
 
-.nameDateWrapper{
+.nameDateWrapper {
   display: flex;
   justify-content: space-between;
 }
+
+@media (min-width: 2560px) {
+  .lastMsg,
+  .lastMsgDate {
+    font-size: 24px;
+  }
+  .userImg {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (min-width: 3840px) {
+  .lastMsg,
+  .lastMsgDate {
+    font-size: 36px;
+  }
+  .userImg {
+    width: 100px;
+    height: 100px;
+  }
+}
+

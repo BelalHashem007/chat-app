@@ -2,32 +2,28 @@
   position: absolute;
   bottom: 0;
   width: 95%;
-  max-height: 200px;
   left: 50%;
   transform: translateX(-50%);
   margin-bottom: 20px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 25px;
+  padding-right: 70px;
+  padding-top: 10px;
+  padding-left: 20px;
+  padding-bottom: 10px;
 }
+
 .msgInput {
-  resize: none;
+  background-color: transparent;
+  border: none;
   outline: none;
-  overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  padding: 10px 50px 10px 20px;
-  border-radius: 25px;
-  min-height: 50px;
-}
-.mirror {
-  visibility: hidden;
-  white-space: pre-wrap;
-  overflow-wrap: break-word;
-  padding: 10px 50px 10px 20px;
-  border-radius: 25px;
-  min-height: 50px;
+  resize: none;
+  padding-bottom: 5px;
+  line-height: 1.5;
+  padding-right: 20px;
 }
 .sendBtn:hover {
   cursor: pointer;
@@ -36,7 +32,7 @@
   background: none;
   border: none;
   position: absolute;
-  right: 10px;
+  right: 20px;
   bottom: 5px;
   margin: 0;
   padding: 5px;
@@ -45,4 +41,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (min-width: 2560px) {
+  .sendBtn svg {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .msgInputWrapper {
+    padding-right: 90px;
+  }
+}
+
+@media (min-width: 3840px) {
+  .sendBtn {
+    bottom: 10px;
+  }
+   .msgInputWrapper {
+    padding-right: 110px;
+  }
+  .sendBtn svg {
+    width: 60px !important;
+    height: 60px !important;
+  }
 }

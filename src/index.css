@@ -9,7 +9,7 @@
 }
 
 html {
-  font-size: 16px;
+  font-size: clamp(16px, 0.9vw, 22px);
   color:black;
 }
 
@@ -25,6 +25,19 @@ button,
 textarea,
 select {
   font: inherit;
+}
+
+/*media queries*/
+@media (min-width:2560px){
+  html{
+    font-size: 26px;
+  }
+}
+
+@media (min-width:3840px){
+  html{
+    font-size: 40px;
+  }
 }
 
 

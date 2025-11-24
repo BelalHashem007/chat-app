@@ -56,6 +56,30 @@ header h1 {
 @media (max-width: 680px) {
   .loginBody,
   .signupBody {
-    width: 90%;
+    width: 80%;
   }
 }
+
+
+@media (min-width: 2560px) {
+.loginBody,
+  .signupBody {
+    max-width: 900px;
+  }
+  .inpContainer{
+    max-width: 500px;
+  }
+}
+
+
+@media (min-width: 3840px) {
+.loginBody,
+  .signupBody {
+    max-width: 1200px;
+  }
+  .inpContainer{
+    max-width: 700px;
+  }
+}
+
+

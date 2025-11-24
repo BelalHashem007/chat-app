@@ -1,5 +1,6 @@
 import FormInput from "../../components/formComponents/FormInput";
 import FormButton from "../../components/formComponents/FormButton";
+import { Link } from "react-router";
 import styles from "./auth.module.css";
 
 function Login() {
@@ -15,7 +16,7 @@ function Login() {
         <LoginForm onSubmit={() => {}} />
         <div className={styles.createAccLink}>
           <p>
-            Not registered ? <a href="/signup">Create new account</a>
+            Not registered ? <Link to={"/signup"}>Create new account</Link>
           </p>
         </div>
       </div>

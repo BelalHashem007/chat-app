@@ -4,7 +4,7 @@ import Image from "../contactlist/ImageComponent";
 function UserInfoComponent({ user }) {
   return (
     <div className={styles.userContactWrapper}>
-      <Image url={user.url} />
+      <img src={user.url} alt={user.name} className={styles.userImg}/>
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
           <header>
