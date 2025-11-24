@@ -6,6 +6,11 @@
     "contactlist chatwindow";
 }
 
+main{
+  grid-area: chatwindow;
+  display: flex;
+}
+
 .contactList {
   grid-area: contactlist;
   display: flex;
@@ -13,8 +18,14 @@
   gap: 15px;
 }
 
+.navContactList{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
 .chatWindow {
-  grid-area: chatwindow;
+  flex: 1;
   border-left: 1px solid black;
   display: flex;
   flex-direction: column;
@@ -30,4 +41,14 @@
 .users{
   list-style-type: none;
   padding: 0;
+}
+
+.srOnly{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  margin: -1px;
+  padding: 0;
+  border: 0;
 }

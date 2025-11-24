@@ -16,15 +16,17 @@ function Chat() {
   return (
     <div className={styles.chatWrapper}>
       <ContactList />
-      <div className={styles.chatWindow}>
-        <div className={styles.optionsUserWrapper}>
-          <UserInfoComponent user={users[0]} />
-          <div className={styles.options}>unfinished</div>
+      <main aria-label={`Chat with ${users[0].name}`}>
+        <div className={styles.chatWindow}>
+          <div className={styles.optionsUserWrapper}>
+            <UserInfoComponent user={users[0]} />
+            <div className={styles.options}>unfinished</div>
+          </div>
+          <div className={styles.window}>
+            <Window />
+          </div>
         </div>
-        <div className={styles.window}>
-          <Window />
-        </div>
-      </div>
+      </main>
     </div>
   );
 }
@@ -35,17 +37,19 @@ function ContactList() {
       <header className={styles.logo}>
         <Logo />
       </header>
-      <h2 style={{ visibility: "hidden" }}>Contact List</h2>
-      <div className={styles.options}>
-        <OptionsSearchWrapper />
-      </div>
-      <ul className={styles.users}>
-        {users.map((user) => (
-          <li key={user.id}>
-            <UserContact user={user} />
-          </li>
-        ))}
-      </ul>
+      <nav className={styles.navContactList} aria-label="Contacts">
+        <h2 className={styles.srOnly} >Contact List</h2>
+        <div className={styles.options}>
+          <OptionsSearchWrapper />
+        </div>
+        <ul className={styles.users}>
+          {users.map((user) => (
+            <li key={user.id}>
+              <UserContact user={user} />
+            </li>
+          ))}
+        </ul>
+      </nav>
     </div>
   );
 }

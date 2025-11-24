@@ -2,7 +2,7 @@ import styles from "./messageBubble.module.css";
 
 function MessageBubble({ msg }) {
   return (
-    <div
+    <section aria-label="Messages" role="log"
       className={`${styles.chatBubble} ${
         msg.user !== 1 ? styles.curUser : ""
       } `}
@@ -15,7 +15,7 @@ function MessageBubble({ msg }) {
         <div className={`${styles.message} `}>{msg.text}</div>
         <div className={styles.messageDate}>{msg.date}</div>
       </div>
-    </div>
+    </section>
   );
 }
 

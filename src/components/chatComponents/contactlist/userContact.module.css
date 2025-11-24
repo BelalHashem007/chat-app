@@ -2,6 +2,10 @@
   display: flex;
   gap: var(--space-g10);
   padding: var(--space-lg);
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
 }
 
 .lastMsg,.lastMsgDate {
