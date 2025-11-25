@@ -1,5 +1,4 @@
 import styles from "./userInfoComponent.module.css";
-import Image from "../contactlist/ImageComponent";
 
 function UserInfoComponent({ user }) {
   return (

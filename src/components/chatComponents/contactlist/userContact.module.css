@@ -3,9 +3,10 @@
   gap: var(--space-g10);
   background: none;
   border: none;
-  width: 100%;
   text-align: left;
   padding: clamp(8px, 0.7vw, 16px);
+  margin: 0 10px;
+  flex-grow: 1;
 }
 
 .lastMsg,
@@ -27,6 +28,7 @@
 .userImg {
   width: 48px;
   height: 48px;
+  display: flex;
 }
 
 .nameWrapper {
@@ -59,4 +61,3 @@
     height: 100px;
   }
 }
-

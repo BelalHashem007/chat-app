@@ -55,7 +55,8 @@ select {
   /*Color*/
   --color-faded: #707991;
   --color-hover:#F5F5F5;
-
+  --color-hover-sidebar:#e8e8e8;
+  --color-logout:#ef9a9a66;
   /*Font*/
   --font-sm:14px;
   --font-xs:12px;

@@ -1,16 +1,18 @@
 import styles from "./chat.module.css";
 import UserContact from "../../components/chatComponents/contactlist/UserContact";
 import OptionsSearchWrapper from "../../components/chatComponents/contactlist/OptionsSearchWrapper";
-import userAvatar from "../../assets/Avatar.png";
 import Logo from "../../components/chatComponents/logo/LogoComponent";
 import UserInfoComponent from "../../components/chatComponents/chatwindow/UserInfoComponent";
 import Window from "../../components/chatComponents/chatwindow/Window";
 import { useState } from "react";
+import Sidebar from "../../components/chatComponents/sidebar/Sidebar";
+import Profile from "../../components/chatComponents/profile/Profile";
+import { useOutletContext } from "react-router";
 
 const users = [
-  { id: 1, url: userAvatar, name: "mohamed" },
-  { id: 2, url: userAvatar, name: "Ahmed" },
-  { id: 3, url: userAvatar, name: "Belal" },
+  { id: 1, name: "mohamed" },
+  { id: 2,  name: "Ahmed" },
+  { id: 3, name: "Belal" },
 ];
 const messages = [
   { id: 1, text: "Oldest message", user: 1, date: "11:37 AM" },
@@ -23,24 +25,28 @@ const messages = [
 
 function Chat() {
   const [selectedUser, setSelectedUser] = useState(null);
-  let user = null;
-  if (selectedUser) {
-    user = users[selectedUser-1];
-  }
+  const [showProfile, setShowProfile] = useState(false);
+  const [user] = useOutletContext();
+  console.log(user)
   return (
     <div className={styles.chatWrapper}>
-      <ContactList
-        selectedUser={selectedUser}
-        setSelectedUser={setSelectedUser}
-      />
-      <WindowPage messages={messages} user={user}/>
+      <Sidebar setShowProfile={setShowProfile}/>
+      {showProfile ? (
+        <Profile />
+      ) : (
+        <ContactList
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+        />
+      )}
+      <WindowPage messages={messages}  />
     </div>
   );
 }
 
-function WindowPage({ messages,user }) {
+function WindowPage({ messages, user }) {
   return (
-    <main aria-label={`${user ? `Chat with ${user.name}`: 'Empty chat'}`}>
+    <main aria-label={`${user ? `Chat with ${user.name}` : "Empty chat"}`}>
       <div className={styles.chatWindow}>
         {user && messages && (
           <div className={styles.optionsUserWrapper}>
@@ -49,7 +55,7 @@ function WindowPage({ messages,user }) {
           </div>
         )}
         <div className={styles.window}>
-          <Window messages={messages} />
+          <Window messages={null} />
         </div>
       </div>
     </main>

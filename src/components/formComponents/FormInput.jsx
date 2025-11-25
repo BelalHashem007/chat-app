@@ -1,14 +1,15 @@
 import styles from "./formInput.module.css";
-function FormInput({ label, name, type = "text" }) {
+function FormInput(props) {
   return (
     <>
-      <label htmlFor={name} className={styles.inpLabel}>
-        {label}:
+      <label htmlFor={props.name} className={styles.inpLabel}>
+        {props.label}:
       </label>
       <input
-        type={type}
-        name={name}
-        id={name}
+        type={props.type}
+        name={props.name}
+        id={props.name}
+        autoComplete={props.autoComplete || ""}
         required
         className={styles.inp}
       />

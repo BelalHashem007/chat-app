@@ -1,0 +1,28 @@
+.sidebar {
+  background-color: rgb(247, 245, 243);
+  display: flex;
+}
+.list {
+  flex-grow: 1;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  padding: 20px 0;
+  gap: 5px;
+  justify-content: space-between;
+}
+.listItem button {
+  background: none;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+}
+.listItem button:hover {
+  background-color: var(--color-hover-sidebar);
+  cursor: pointer;
+}
+.listItem .logoutBtn:hover{
+    background-color: var(--color-logout);
+}

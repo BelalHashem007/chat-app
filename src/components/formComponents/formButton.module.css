@@ -12,3 +12,6 @@
     cursor: pointer;
     background-color: #138ef3;
 }
+.btn:disabled{
+    opacity: 0.4;
+}

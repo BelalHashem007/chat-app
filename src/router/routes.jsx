@@ -5,6 +5,7 @@ import { Navigate } from "react-router";
 import ErrorNotFound from "../pages/error/ErrorNotFound";
 import OtherErrors from "../pages/error/OtherErrors";
 import Root from "../Root";
+import ProtectedRoute from "../util/ProtectedRoute";
 
 const routes = [
   {
@@ -18,7 +19,12 @@ const routes = [
       },
       {
         path: "/chat",
-        element: <Chat />,
+        element: (
+          <ProtectedRoute>
+            {" "}
+            <Chat />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",

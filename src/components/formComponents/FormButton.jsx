@@ -1,8 +1,8 @@
 import styles from './formButton.module.css'
 
-function FormButton({text,type="submit"}){
+function FormButton(props){
 return(
-    <button type={type} className={styles.btn}>{text}</button>
+    <button type={props.type} className={styles.btn} disabled={props.disableBtn}>{props.text}</button>
 );
 }
 
