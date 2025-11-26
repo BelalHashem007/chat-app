@@ -12,8 +12,8 @@
   border: 1px solid #00000021;
 }
 
-.searchInp:focus{
-    outline: 2px solid #2196f3;
+.searchInp:focus {
+  outline: 2px solid #2196f3;
 }
 
 .searchWrapper {
@@ -28,8 +28,8 @@
   display: block;
   position: absolute;
   top: 12px;
-  width: clamp(1.2rem,1vw,1.6rem);
-  height: clamp(1.2rem,1vw,1.6rem);
+  width: clamp(1.2rem, 1vw, 1.6rem);
+  height: clamp(1.2rem, 1vw, 1.6rem);
   left: 15px;
   pointer-events: none;
   background-image: url(../../../assets/search-icon.png);
@@ -37,24 +37,73 @@
   background-repeat: no-repeat;
 }
 
+.searchResultsWrapper {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  z-index: 2;
+  box-shadow: -7px 12px 20px #0000003b;
+  padding: 10px;
+  border: 1px solid #00000012;
+}
+.searchResultsWrapper.active{
+  display: block;
+}
+.searchResultsWrapper ul {
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.searchResult {
+  display: flex;
+  padding: 10px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+.searchResult:hover {
+  background-color: var(--color-hover);
+}
+.userPic {
+  width: 40px;
+  height: 22px;
+}
+.userEmail {
+  word-break: break-all;
+}
+.addUser {
+  background: none;
+  border: none;
+  background-color: #42a5f5;
+  color: white;
+  border-radius: 4px;
+}
+.addUser:hover {
+  cursor: pointer;
+  background-color: #2e8bd5;
+}
 
-@media (min-width:2560px){
-  .searchInp{
+@media (min-width: 2560px) {
+  .searchInp {
     padding-left: 50px;
   }
   .searchWrapper::before {
     top: 15px;
   }
-  .searchWrapper{
+  .searchWrapper {
     max-width: 600px;
   }
 }
 
-@media (min-width:3860px){
-  .searchInp{
+@media (min-width: 3860px) {
+  .searchInp {
     padding-left: 80px;
   }
-  .searchWrapper{
+  .searchWrapper {
     max-width: 800px;
   }
 }

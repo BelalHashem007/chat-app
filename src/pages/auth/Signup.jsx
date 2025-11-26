@@ -4,11 +4,14 @@ import styles from "./auth.module.css";
 import { createUser } from "../../firebase/firebase_auth/authentication";
 import { useNavigate, Link } from "react-router";
 import { useState } from "react";
+import { storeNewUserProfile } from "../../firebase/firebase_db/database";
 
 function Signup() {
   const navigate = useNavigate();
+
   const [error, setError] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
+
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -24,6 +27,7 @@ function Signup() {
     setDisableBtn(true);
     const result = await createUser(data.mail, data.password);
     if (result.user) {
+      await storeNewUserProfile(result.user);
       navigate("/chat");
     } else {
       setError(result.error);
