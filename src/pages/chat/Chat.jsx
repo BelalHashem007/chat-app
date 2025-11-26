@@ -4,10 +4,11 @@ import OptionsSearchWrapper from "../../components/chatComponents/contactlist/Op
 import Logo from "../../components/chatComponents/logo/LogoComponent";
 import UserInfoComponent from "../../components/chatComponents/chatwindow/UserInfoComponent";
 import Window from "../../components/chatComponents/chatwindow/Window";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Sidebar from "../../components/chatComponents/sidebar/Sidebar";
 import Profile from "../../components/chatComponents/profile/Profile";
 import { useOutletContext } from "react-router";
+import { subscribeToUserChats } from "../../firebase/firebase_db/database";
 
 const users = [
   { id: 1, name: "mohamed" },
@@ -63,6 +64,17 @@ function WindowPage({ messages, user }) {
 }
 
 function ContactList({ selectedUser, setSelectedUser }) {
+  const [user] = useOutletContext();
+  const [chats,setChats] = useState([])
+  console.log(chats)
+  useEffect(()=>{
+     const unsubscribe =  subscribeToUserChats(user.uid,(fetchedChats)=>{
+      setChats(fetchedChats)
+    })
+
+    return ()=> {unsubscribe()};
+  },[user])
+
   return (
     <div className={styles.contactList}>
       <header className={styles.logo}>
@@ -74,20 +86,21 @@ function ContactList({ selectedUser, setSelectedUser }) {
           <OptionsSearchWrapper />
         </div>
         <ul className={styles.users}>
-          {users.map((user) => (
+          {chats.map((chat) => (
             <li
-              key={user.id}
+              key={chat.id}
               onClick={() => {
-                setSelectedUser(user.id);
+                setSelectedUser(chat.id);
               }}
               className={`${
-                selectedUser == user.id ? styles.activeContact : ""
+                selectedUser == chat.id ? styles.activeContact : ""
               }`}
             >
-              <UserContact user={user} />
+              {<UserContact chat={chat} curUserUid={user.uid} />}
             </li>
           ))}
         </ul>
+        {chats.length == 0 && <p>No active chats. Start a new conversation!</p>}
       </nav>
     </div>
   );

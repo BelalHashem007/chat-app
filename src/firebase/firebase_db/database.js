@@ -8,6 +8,9 @@ import {
   query,
   where,
   getDocs,
+  addDoc,
+  onSnapshot,
+  orderBy
 } from "firebase/firestore";
 
 const db = getFirestore(app);
@@ -39,7 +42,7 @@ async function searchUsers(searchTerm) {
   const results = { data: [], error: null };
   if (!searchTerm || searchTerm.trim() == "") return results;
 
-  console.log("I ran (SearchUsers)")
+  console.log("I ran (SearchUsers)");
   const lowerCasedSearchTerm = searchTerm.toLowerCase();
   const usersRef = collection(db, "users");
 
@@ -64,4 +67,66 @@ async function searchUsers(searchTerm) {
   return results;
 }
 
-export { storeNewUserProfile, searchUsers };
+async function createNewChatRoom(curUser, otherUser) {
+  if (!curUser || !otherUser) return;
+
+  const chatCollectionRef = collection(db, "chats");
+  const chatToStore = {
+    participants: [
+      {
+        uid: curUser.uid,
+        displayName: curUser.displayName,
+        photoURL: curUser.photoURL,
+        email:curUser.email,
+      },
+      {
+        uid: otherUser.uid,
+        displayName: otherUser.displayName,
+        photoURL: otherUser.photoURL,
+        email:otherUser.email,
+      },
+    ],
+    participantsUids: [curUser.uid, otherUser.uid],
+    isGroupChat: false,
+    createdAt: serverTimestamp(),
+    lastMessage: "",
+    lastMessageDate: serverTimestamp(),
+    lastMessageSenderUid: "",
+    lastMessageSenderDisplayName: "",
+  };
+  try {
+    const docRef = await addDoc(chatCollectionRef, chatToStore);
+    console.log(docRef);
+  } catch (error) {
+    console.log(error);
+  }
+  return;
+}
+
+ function subscribeToUserChats(currentUserUid,callback) {
+  if (!currentUserUid) return () => {};
+
+  const chatsCollectionRef = collection(db, "chats");
+  const q = query(
+    chatsCollectionRef,
+    where("participantsUids", "array-contains", currentUserUid),
+    orderBy("lastMessageDate", "desc")
+  );
+  const unsubscribe = onSnapshot(
+    q,
+    (querySnapshot) => {
+      const userChats = [];
+      querySnapshot.forEach((doc) => {
+        userChats.push({ id: doc.id, ...doc.data() });
+      });
+      callback(userChats); // Pass the updated list of chats to your component
+    },
+    (error) => {
+      console.error("Error fetching user chats:", error);
+    }
+  );
+
+  return unsubscribe;
+}
+
+export { storeNewUserProfile, searchUsers, createNewChatRoom,subscribeToUserChats };

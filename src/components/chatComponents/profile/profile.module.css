@@ -1,0 +1,30 @@
+.wrapper{
+    padding: 20px;
+}
+.profileDetails{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 50px;
+}
+.profilePicture{
+    width: 100px;
+    height: 100px;
+    align-self: center;
+    display: flex;
+}
+.profileName,.profileEmail{
+    display: flex;
+    justify-content: space-between;
+}
+.profileName button, .profileEmail button {
+    background: none;
+    border: none;
+}
+.profileName button:hover, .profileEmail button:hover {
+    cursor: pointer;
+    background-color: var(--color-hover);
+}
+.nameLabel,.emailLabel {
+    color: #56595b;
+}

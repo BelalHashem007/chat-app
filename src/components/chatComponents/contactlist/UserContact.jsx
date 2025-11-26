@@ -1,23 +1,47 @@
 import styles from "./userContact.module.css";
 import DefaultImage from "../../../util/DefaultImage";
-function UserContact({ user }) {
+function UserContact({ chat, curUserUid }) {
+  if (!chat || !curUserUid) return;
+
+  const contactUid = chat.participantsUids.filter(
+    (uid) => curUserUid != uid
+  )[0];
+
+  const contact = chat.participants.filter(
+    (participant) => participant.uid == contactUid
+  )[0];
+  const lastMsg = chat.lastMessage ? (chat.lastMessageSenderUid == curUserUid ? "You:" : contact.displayName || "New User" +": "+ chat.lastMessage) : "";
+
   return (
     <button className={styles.userContactWrapper}>
-      {user.url ? (
-        <img src={user.url} alt={user.name} className={styles.userImg} />
+      {contact.photoURL ? (
+        <img
+          src={contact.photoURL}
+          alt={contact.displayName}
+          className={styles.userImg}
+        />
       ) : (
-        <div className={styles.userImg}> <DefaultImage user={{ email: user.name }} /></div>
+        <div className={styles.userImg}>
+          {" "}
+          <DefaultImage text={contact.email} />
+        </div>
       )}
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
-          <div className={styles.name}>{user.name}</div>
+          <div className={styles.name}>
+            {contact.displayName ? contact.displayName : "New User"}
+          </div>
           <div className={styles.lastMsgDate} aria-hidden="true">
-            Msg date...
+            {new Date(chat.lastMessageDate.seconds * 1000).toLocaleTimeString(
+              [],
+              {
+                hour: "2-digit",
+                minute: "2-digit",
+              }
+            )}
           </div>
         </div>
-        <div className={styles.lastMsg} aria-hidden="true">
-          Last message...
-        </div>
+        <div className={styles.lastMsg} aria-hidden="true">{lastMsg}</div>
       </div>
     </button>
   );

@@ -1,7 +1,9 @@
-function DefaultImage({ user }) {
-  if (!user) return;
-  const firstLetter = user.email.slice(0, 1).toUpperCase();
-  const bgColor = generateRandomHexColor(user.email);
+function DefaultImage({ text }) {
+  console.log(text)
+  if (!text) return;
+  
+  const firstLetter = text.slice(0, 1).toUpperCase();
+  const bgColor = generateRandomHexColor(text);
   const color = getBrightness(bgColor) > 128 ? "#000000" : "#FFFFFF";
 
   return (
@@ -14,6 +16,7 @@ function DefaultImage({ user }) {
         display:"flex",
         justifyContent:"center",
         alignItems:"center",
+        fontWeight:"700"
       }}
     >
       {firstLetter}
