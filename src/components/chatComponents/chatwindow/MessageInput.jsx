@@ -3,12 +3,32 @@ import Icon from "@mdi/react";
 import { mdiSendVariantOutline } from "@mdi/js";
 import styles from "./messageInput.module.css";
 import TextareaAutosize from "react-textarea-autosize";
+import { useOutletContext } from "react-router";
+import { sendMessage } from "../../../firebase/firebase_db/database";
 
-function MessageInput() {
+function MessageInput({ selectedChat }) {
   const [msg, setMsg] = useState("");
+  const [user] = useOutletContext();
+
+  async function handleSumbit(e) {
+    e.preventDefault();
+    console.log(selectedChat);
+    if (!msg || !msg.trim() || !user || !selectedChat) return;
+    setMsg("");
+    await sendMessage(msg, selectedChat.id, user);
+  }
+
   return (
-    <form aria-label="Send a message" className={styles.wrapper}>
-      <div className={styles.msgInputWrapper}>
+    <form
+      aria-label="Send a message"
+      className={styles.wrapper}
+      onSubmit={handleSumbit}
+      onKeyDown={(e)=>{
+        if (e.key=="Enter"){
+          handleSumbit(e);
+        }
+      }}
+    >
         <TextareaAutosize
           value={msg}
           onChange={(e) => {
@@ -22,7 +42,6 @@ function MessageInput() {
         <button className={styles.sendBtn} type="submit" title="Send">
           <Icon path={mdiSendVariantOutline} size={"30px"} color={"white"} />
         </button>
-      </div>
     </form>
   );
 }

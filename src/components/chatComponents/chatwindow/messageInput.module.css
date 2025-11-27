@@ -1,5 +1,5 @@
-.msgInputWrapper {
-  position: absolute;
+.wrapper {
+  position: relative;
   bottom: 0;
   width: 95%;
   left: 50%;

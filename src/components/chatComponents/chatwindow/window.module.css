@@ -1,6 +1,7 @@
 .windowbg {
-  height: 100%;
   position: relative;
+  flex: 1;
+  min-height: 0;
 }
 .windowbg.notActive {
   display: flex;
@@ -19,12 +20,9 @@
   font-size: 1.5rem;
 }
 .windowbg.active {
-  padding-top: 20px;
   display: flex;
   flex-direction: column;
-  padding-bottom: 100px;
   gap: 20px;
-  justify-content: flex-end;
 }
 .windowbg::before {
   content: "";
@@ -34,9 +32,42 @@
   background-repeat: repeat;
   background-size: 400px;
   inset: 0;
-  opacity: 0.6;
+  opacity: 0.5;
   z-index: 0;
 }
+.ScrollWrapper{
+  overflow-y: auto;
+  flex: 1;
+  position: relative;
+  min-height: 0;
+}
+.flexWrapper{
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: flex-end;
+}
+/*Styling scrollbar inside chat*/
+.ScrollWrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ScrollWrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+}
+
+.ScrollWrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Firefox */
+.ScrollWrapper {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.25) transparent;
+}
+
 
 @media (min-width: 3840px) {
   .windowbg {

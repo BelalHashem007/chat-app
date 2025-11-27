@@ -2,16 +2,8 @@ import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import styles from "./window.module.css";
 
-function Window({ messages }) {
-  //get current user messages
-
-  const currentUser = {
-    userid: 2,
-    userMessages: [
-      "hi",
-      "When will i able to get the details for the course ?",
-    ],
-  };
+function Window({ messages, selectedChat }) {
+  //get current contact messages
   if (!messages) {
     return (
       <div className={`${styles.windowbg} ${styles.notActive}`}>
@@ -25,10 +17,14 @@ function Window({ messages }) {
 
   return (
     <div className={`${styles.windowbg} ${styles.active}`}>
-      {messages.map((msg) => (
-        <MessageBubble key={msg.id} msg={msg} />
-      ))}
-      <MessageInput />
+      <div className={styles.ScrollWrapper}>
+        <div className={styles.flexWrapper}>
+          {messages.map((msg) => (
+            <MessageBubble key={msg.id} msg={msg} />
+          ))}
+        </div>
+      </div>
+      <MessageInput selectedChat={selectedChat} />
     </div>
   );
 }

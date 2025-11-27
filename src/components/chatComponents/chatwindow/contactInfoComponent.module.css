@@ -12,8 +12,8 @@
   font-weight: 600;
 }
 .userImg{
-  width: 58px;
-  height: 58px;
+  min-width: 80px;
+  display: flex;
 }
 
 @media (min-width:2560px) {

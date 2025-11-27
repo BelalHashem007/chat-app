@@ -8,6 +8,7 @@
 main {
   grid-area: chatwindow;
   display: flex;
+  max-height: 100vh;
 }
 
 .contactList {
@@ -34,7 +35,10 @@ main {
   justify-content: space-between;
 }
 .window {
-  height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .users {

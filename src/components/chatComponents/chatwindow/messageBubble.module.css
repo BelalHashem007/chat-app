@@ -4,6 +4,7 @@
   position: relative;
   z-index: 1;
   padding-left: var(--space-bubble);
+  width: fit-content;
 }
 
 .message {
@@ -44,15 +45,14 @@
   margin-left: 20px;
   background-color: white;
   border-radius: 10px;
-  padding: 4px 12px 25px 12px;
+  padding: 4px 12px 4px 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .messageDate {
   color: #404658;
-  position: absolute; 
-  bottom: 0;
-  right: 0;
-  padding-right: 12px;
-  padding-bottom: 4px;
   font-size: var(--font-xs);
+  align-self: flex-end;
 }

@@ -1,15 +1,14 @@
 import styles from "./userContact.module.css";
 import DefaultImage from "../../../util/DefaultImage";
+
 function UserContact({ chat, curUserUid }) {
   if (!chat || !curUserUid) return;
 
-  const contactUid = chat.participantsUids.filter(
-    (uid) => curUserUid != uid
+
+  const contact = chat.enrichedParticipants.filter(
+    (user) => curUserUid != user.uid
   )[0];
 
-  const contact = chat.participants.filter(
-    (participant) => participant.uid == contactUid
-  )[0];
   const lastMsg = chat.lastMessage ? (chat.lastMessageSenderUid == curUserUid ? "You:" : contact.displayName || "New User" +": "+ chat.lastMessage) : "";
 
   return (
