@@ -12,6 +12,7 @@ import {
   subscribeToChatMessages,
   subscribeToUserChats,
 } from "../../firebase/firebase_db/database";
+import { listenToUserOnlineStatus } from "../../firebase/firebase_RTdb/rtdb";
 
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
@@ -36,8 +37,16 @@ function Chat() {
 function WindowPage({ selectedChat }) {
   const [messages, setMessages] = useState([]);
   const [user] = useOutletContext();
+  const [contactOnlineStatus, setContactOnlineStatus] = useState(null); 
+
   let contact = null;
   console.log(messages)
+
+ if (selectedChat&&user) {
+    contact = selectedChat.enrichedParticipants.filter(
+      (participant) => user.uid !== participant.uid
+    )[0];
+  }
 
   useEffect(() => {
     if (!selectedChat) return;
@@ -54,11 +63,27 @@ function WindowPage({ selectedChat }) {
     };
   }, [selectedChat]);
 
-  if (selectedChat) {
-    contact = selectedChat.enrichedParticipants.filter(
-      (participant) => user.uid !== participant.uid
-    )[0];
-  }
+
+  useEffect(() => {
+    if (!selectedChat || !contact) {
+      return;
+    }
+
+    console.log(`Setting up status listener for contact: ${contact.uid}`);
+
+    const unsubscribeStatus = listenToUserOnlineStatus(
+      contact.uid,
+      (status) => {
+        console.log(`Contact ${contact.uid} status update:`, status);
+        setContactOnlineStatus(status);
+      }
+    );
+
+    return () => {
+      console.log(`Cleaning up status listener for contact: ${contact.uid}`);
+      unsubscribeStatus();
+    };
+  }, [selectedChat, contact]);
 
   return (
     <main
@@ -67,7 +92,7 @@ function WindowPage({ selectedChat }) {
       <div className={styles.chatWindow}>
         {selectedChat && (
           <div className={styles.optionsUserWrapper}>
-            <ContactInfoComponent contact={contact} />
+            <ContactInfoComponent contact={contact} contactOnlineStatus={contactOnlineStatus} />
             <div className={styles.options}>unfinished</div>
           </div>
         )}
@@ -119,7 +144,6 @@ function ContactList({ selectedChat, setSelectedChat }) {
             </li>
           ))}
         </ul>
-        {chats.length == 0 && <p>No active chats. Start a new conversation!</p>}
       </nav>
     </div>
   );

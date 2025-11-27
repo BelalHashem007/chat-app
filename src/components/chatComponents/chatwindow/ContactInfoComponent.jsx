@@ -1,8 +1,8 @@
 import styles from "./contactInfoComponent.module.css";
 import DefaultImage from "../../../util/DefaultImage";
 
-function ContactInfoComponent({ contact }) {
-  if (!contact) return;
+function ContactInfoComponent({ contact,contactOnlineStatus }) {
+  if (!contact || !contactOnlineStatus) return;
   return (
     <div className={styles.userContactWrapper}>
       {contact.photoURL ? (
@@ -22,7 +22,7 @@ function ContactInfoComponent({ contact }) {
           <header>
             <h2 className={styles.name}>{contact.displayName ? contact.displayName : "New User"}</h2>
           </header>
-          <div className={styles.lastOnline}>Last online...</div>
+          <div className={styles.onlineStatus}>{contactOnlineStatus.state}</div>
         </div>
       </div>
     </div>

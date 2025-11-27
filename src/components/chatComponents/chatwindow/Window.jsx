@@ -4,7 +4,7 @@ import styles from "./window.module.css";
 
 function Window({ messages, selectedChat }) {
   //get current contact messages
-  if (!messages) {
+  if (!selectedChat) {
     return (
       <div className={`${styles.windowbg} ${styles.notActive}`}>
         <div className={styles.notActiveWrapper}>
