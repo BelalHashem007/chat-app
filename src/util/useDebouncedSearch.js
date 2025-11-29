@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { searchUsers } from "../firebase/firebase_db/database";
 
-const useDebouncedSearch = (searchTerm, delay = 500) => {
+const useDebouncedSearch = (searchTerm,useruid, delay = 500) => {
   const [searchState, setSearchState] = useState({
     results: [],
     isLoading: false,
@@ -25,18 +25,17 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
       return;
     }
 
-    // 2. As soon as typing starts, set loading and show the results area
-    updateSearchState({
-      results: [],
-      isLoading: true,
-      showResultsArea: true,
-      error: null,
-    });
 
-    // 3. Set the debounced timeout
+    // 2. Set the debounced timeout
     const handler = setTimeout(async () => {
       try {
-        const searchResult = await searchUsers(searchTerm);
+        updateSearchState({
+          results: [],
+          isLoading: true,
+          showResultsArea: true,
+          error: null,
+        });
+        const searchResult = await searchUsers(searchTerm,useruid);
 
         if (searchResult.error) {
           updateSearchState({
@@ -61,7 +60,7 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
       }
     }, delay);
 
-    // 4. Cleanup function: This is CRUCIAL for debouncing!
+    // 3. Cleanup function
     return () => {
       clearTimeout(handler);
     };

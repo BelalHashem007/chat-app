@@ -17,6 +17,18 @@ import { listenToUserOnlineStatus } from "../../firebase/firebase_RTdb/rtdb";
 function Chat() {
   const [selectedChat, setSelectedChat] = useState(null);
   const [showProfile, setShowProfile] = useState(false);
+  const [chats, setChats] = useState([]);
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    const unsubscribe = subscribeToUserChats(user.uid, (fetchedChats) => {
+      setChats(fetchedChats);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
 
   return (
     <div className={styles.chatWrapper}>
@@ -27,6 +39,7 @@ function Chat() {
         <ContactList
           selectedChat={selectedChat}
           setSelectedChat={setSelectedChat}
+          chats={chats}
         />
       )}
       <WindowPage selectedChat={selectedChat} />
@@ -36,7 +49,7 @@ function Chat() {
 
 function WindowPage({ selectedChat }) {
   const [messages, setMessages] = useState([]);
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
   const [contactOnlineStatus, setContactOnlineStatus] = useState(null);
 
   let contact = null;
@@ -108,19 +121,8 @@ function WindowPage({ selectedChat }) {
   );
 }
 
-function ContactList({ selectedChat, setSelectedChat }) {
-  const {user} = useAuthContext();
-  const [chats, setChats] = useState([]);
-  console.log(chats);
-  useEffect(() => {
-    const unsubscribe = subscribeToUserChats(user.uid, (fetchedChats) => {
-      setChats(fetchedChats);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [user]);
+function ContactList({ selectedChat, setSelectedChat,chats }) {
+  const { user } = useAuthContext();
 
   return (
     <div className={styles.contactList}>

@@ -47,8 +47,11 @@
   box-shadow: -7px 12px 20px #0000003b;
   padding: 10px;
   border: 1px solid #00000012;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 100%;
 }
-.searchResultsWrapper.active{
+.searchResultsWrapper.active {
   display: block;
 }
 .searchResultsWrapper ul {
@@ -74,6 +77,7 @@
 }
 .userEmail {
   word-break: break-all;
+  min-width: 200px;
 }
 .addUser {
   background: none;

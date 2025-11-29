@@ -9,7 +9,6 @@ import {
   query,
   where,
   getDocs,
-  addDoc,
   onSnapshot,
   orderBy,
   limit,
@@ -42,11 +41,10 @@ async function storeNewUserProfile(user) {
   }
 }
 
-async function searchUsers(searchTerm) {
+async function searchUsers(searchTerm, curUserUid) {
   const results = { data: [], error: null };
   if (!searchTerm || searchTerm.trim() == "") return results;
 
-  console.log("I ran (SearchUsers)");
   const lowerCasedSearchTerm = searchTerm.toLowerCase();
   const usersRef = collection(db, "users");
 
@@ -60,8 +58,15 @@ async function searchUsers(searchTerm) {
 
   try {
     const querySnapshot = await getDocs(qEmail);
+    const contacts = await getDocs(collection(db,`/users/${curUserUid}/contacts`));
+    const contactsUids = new Set(contacts.docs.map((doc)=> doc.id));
 
     querySnapshot.forEach((doc) => {
+      const data = { ...doc.data() };
+      const userUid = data.uid || doc.id;
+
+      if (curUserUid == userUid) return;//exclude current user
+      if (contactsUids.has(userUid)) return; // exclude current contacts
       results.data.push({ id: doc.id, ...doc.data() });
     });
   } catch (error) {
@@ -75,6 +80,7 @@ async function createNewChatRoom(curUser, otherUser) {
   if (!curUser || !otherUser) return;
 
   const chatCollectionRef = collection(db, "chats");
+  const newChatDocRef = doc(chatCollectionRef);
   const chatToStore = {
     participantsUids: [curUser.uid, otherUser.uid],
     isGroupChat: false,
@@ -85,11 +91,28 @@ async function createNewChatRoom(curUser, otherUser) {
     lastMessageSenderDisplayName: "",
   };
   try {
-    const docRef = await addDoc(chatCollectionRef, chatToStore);
-    console.log(docRef);
+    await runTransaction(db, async (transaction) => {
+      //create chatroom
+      transaction.set(newChatDocRef, chatToStore);
+      //create contact for curuser
+      transaction.set(
+        doc(db, `/users/${curUser.uid}/contacts/${otherUser.uid}`),
+        {
+          createdAt: serverTimestamp(),
+        }
+      );
+      //create contact for otheruser
+      transaction.set(
+        doc(db, `/users/${otherUser.uid}/contacts/${curUser.uid}`),
+        {
+          createdAt: serverTimestamp(),
+        }
+      );
+    });
   } catch (error) {
     console.log(error);
   }
+
   return;
 }
 
@@ -161,10 +184,10 @@ async function sendMessage(msg, chatid, curUser) {
       };
 
       //add message doc
-       transaction.set(newMessageRef, msgToStore);
+      transaction.set(newMessageRef, msgToStore);
 
       //update chat details
-       transaction.update(doc(db, `/chats/${chatid}`), {
+      transaction.update(doc(db, `/chats/${chatid}`), {
         lastMessage: msg,
         lastMessageDate: serverTimestamp(),
         lastMessageSenderUid: curUser.uid,

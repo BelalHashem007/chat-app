@@ -10,7 +10,7 @@ function SearchBar() {
   const {user} = useAuthContext();
   const [searchTerm, setSearchTerm] = useState("");
   const { results, isLoading, error, showResultsArea } =
-    useDebouncedSearch(searchTerm, 500);
+    useDebouncedSearch(searchTerm, user.uid,500);
 
   async function handleAdd(otherUser) {
     if (otherUser && user) {
@@ -45,7 +45,7 @@ function SearchBar() {
                 {result.photoURL ? (
                   <img src={result.photoURL} alt={result.displayName} />
                 ) : (
-                  <DefaultImage user={result} />
+                  <DefaultImage text={result.email} />
                 )}
               </div>
               <div className={styles.userEmail}>{result.email}</div>
