@@ -26,7 +26,7 @@ function useAuthStatus() {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setupCurrentUserPresence(user);
+        setupCurrentUserPresence(user);
 
       setUser(user);
       setIsAuthenticated(!!user);
