@@ -7,7 +7,7 @@ import Window from "../../components/chatComponents/chatwindow/Window";
 import { useEffect, useState } from "react";
 import Sidebar from "../../components/chatComponents/sidebar/Sidebar";
 import Profile from "../../components/chatComponents/profile/Profile";
-import { useOutletContext } from "react-router";
+import { useAuthContext } from "../../util/context";
 import {
   subscribeToChatMessages,
   subscribeToUserChats,
@@ -36,13 +36,13 @@ function Chat() {
 
 function WindowPage({ selectedChat }) {
   const [messages, setMessages] = useState([]);
-  const [user] = useOutletContext();
-  const [contactOnlineStatus, setContactOnlineStatus] = useState(null); 
+  const {user} = useAuthContext();
+  const [contactOnlineStatus, setContactOnlineStatus] = useState(null);
 
   let contact = null;
-  console.log(messages)
+  console.log(messages);
 
- if (selectedChat&&user) {
+  if (selectedChat && user) {
     contact = selectedChat.enrichedParticipants.filter(
       (participant) => user.uid !== participant.uid
     )[0];
@@ -62,7 +62,6 @@ function WindowPage({ selectedChat }) {
       unsubscribe();
     };
   }, [selectedChat]);
-
 
   useEffect(() => {
     if (!selectedChat || !contact) {
@@ -91,10 +90,15 @@ function WindowPage({ selectedChat }) {
     >
       <div className={styles.chatWindow}>
         {selectedChat && (
-          <div className={styles.optionsUserWrapper}>
-            <ContactInfoComponent contact={contact} contactOnlineStatus={contactOnlineStatus} />
-            <div className={styles.options}>unfinished</div>
-          </div>
+          <header>
+            <div className={styles.optionsUserWrapper}>
+              <ContactInfoComponent
+                contact={contact}
+                contactOnlineStatus={contactOnlineStatus}
+              />
+              <div className={styles.options}>unfinished</div>
+            </div>
+          </header>
         )}
         <div className={styles.window}>
           <Window messages={messages} selectedChat={selectedChat} />
@@ -105,7 +109,7 @@ function WindowPage({ selectedChat }) {
 }
 
 function ContactList({ selectedChat, setSelectedChat }) {
-  const [user] = useOutletContext();
+  const {user} = useAuthContext();
   const [chats, setChats] = useState([]);
   console.log(chats);
   useEffect(() => {

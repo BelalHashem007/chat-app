@@ -16,6 +16,8 @@ main {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  border-left: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
 }
 
 .navContactList {
@@ -26,13 +28,13 @@ main {
 
 .chatWindow {
   flex: 1;
-  border-left: 1px solid black;
   display: flex;
   flex-direction: column;
 }
 .optionsUserWrapper {
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
 }
 .window {
   flex: 1;
@@ -44,9 +46,13 @@ main {
 .users {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 .users li {
   display: flex;
+  margin: 0 10px;
 }
 .srOnly {
   position: absolute;

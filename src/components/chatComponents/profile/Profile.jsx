@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router";
+import { useAuthContext } from "../../../util/context";
 import DefaultImage from "../../../util/DefaultImage";
 import styles from "./profile.module.css";
 import Icon from "@mdi/react";
@@ -7,7 +7,7 @@ import { useState } from "react";
 import { updateUserName } from "../../../firebase/firebase_db/database";
 
 function Profile() {
-  const [user] = useOutletContext();
+  const {user} = useAuthContext();
   const [nameEditable, setNameEditable] = useState(false);
   const [name, setName] = useState(user.displayName || "New User");
 

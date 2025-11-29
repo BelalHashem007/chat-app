@@ -4,11 +4,20 @@ import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import styles from "./auth.module.css";
 import { signIn } from "../../firebase/firebase_auth/authentication";
+import { useAuthContext } from "../../util/context";
 
 function Login() {
   let navigate = useNavigate();
   const [error, setError] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
+  const {isAuthenticated} = useAuthContext();
+  
+  
+  if (isAuthenticated) { // if user already logged in navigate to chat page
+    navigate("/chat")
+    return null; // stop rendering the login page
+  } 
+
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);

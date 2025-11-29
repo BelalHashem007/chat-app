@@ -3,12 +3,12 @@ import Icon from "@mdi/react";
 import { mdiSendVariantOutline } from "@mdi/js";
 import styles from "./messageInput.module.css";
 import TextareaAutosize from "react-textarea-autosize";
-import { useOutletContext } from "react-router";
 import { sendMessage } from "../../../firebase/firebase_db/database";
+import { useAuthContext } from "../../../util/context";
 
 function MessageInput({ selectedChat }) {
   const [msg, setMsg] = useState("");
-  const [user] = useOutletContext();
+  const {user}= useAuthContext();
 
   async function handleSumbit(e) {
     e.preventDefault();

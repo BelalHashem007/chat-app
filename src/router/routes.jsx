@@ -6,6 +6,7 @@ import ErrorNotFound from "../pages/error/ErrorNotFound";
 import OtherErrors from "../pages/error/OtherErrors";
 import Root from "../Root";
 import ProtectedRoute from "../util/ProtectedRoute";
+import UnAuthorizedRoute from "../util/UnAuthorizedRoute";
 
 const routes = [
   {
@@ -28,11 +29,11 @@ const routes = [
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <UnAuthorizedRoute><Login /></UnAuthorizedRoute>,
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: <UnAuthorizedRoute><Signup /></UnAuthorizedRoute>,
       },
       { path: "*", element: <ErrorNotFound /> },
     ],

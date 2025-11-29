@@ -22,7 +22,8 @@ function ContactInfoComponent({ contact,contactOnlineStatus }) {
           <header>
             <h2 className={styles.name}>{contact.displayName ? contact.displayName : "New User"}</h2>
           </header>
-          <div className={styles.onlineStatus}>{contactOnlineStatus ? contactOnlineStatus.state : "offline"}</div>
+          <div className={styles.onlineStatus}>
+            <span className={`${styles.dot} ${contactOnlineStatus && contactOnlineStatus.state === "online" ? styles.online : styles.offline}`}></span>{contactOnlineStatus && contactOnlineStatus.state }</div>
         </div>
       </div>
     </div>

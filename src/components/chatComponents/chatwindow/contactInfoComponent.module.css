@@ -1,19 +1,34 @@
 .userContactWrapper {
   display: flex;
   gap: var(--space-g10);
-  padding: var(--space-lg);
+  padding: var(--space-sm);
 }
 .onlineStatus {
   color: var(--color-faded);
-  font-size: 1rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
 }
 .name {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: 600;
 }
 .userImg{
-  min-width: 80px;
+  min-width: 50px;
   display: flex;
+}
+.dot{
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+.dot.online {
+  background-color: #4CAF50;
+}
+.dot.offline {
+  background-color: red;
 }
 
 @media (min-width:2560px) {

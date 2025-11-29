@@ -20,11 +20,12 @@ function Sidebar({ setShowProfile }) {
     <nav aria-label="Sidebar" className={styles.sidebar}>
       <ul className={styles.list}>
         <div className={styles.top}>
-          <li title="Chats" aria-label="Chats" className={styles.listItem}>
+          <li  aria-label="Chats" className={styles.listItem}>
             <button
               onClick={() => {
                 setShowProfile(false);
               }}
+              title="Chats"
             >
               <Icon path={mdiMessageText} size={1} />
             </button>

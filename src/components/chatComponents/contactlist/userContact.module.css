@@ -5,7 +5,6 @@
   border: none;
   text-align: left;
   padding: clamp(8px, 0.7vw, 16px);
-  margin: 0 10px;
   flex-grow: 1;
 }
 
@@ -13,6 +12,12 @@
 .lastMsgDate {
   color: var(--color-faded);
   font-size: var(--font-sm);
+}
+.lastMsg {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 200px;
+  text-wrap: nowrap;
 }
 
 .name {

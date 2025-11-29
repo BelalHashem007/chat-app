@@ -5,12 +5,14 @@
   z-index: 1;
   padding-left: var(--space-bubble);
   width: fit-content;
+  max-width: 70%;
 }
 
 .message {
   color: black;
   width: fit-content;
   position: relative;
+  word-break: break-all;
 }
 .msgWrapper::before {
   content: "";

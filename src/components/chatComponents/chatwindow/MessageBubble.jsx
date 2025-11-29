@@ -1,9 +1,8 @@
 import styles from "./messageBubble.module.css";
-import { useOutletContext } from "react-router";
+import { useAuthContext } from "../../../util/context";
 
 function MessageBubble({ msg }) {
-  console.log(msg)
-  const [user] = useOutletContext();
+  const {user} = useAuthContext();
   return (
     <section aria-label="Messages" role="log"
       className={`${styles.chatBubble} ${

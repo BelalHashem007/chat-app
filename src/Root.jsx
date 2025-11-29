@@ -1,11 +1,12 @@
 import { Outlet } from "react-router";
-import { useState } from "react";
+import AuthProvider from "./util/AuthProvider";
 
-function Root(){
-    const [user,setUser] = useState(null);
-    return(
-        <Outlet context={[user,setUser]}/>
-    );
+function Root() {
+  return (
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
+  );
 }
 
-export default Root
+export default Root;

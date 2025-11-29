@@ -2,11 +2,12 @@ import { useState } from "react";
 import styles from "./searchComponent.module.css";
 import DefaultImage from "../../../util/DefaultImage";
 import useDebouncedSearch from "../../../util/useDebouncedSearch";
-import { useOutletContext } from "react-router";
 import { createNewChatRoom } from "../../../firebase/firebase_db/database";
+import { useAuthContext } from "../../../util/context";
+
 
 function SearchBar() {
-  const [user] = useOutletContext();
+  const {user} = useAuthContext();
   const [searchTerm, setSearchTerm] = useState("");
   const { results, isLoading, error, showResultsArea } =
     useDebouncedSearch(searchTerm, 500);
