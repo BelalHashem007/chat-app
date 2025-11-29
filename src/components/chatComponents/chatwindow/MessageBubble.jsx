@@ -1,5 +1,6 @@
 import styles from "./messageBubble.module.css";
 import { useAuthContext } from "../../../util/context";
+import getMessageDate from "../../../util/getMessageDate";
 
 function MessageBubble({ msg }) {
   const {user} = useAuthContext();
@@ -15,11 +16,7 @@ function MessageBubble({ msg }) {
         }`}
       >
         <div className={`${styles.message} `}>{msg.text}</div>
-        <div className={styles.messageDate}>{new Date( msg.timestamp.seconds*1000).toLocaleTimeString( [],
-              {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}</div>
+        <div className={styles.messageDate}>{getMessageDate(msg.timestamp,{forChatWindow:true})}</div>
       </div>
     </section>
   );

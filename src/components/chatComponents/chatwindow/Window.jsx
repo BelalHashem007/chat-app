@@ -9,7 +9,6 @@ function Window({ messages, selectedChat }) {
   useEffect(()=>{
     if (scrolWrapperRef.current){
       scrolWrapperRef.current.scrollTop = scrolWrapperRef.current.scrollHeight ;
-      console.log(scrolWrapperRef.current.scrollTop)
     }
   },[messages])
   //get current contact messages

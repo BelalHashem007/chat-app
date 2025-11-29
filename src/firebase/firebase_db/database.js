@@ -86,7 +86,7 @@ async function createNewChatRoom(curUser, otherUser) {
     isGroupChat: false,
     createdAt: serverTimestamp(),
     lastMessage: "",
-    lastMessageDate: serverTimestamp(),
+    lastMessageDate: null,
     lastMessageSenderUid: "",
     lastMessageSenderDisplayName: "",
   };

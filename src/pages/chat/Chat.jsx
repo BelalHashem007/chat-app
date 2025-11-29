@@ -51,9 +51,8 @@ function WindowPage({ selectedChat }) {
   const [messages, setMessages] = useState([]);
   const { user } = useAuthContext();
   const [contactOnlineStatus, setContactOnlineStatus] = useState(null);
-
+  
   let contact = null;
-  console.log(messages);
 
   if (selectedChat && user) {
     contact = selectedChat.enrichedParticipants.filter(
@@ -123,7 +122,7 @@ function WindowPage({ selectedChat }) {
 
 function ContactList({ selectedChat, setSelectedChat,chats }) {
   const { user } = useAuthContext();
-
+  
   return (
     <div className={styles.contactList}>
       <header className={styles.logo}>

@@ -12,7 +12,6 @@ function MessageInput({ selectedChat }) {
 
   async function handleSumbit(e) {
     e.preventDefault();
-    console.log(selectedChat);
     if (!msg || !msg.trim() || !user || !selectedChat) return;
     setMsg("");
     await sendMessage(msg, selectedChat.id, user);

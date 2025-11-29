@@ -13,7 +13,6 @@ export default function AuthProvider({ children }) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("Hello from inside.", user);
       setupCurrentUserPresence(user);
       setUser(user);
       setIsAuthenticated(!!user);

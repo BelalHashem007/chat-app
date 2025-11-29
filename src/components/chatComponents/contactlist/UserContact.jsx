@@ -1,5 +1,6 @@
 import styles from "./userContact.module.css";
 import DefaultImage from "../../../util/DefaultImage";
+import getMessageDate from "../../../util/getMessageDate";
 
 function UserContact({ chat, curUserUid }) {
   if (!chat || !curUserUid) return;
@@ -10,7 +11,7 @@ function UserContact({ chat, curUserUid }) {
   )[0];
 
   const lastMsgSender = chat.lastMessage && (chat.lastMessageSenderUid == curUserUid ? "You" : (contact.displayName || "New User"));
-
+  console.log(chat.lastMessageDate)
   return (
     <button className={styles.userContactWrapper}>
       {contact.photoURL ? (
@@ -31,13 +32,7 @@ function UserContact({ chat, curUserUid }) {
             {contact.displayName ? contact.displayName : "New User"}
           </div>
           <div className={styles.lastMsgDate} aria-hidden="true">
-            {new Date(chat.lastMessageDate.seconds * 1000).toLocaleTimeString(
-              [],
-              {
-                hour: "2-digit",
-                minute: "2-digit",
-              }
-            )}
+            {getMessageDate(chat.lastMessageDate)}
           </div>
         </div>
         <div className={styles.lastMsg} aria-hidden="true">{chat.lastMessage && lastMsgSender +": "+chat.lastMessage}</div>
