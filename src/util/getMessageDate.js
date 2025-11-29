@@ -1,6 +1,5 @@
 function getMessageDate(timestamp,options = { forChatWindow: false }) {
   if (!timestamp) return;
-  console.log(timestamp);
   const inputDate = new Date(timestamp.seconds * 1000);
   const currentDate = new Date();
 
