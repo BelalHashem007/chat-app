@@ -14,6 +14,7 @@ import {
   orderBy,
   limit,
   updateDoc,
+  runTransaction,
 } from "firebase/firestore";
 import { auth } from "../firebase_auth/authentication";
 
@@ -30,7 +31,6 @@ async function storeNewUserProfile(user) {
     displayName: user.displayName || "New User",
     photoURL: user.photoURL || null,
     createdAt: serverTimestamp(),
-    lastActive: serverTimestamp(),
     updatedAt: serverTimestamp(),
   };
 
@@ -148,20 +148,31 @@ function subscribeToUserChats(currentUserUid, callback) {
 
 async function sendMessage(msg, chatid, curUser) {
   if (!msg || !msg.trim() || !chatid || !curUser) return;
-
-  const msgCollectionRef = collection(db, `/chats/${chatid}/messages`);
-
-  const msgToStore = {
-    senderUid: curUser.uid,
-    senderDisplayName: curUser.displayName,
-    senderPhotoURL: curUser.photoURL,
-    text: msg,
-    timestamp: serverTimestamp(),
-  };
-
   try {
-    const docRef = await addDoc(msgCollectionRef, msgToStore);
-    console.log("Message sent successfully", docRef);
+    await runTransaction(db, async (transaction) => {
+      const newMessageRef = doc(collection(db, `/chats/${chatid}/messages`));
+
+      const msgToStore = {
+        senderUid: curUser.uid,
+        senderDisplayName: curUser.displayName,
+        senderPhotoURL: curUser.photoURL,
+        text: msg,
+        timestamp: serverTimestamp(),
+      };
+
+      //add message doc
+       transaction.set(newMessageRef, msgToStore);
+
+      //update chat details
+       transaction.update(doc(db, `/chats/${chatid}`), {
+        lastMessage: msg,
+        lastMessageDate: serverTimestamp(),
+        lastMessageSenderUid: curUser.uid,
+        lastMessageSenderDisplayName: curUser.displayName,
+      });
+    });
+
+    console.log("Message sent successfully");
   } catch (error) {
     console.error("Error sending message:", error);
   }
@@ -242,6 +253,7 @@ async function updateUserName(userUid, newName) {
     //update cloud firestore
     await updateDoc(doc(db, `/users/${userUid}`), {
       displayName: newName,
+      updatedAt: serverTimestamp(),
     });
     console.log("Updated user displayname in cloud firestore.");
   } catch (error) {

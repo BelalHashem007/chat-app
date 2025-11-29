@@ -9,7 +9,7 @@ function UserContact({ chat, curUserUid }) {
     (user) => curUserUid != user.uid
   )[0];
 
-  const lastMsg = chat.lastMessage ? (chat.lastMessageSenderUid == curUserUid ? "You:" : contact.displayName || "New User" +": "+ chat.lastMessage) : "";
+  const lastMsgSender = chat.lastMessage && (chat.lastMessageSenderUid == curUserUid ? "You" : (contact.displayName || "New User"));
 
   return (
     <button className={styles.userContactWrapper}>
@@ -40,7 +40,7 @@ function UserContact({ chat, curUserUid }) {
             )}
           </div>
         </div>
-        <div className={styles.lastMsg} aria-hidden="true">{lastMsg}</div>
+        <div className={styles.lastMsg} aria-hidden="true">{chat.lastMessage && lastMsgSender +": "+chat.lastMessage}</div>
       </div>
     </button>
   );

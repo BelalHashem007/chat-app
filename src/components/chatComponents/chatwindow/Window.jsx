@@ -1,8 +1,17 @@
 import MessageInput from "./MessageInput";
 import MessageBubble from "./MessageBubble";
 import styles from "./window.module.css";
+import { useEffect, useRef } from "react";
 
 function Window({ messages, selectedChat }) {
+  const scrolWrapperRef = useRef(null);
+
+  useEffect(()=>{
+    if (scrolWrapperRef.current){
+      scrolWrapperRef.current.scrollTop = scrolWrapperRef.current.scrollHeight ;
+      console.log(scrolWrapperRef.current.scrollTop)
+    }
+  },[messages])
   //get current contact messages
   if (!selectedChat) {
     return (
@@ -17,7 +26,7 @@ function Window({ messages, selectedChat }) {
 
   return (
     <div className={`${styles.windowbg} ${styles.active}`}>
-      <div className={styles.ScrollWrapper}>
+      <div className={styles.ScrollWrapper} ref={scrolWrapperRef}>
         <div className={styles.flexWrapper}>
           {messages.map((msg) => (
             <MessageBubble key={msg.id} msg={msg} />

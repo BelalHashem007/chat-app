@@ -1,5 +1,4 @@
 function DefaultImage({ text }) {
-  console.log(text)
   if (!text) return;
   
   const firstLetter = text.slice(0, 1).toUpperCase();

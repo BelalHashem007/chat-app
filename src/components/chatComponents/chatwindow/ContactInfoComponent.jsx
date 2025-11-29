@@ -2,7 +2,7 @@ import styles from "./contactInfoComponent.module.css";
 import DefaultImage from "../../../util/DefaultImage";
 
 function ContactInfoComponent({ contact,contactOnlineStatus }) {
-  if (!contact || !contactOnlineStatus) return;
+  if (!contact ) return;
   return (
     <div className={styles.userContactWrapper}>
       {contact.photoURL ? (
@@ -22,7 +22,7 @@ function ContactInfoComponent({ contact,contactOnlineStatus }) {
           <header>
             <h2 className={styles.name}>{contact.displayName ? contact.displayName : "New User"}</h2>
           </header>
-          <div className={styles.onlineStatus}>{contactOnlineStatus.state}</div>
+          <div className={styles.onlineStatus}>{contactOnlineStatus ? contactOnlineStatus.state : "offline"}</div>
         </div>
       </div>
     </div>
