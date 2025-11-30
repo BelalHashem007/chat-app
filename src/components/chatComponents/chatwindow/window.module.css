@@ -27,8 +27,8 @@
 .windowbg::before {
   content: "";
   position: absolute;
-  background-color: #8babd8;
-  background-image: url("https://twallpaper.js.org/patterns/math.svg");
+  background-color: #BBDEFB;
+  background-image: url("../../../assets/math.svg");
   background-repeat: repeat;
   background-size: 400px;
   inset: 0;

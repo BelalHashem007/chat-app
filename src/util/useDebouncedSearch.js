@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { searchUsers } from "../firebase/firebase_db/database";
 
-const useDebouncedSearch = (searchTerm,useruid, delay = 500) => {
+const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
   const [searchState, setSearchState] = useState({
     results: [],
     isLoading: false,
@@ -64,7 +64,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500) => {
     return () => {
       clearTimeout(handler);
     };
-  }, [searchTerm, delay]);
+  }, [searchTerm, delay,useruid]);
 
   return {
     results: searchState.results,

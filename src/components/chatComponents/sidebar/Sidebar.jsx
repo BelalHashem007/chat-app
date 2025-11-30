@@ -4,7 +4,7 @@ import styles from "./sidebar.module.css";
 import { LogOut } from "../../../firebase/firebase_auth/authentication";
 import { useNavigate } from "react-router";
 
-function Sidebar({ setShowProfile }) {
+function Sidebar({ setActiveComponent }) {
   const navigate = useNavigate();
   async function handleLogout() {
     const result = await LogOut();
@@ -23,7 +23,7 @@ function Sidebar({ setShowProfile }) {
           <li  aria-label="Chats" className={styles.listItem}>
             <button
               onClick={() => {
-                setShowProfile(false);
+                setActiveComponent("contactList");
               }}
               title="Chats"
             >
@@ -33,7 +33,7 @@ function Sidebar({ setShowProfile }) {
           <li title="Profile" aria-label="Profile" className={styles.listItem}>
             <button
               onClick={() => {
-                setShowProfile(true);
+                setActiveComponent("profile");
               }}
             >
               <Icon path={mdiAccount} size={1} />

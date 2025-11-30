@@ -144,9 +144,7 @@ function subscribeToUserChats(currentUserUid, callback) {
           }
         });
       });
-      console.log(allUids);
       const participantDetails = await getParticipantDetails(allUids);
-      console.log(participantDetails);
       const enrichedChats = userChats.map((chat) => {
         const enrichedParticipants = chat.participantsUids.map((uid) => {
           return (
@@ -255,7 +253,6 @@ async function getParticipantDetails(participantUids) {
   const allParticipantsDetails = new Map();
 
   allParticipantsDocs.forEach((user) => {
-    console.log(user);
     allParticipantsDetails.set(user.uid, user);
   });
 
@@ -283,6 +280,7 @@ async function updateUserName(userUid, newName) {
     console.error(error);
   }
 }
+
 
 export {
   storeNewUserProfile,

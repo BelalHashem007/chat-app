@@ -13,7 +13,6 @@ function getMessageDate(timestamp,options = { forChatWindow: false }) {
   const isYesterday =
     new Date(currentDate - oneDayInMilliseconds).toDateString() ===
     inputDate.toDateString();
-console.log(inputDate.toDateString())
   const timeString = inputDate.toLocaleTimeString([], {
     hour: "2-digit",
     minute: "2-digit",

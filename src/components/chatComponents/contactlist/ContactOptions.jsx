@@ -3,7 +3,7 @@ import styles from "./contactOptions.module.css";
 import Icon from "@mdi/react";
 import { mdiAccountMultiplePlusOutline,mdiAccountPlusOutline } from "@mdi/js";
 
-function ContactOptions() {
+function ContactOptions({setActiveComponent}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function handleMenuChange() {
@@ -29,7 +29,7 @@ function ContactOptions() {
         ></div>
       </button>
       <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}>
-        <button className={styles.menuOpion}>
+        <button className={styles.menuOpion} onClick={()=>{setActiveComponent("addContact")}}>
           <Icon path={mdiAccountPlusOutline} size={1} />{" "}
           New contact
         </button>

@@ -1,12 +1,12 @@
 import ContactOptions from "./ContactOptions";
-import SearchBar from "./SearchComponent";
+import SearchContacts from "./SearchContacts";
 import styles from "./optionsSearchWrapper.module.css";
 
-function OptionsSearchWrapper() {
+function OptionsSearchWrapper({chats,setActiveChats,setActiveComponent}) {
   return (
     <div className={styles.optionsSearchWrapper}>
-      <ContactOptions />
-      <SearchBar />
+      <ContactOptions setActiveComponent={setActiveComponent}/>
+      <SearchContacts chats={chats} setActiveChats={setActiveChats}/>
     </div>
   );
 }
