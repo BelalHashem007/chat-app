@@ -14,3 +14,5 @@ Making a chat web application using react, react router, react testing library a
 - Group chat.
 - Guest login.
 - Responsive UI for mobile users.
+- Testing.
+- Setting up security rules.
