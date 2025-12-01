@@ -58,14 +58,16 @@ async function searchUsers(searchTerm, curUserUid) {
 
   try {
     const querySnapshot = await getDocs(qEmail);
-    const contacts = await getDocs(collection(db,`/users/${curUserUid}/contacts`));
-    const contactsUids = new Set(contacts.docs.map((doc)=> doc.id));
+    const contacts = await getDocs(
+      collection(db, `/users/${curUserUid}/contacts`)
+    );
+    const contactsUids = new Set(contacts.docs.map((doc) => doc.id));
 
     querySnapshot.forEach((doc) => {
       const data = { ...doc.data() };
       const userUid = data.uid || doc.id;
 
-      if (curUserUid == userUid) return;//exclude current user
+      if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
       results.data.push({ id: doc.id, ...doc.data() });
     });
@@ -76,43 +78,63 @@ async function searchUsers(searchTerm, curUserUid) {
   return results;
 }
 
-async function createNewChatRoom(curUser, otherUser) {
-  if (!curUser || !otherUser) return;
+async function createNewChatRoom(
+  currentUser,
+  participants,
+  isGroupChat,
+  groupName,
+  adminUids
+) {
+  if (!currentUser || !participants) return;
 
   const chatCollectionRef = collection(db, "chats");
   const newChatDocRef = doc(chatCollectionRef);
-  const chatToStore = {
-    participantsUids: [curUser.uid, otherUser.uid],
-    isGroupChat: false,
-    createdAt: serverTimestamp(),
-    lastMessage: "",
-    lastMessageDate: null,
-    lastMessageSenderUid: "",
-    lastMessageSenderDisplayName: "",
-  };
-  try {
-    await runTransaction(db, async (transaction) => {
-      //create chatroom
-      transaction.set(newChatDocRef, chatToStore);
-      //create contact for curuser
-      transaction.set(
-        doc(db, `/users/${curUser.uid}/contacts/${otherUser.uid}`),
-        {
-          createdAt: serverTimestamp(),
-        }
-      );
-      //create contact for otheruser
-      transaction.set(
-        doc(db, `/users/${otherUser.uid}/contacts/${curUser.uid}`),
-        {
-          createdAt: serverTimestamp(),
-        }
-      );
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const participantsUids = participants.map((participant)=> participant.uid)
+  
+    const chatToStore = {
+      participantsUids: [...participantsUids,currentUser.uid],
+      isGroupChat: isGroupChat,
+      createdAt: serverTimestamp(),
+      lastMessage: "",
+      lastMessageDate: null,
+      lastMessageSenderUid: "",
+      lastMessageSenderDisplayName: "",
+    };
 
+    if(isGroupChat){//group chat stuff
+      chatToStore.groupName=groupName;
+      chatToStore.adminUids=adminUids || [currentUser.uid]
+      chatToStore.groupProfileURL = null;
+    }
+    else {
+      if (participants.length !== 2) return console.log("DMs must be between two people.");
+    }
+    console.log(participants,chatToStore)
+    try {
+      await runTransaction(db, async (transaction) => {
+        //create chatroom
+        transaction.set(newChatDocRef, chatToStore);
+
+        if (!isGroupChat){ //if this is DM and not groupchat create the contacts
+        //create contact for curuser
+        transaction.set(
+          doc(db, `/users/${currentUser.uid}/contacts/${participants[0].uid}`),
+          {
+            createdAt: serverTimestamp(),
+          }
+        );
+        //create contact for otheruser
+        transaction.set(
+          doc(db, `/users/${participants[0].uid}/contacts/${currentUser.uid}`),
+          {
+            createdAt: serverTimestamp(),
+          }
+        );
+      }
+      });
+    } catch (error) {
+      console.log(error);
+    }
   return;
 }
 
@@ -280,7 +302,6 @@ async function updateUserName(userUid, newName) {
     console.error(error);
   }
 }
-
 
 export {
   storeNewUserProfile,

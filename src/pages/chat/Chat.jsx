@@ -6,7 +6,6 @@ import Sidebar from "../../components/chatComponents/sidebar/Sidebar";
 import Profile from "../../components/chatComponents/profile/Profile";
 import { useAuthContext } from "../../util/context";
 import { subscribeToUserChats } from "../../firebase/firebase_db/database";
-import AddContact from "../../components/chatComponents/adduser/AddContact";
 
 const dynamicComponents = {
   contactList: ({
@@ -15,7 +14,6 @@ const dynamicComponents = {
     chats,
     activeChats,
     setActiveChats,
-    setActiveComponent
   }) => (
     <ContactList
       selectedChat={selectedChat}
@@ -23,11 +21,9 @@ const dynamicComponents = {
       chats={chats}
       activeChats={activeChats}
       setActiveChats={setActiveChats}
-      setActiveComponent={setActiveComponent}
     />
   ),
   profile: () => <Profile />,
-  addContact:()=> <AddContact/>
 };
 
 function Chat() {

@@ -9,9 +9,9 @@ Making a chat web application using react, react router, react testing library a
 - Searching/filtering contacts(via name).
 - online/offline status using RealTime Database from firestore.
 - Updating profile details(only name for now).
+- Group chat.
 
 ## To-Do
-- Group chat.
 - Guest login.
 - Responsive UI for mobile users.
 - Testing.

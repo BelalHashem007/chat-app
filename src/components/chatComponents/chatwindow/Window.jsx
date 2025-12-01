@@ -28,7 +28,7 @@ function Window({ messages, selectedChat }) {
       <div className={styles.ScrollWrapper} ref={scrolWrapperRef}>
         <div className={styles.flexWrapper}>
           {messages.map((msg) => (
-            <MessageBubble key={msg.id} msg={msg} />
+            <MessageBubble key={msg.id} msg={msg} selectedChat={selectedChat}/>
           ))}
         </div>
       </div>

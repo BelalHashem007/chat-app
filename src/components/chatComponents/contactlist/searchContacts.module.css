@@ -90,6 +90,18 @@
   cursor: pointer;
   background-color: #2e8bd5;
 }
+.srOnly{
+  position: absolute;
+  inset: 0;
+  margin: -1px;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
 
 @media (min-width: 2560px) {
   .searchInp {

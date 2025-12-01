@@ -1,0 +1,129 @@
+.addGroupWrapper {
+  padding: 20px;
+  padding-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  z-index: 2;
+  background-color: white;
+  transform: translateX(-100%);
+  transition: all 0.4s allow-discrete;
+  content-visibility: hidden;
+}
+
+.addGroupWrapper.show {
+  transform: translateX(0);
+  content-visibility: visible;
+}
+
+.backBtn {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  padding: 5px;
+  font-size: 1.25rem;
+}
+.backBtn:hover {
+  cursor: pointer;
+  background-color: var(--color-hover);
+}
+ul {
+  list-style-type: none;
+}
+.availableContacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 10px;
+}
+.addContactToGroup {
+  flex: 1;
+  min-width: 100px;
+  display: flex;
+}
+.addContactToGroup button {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  gap: 10px;
+  background: none;
+  border: none;
+  align-items: center;
+}
+.addContactToGroup button:hover {
+  cursor: pointer;
+  background-color: var(--color-hover);
+}
+.contactImg {
+  display: flex;
+  min-width: 50px;
+  min-height: 50px;
+}
+
+.selectedContacts {
+  display: flex;
+  padding: 0;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.selectedWrapper {
+  display: flex;
+  gap: 5px;
+}
+.selectedImg {
+  width: 20px;
+  height: 20px;
+}
+.removeSelected {
+  background: none;
+  border: none;
+  font-size: 0.875rem;
+  color: red;
+  border-radius: 50%;
+  padding: 3px 5px 3px 5px;
+}
+.removeSelected:hover {
+  background-color: var(--color-hover);
+  cursor: pointer;
+}
+.srOnly {
+  position: absolute;
+  inset: 0;
+  margin: -1px;
+  width: 1px;
+  height: 1px;
+  border: 0;
+  padding: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+.searchInp {
+  border: none;
+  border-bottom: 1px solid black;
+  outline: none;
+}
+
+.nextBtn {
+  max-width: 100px;
+  margin: 0 auto;
+  background-color: #03a9f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+}
+.nextBtn:hover {
+    cursor: pointer;
+}
+.nextBtn:disabled{
+    opacity: 0.5;
+}

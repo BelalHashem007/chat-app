@@ -20,7 +20,6 @@ function MessageInput({ selectedChat }) {
   }
 
   function handleEmoji(emojieData){
-    console.log(emojieData.emoji)
     setMsg((msg)=>msg+emojieData.emoji)
   }
 

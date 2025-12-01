@@ -4,54 +4,28 @@ import DefaultImage from "../../../util/DefaultImage.jsx";
 import useDebouncedSearch from "../../../util/useDebouncedSearch.js";
 import { createNewChatRoom } from "../../../firebase/firebase_db/database";
 import { useAuthContext } from "../../../util/context";
+import Icon from "@mdi/react";
+import { mdiArrowLeft } from "@mdi/js";
 
-function SearchBar({ setResult, setSearchTerm, searchTerm }) {
-  const { user } = useAuthContext();
-  const { results  } = useDebouncedSearch(
-    searchTerm,
-    user.uid,
-    500
-  );
-
-  useEffect(() => {
-    setResult(results);
-  }, [results, setResult]);
-
-  return (
-    <div className={styles.searchWrapper}>
-      <input
-        className={styles.searchInp}
-        type="search"
-        name="contactList"
-        id=""
-        placeholder="Search"
-        aria-label="Search contacts"
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-        }}
-      />
-    </div>
-  );
-}
-
-function AddContact() {
+function AddContact({ showAddContact, setShowAddContact }) {
   const { user } = useAuthContext();
   const [result, setResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showPopup,setShowPopup] = useState(false);
-  const [contactName,setContactName] = useState("")
+  const [showPopup, setShowPopup] = useState(false);
+  const [contactName, setContactName] = useState("");
 
   async function handleAdd(otherUser) {
     if (otherUser && user) {
       setSearchTerm("");
-      await createNewChatRoom(user, otherUser);
+      await createNewChatRoom(user, [otherUser,user], false);
       setContactName(otherUser.displayName);
-      setShowPopup(true)
+      setShowPopup(true);
     }
   }
   return (
-    <div className={styles.addContactWrapper}>
+    <div
+      className={`${styles.addContactWrapper} ${showAddContact && styles.show}`}
+    >
       <header>
         <h2>Search for new Contacts</h2>
       </header>
@@ -60,6 +34,15 @@ function AddContact() {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
+      <button
+        title="back"
+        className={styles.backBtn}
+        onClick={() => {
+          setShowAddContact(false);
+        }}
+      >
+        <Icon path={mdiArrowLeft} size={1} />
+      </button>
       <ul className={styles.resultWrapper}>
         {result.map((contact) => (
           <li className={styles.searchResult} key={contact.uid}>
@@ -74,7 +57,7 @@ function AddContact() {
             <button
               className={styles.addUser}
               onClick={() => {
-                handleAdd(contact)
+                handleAdd(contact);
               }}
             >
               Add
@@ -82,13 +65,54 @@ function AddContact() {
           </li>
         ))}
       </ul>
-       
-      <div className={`${styles.notificationWrapper} ${showPopup && styles.show}`}>
-          <button className={styles.closePopup} title="Close popup" onClick={()=>{setShowPopup(false)}}>X</button>
-          <p>You have added a new contact.</p>
-          <p>{contactName} is now a contact.</p>
+        
+      <div
+        className={`${styles.notificationWrapper} ${showPopup && styles.show}`}
+      >
+        <button
+          className={styles.closePopup}
+          title="Close popup"
+          onClick={() => {
+            setShowPopup(false);
+          }}
+        >
+          X
+        </button>
+        <p>You have added a new contact.</p>
+        <p>{contactName} is now a contact.</p>
       </div>
     </div>
+  );
+}
+function SearchBar({ setResult, setSearchTerm, searchTerm }) {
+  const { user } = useAuthContext();
+  const { results ,noResult} = useDebouncedSearch(searchTerm, user.uid, 500);
+
+  useEffect(() => {
+    setResult(results);
+  }, [results, setResult]);
+
+  return (
+    <>
+    <div className={styles.searchWrapper}>
+      <label htmlFor="contact-search" className={styles.srOnly}>
+        Search for new contacts
+      </label>
+      <input
+        className={styles.searchInp}
+        type="search"
+        name="contact-search"
+        id="contact-search"
+        placeholder="Search"
+        aria-label="Search contacts"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+        }}
+      />
+    </div>
+    <p>{noResult&& "No results."}</p>
+    </>
   );
 }
 

@@ -3,11 +3,20 @@ import styles from "./contactOptions.module.css";
 import Icon from "@mdi/react";
 import { mdiAccountMultiplePlusOutline,mdiAccountPlusOutline } from "@mdi/js";
 
-function ContactOptions({setActiveComponent}) {
+function ContactOptions({setShowAddContact,setShowAddGroup}) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   function handleMenuChange() {
     setMenuOpen(!menuOpen);
+  }
+
+  function handleContactButton(){
+    setShowAddContact(true)
+    handleMenuChange();
+  }
+  function handleGroupButton(){
+    setShowAddGroup(true)
+    handleMenuChange();
   }
 
   return (
@@ -29,11 +38,11 @@ function ContactOptions({setActiveComponent}) {
         ></div>
       </button>
       <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}>
-        <button className={styles.menuOpion} onClick={()=>{setActiveComponent("addContact")}}>
+        <button className={styles.menuOpion} onClick={handleContactButton}>
           <Icon path={mdiAccountPlusOutline} size={1} />{" "}
           New contact
         </button>
-        <button className={styles.menuOpion}>
+        <button className={styles.menuOpion} onClick={handleGroupButton}>
           <Icon path={mdiAccountMultiplePlusOutline} size={1} />
            {" "}New group
         </button>

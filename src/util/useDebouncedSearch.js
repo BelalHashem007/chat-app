@@ -7,6 +7,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
     isLoading: false,
     error: null,
     showResultsArea: false,
+    noResult:false,
   });
 
   useEffect(() => {
@@ -21,6 +22,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
         isLoading: false,
         error: null,
         showResultsArea: false,
+        noResult:false,
       });
       return;
     }
@@ -42,12 +44,14 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
             error: searchResult.error,
             results: [],
             isLoading: false,
+            noResult:false,
           });
         } else {
           updateSearchState({
             results: searchResult.data,
             error: null,
             isLoading: false,
+            noResult:searchResult.data.length ==0,
           });
         }
       } catch (err) {
@@ -55,6 +59,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
           error: new Error("An unexpected error occurred during search."),
           results: [],
           isLoading: false,
+          noResult:false,
         });
         console.error("Unexpected error in useDebouncedSearch:", err);
       }
@@ -71,6 +76,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
     isLoading: searchState.isLoading,
     error: searchState.error,
     showResultsArea: searchState.showResultsArea,
+    noResult:searchState.noResult
   };
 };
 
