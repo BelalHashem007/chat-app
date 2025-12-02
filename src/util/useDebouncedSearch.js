@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { searchUsers } from "../firebase/firebase_db/database";
+import { useAuthContext } from "./context";
 
-const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
+const useDebouncedSearch = (searchTerm, delay = 500) => {
+  const { user } = useAuthContext();
   const [searchState, setSearchState] = useState({
     results: [],
     isLoading: false,
     error: null,
     showResultsArea: false,
-    noResult:false,
+    noResult: false,
   });
 
   useEffect(() => {
@@ -22,11 +24,10 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
         isLoading: false,
         error: null,
         showResultsArea: false,
-        noResult:false,
+        noResult: false,
       });
       return;
     }
-
 
     // 2. Set the debounced timeout
     const handler = setTimeout(async () => {
@@ -37,21 +38,21 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
           showResultsArea: true,
           error: null,
         });
-        const searchResult = await searchUsers(searchTerm,useruid);
+        const searchResult = await searchUsers(searchTerm, user.uid);
 
         if (searchResult.error) {
           updateSearchState({
             error: searchResult.error,
             results: [],
             isLoading: false,
-            noResult:false,
+            noResult: false,
           });
         } else {
           updateSearchState({
             results: searchResult.data,
             error: null,
             isLoading: false,
-            noResult:searchResult.data.length ==0,
+            noResult: searchResult.data.length == 0,
           });
         }
       } catch (err) {
@@ -59,7 +60,7 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
           error: new Error("An unexpected error occurred during search."),
           results: [],
           isLoading: false,
-          noResult:false,
+          noResult: false,
         });
         console.error("Unexpected error in useDebouncedSearch:", err);
       }
@@ -69,14 +70,14 @@ const useDebouncedSearch = (searchTerm,useruid, delay = 500,) => {
     return () => {
       clearTimeout(handler);
     };
-  }, [searchTerm, delay,useruid]);
+  }, [searchTerm, delay, user.uid]);
 
   return {
     results: searchState.results,
     isLoading: searchState.isLoading,
     error: searchState.error,
     showResultsArea: searchState.showResultsArea,
-    noResult:searchState.noResult
+    noResult: searchState.noResult,
   };
 };
 

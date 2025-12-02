@@ -127,3 +127,6 @@ ul {
 .nextBtn:disabled{
     opacity: 0.5;
 }
+.guestId{
+  color: gray;
+}

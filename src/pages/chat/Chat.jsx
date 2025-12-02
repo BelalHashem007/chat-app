@@ -32,7 +32,7 @@ function Chat() {
   const [chats, setChats] = useState([]);
   const [activeChats, setActiveChats] = useState([]);
   const { user } = useAuthContext();
-
+  console.log(user)
   const DynamicComponent = dynamicComponents[activeComponent];
 
   useEffect(() => {

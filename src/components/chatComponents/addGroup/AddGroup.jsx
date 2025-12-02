@@ -10,6 +10,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
+  console.log(chats)
   //calculating ALL contacts the user have
   const baseContacts = useMemo(() => {
     if (chats.length == 0) return [];
@@ -62,6 +63,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
     setShowOptions(true);
   }
 
+  console.log(availableContacts)
   return (
     <div className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`}>
       {showOptions ? (
@@ -91,7 +93,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                   aria-label={contact.displayName}
                 >
                   <div className={styles.selectedImg}>
-                    <DefaultImage text={contact.displayName} />
+                    <DefaultImage text={contact.email || contact.displayName} />
                   </div>
                   <div className={styles.selectedName}>
                     {contact.displayName}
@@ -150,10 +152,11 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                     }}
                   >
                     <div className={styles.contactImg}>
-                      <DefaultImage text={contact.displayName} />
+                      <DefaultImage text={contact.email || contact.displayName} />
                     </div>
                     <div className={styles.contactName}>
                       {contact.displayName}
+                      {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
                     </div>
                   </button>
                 </li>

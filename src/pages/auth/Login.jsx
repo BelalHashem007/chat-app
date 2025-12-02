@@ -3,33 +3,56 @@ import FormButton from "../../components/formComponents/FormButton";
 import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 import styles from "./auth.module.css";
-import { signIn } from "../../firebase/firebase_auth/authentication";
+import {
+  signIn,
+  guestSignIn,
+} from "../../firebase/firebase_auth/authentication";
 import { useAuthContext } from "../../util/context";
+import Icon from "@mdi/react";
+import { mdiAccountCircle } from "@mdi/js";
+import { storeNewUserProfile } from "../../firebase/firebase_db/database";
 
 function Login() {
   let navigate = useNavigate();
   const [error, setError] = useState(null);
-  const [disableBtn, setDisableBtn] = useState(false);
-  const {isAuthenticated} = useAuthContext();
-  
-  
-  if (isAuthenticated) { // if user already logged in navigate to chat page
-    navigate("/chat")
+  const [disableLoginBtn, setDisableLoginBtn] = useState(false);
+  const [disableGuestBtn, setDisableGuestBtn] = useState(false);
+  const { isAuthenticated } = useAuthContext();
+
+  if (isAuthenticated) {
+    // if user already logged in navigate to chat page
+    navigate("/chat");
     return null; // stop rendering the login page
-  } 
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-    
-    setDisableBtn(true);
+
+    setDisableLoginBtn(true);
     const result = await signIn(data.mail, data.password);
     if (result.user) {
       navigate("/chat");
     } else {
       setError(result.error);
-      setDisableBtn(false);
+      setDisableLoginBtn(false);
+    }
+  }
+
+  async function handleGuestLogin() {
+    setDisableGuestBtn(true);
+    const result = await guestSignIn();
+    if (result.error) {
+      //if error happens in signing in anonymously return after showing error message
+      setError(result.error);
+      setDisableGuestBtn(false);
+      return;
+    }
+    //continute if no error
+    if (result.user) {
+      await storeNewUserProfile(result.user);
+      navigate("/chat")
     }
   }
 
@@ -43,7 +66,19 @@ function Login() {
           <h1 className={styles.pageHeader}>Sign in</h1>
         </header>
 
-        <LoginForm onSubmit={handleSubmit} error={error} disableBtn={disableBtn}/>
+        <LoginForm
+          onSubmit={handleSubmit}
+          error={error}
+          disableLoginBtn={disableLoginBtn}
+        />
+        <button
+          className={styles.guestLogin}
+          onClick={handleGuestLogin}
+          disabled={disableGuestBtn}
+        >
+          <Icon path={mdiAccountCircle} size={1} />{" "}
+          {disableGuestBtn ? "Logging in..." : "Continue as Guest"}
+        </button>
         <div className={styles.createAccLink}>
           <p>
             Not registered ? <Link to={"/signup"}>Create new account</Link>
@@ -54,7 +89,7 @@ function Login() {
   );
 }
 
-function LoginForm({ onSubmit, error,disableBtn }) {
+function LoginForm({ onSubmit, error, disableLoginBtn }) {
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       <div className={styles.inpContainer}>
@@ -73,7 +108,11 @@ function LoginForm({ onSubmit, error,disableBtn }) {
           autocomplete="current-password"
         />
       </div>
-      <FormButton text={disableBtn ? "Logging in...":"Log in"} type="Submit" disableBtn={disableBtn}/>
+      <FormButton
+        text={disableLoginBtn ? "Logging in..." : "Log in"}
+        type="Submit"
+        disableBtn={disableLoginBtn}
+      />
       <div className={styles.error}>{error}</div>
     </form>
   );

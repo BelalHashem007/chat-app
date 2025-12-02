@@ -16,6 +16,7 @@ import {
   runTransaction,
 } from "firebase/firestore";
 import { auth } from "../firebase_auth/authentication";
+import { nanoid } from "nanoid";
 
 const db = getFirestore(app);
 
@@ -26,12 +27,18 @@ async function storeNewUserProfile(user) {
   const userDataToStore = {
     uid: user.uid,
     email: user.email,
-    email_lower: user.email.toLowerCase(),
+    email_lower: user.email?.toLowerCase() || null,
     displayName: user.displayName || "New User",
     photoURL: user.photoURL || null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
+    isAnonymous: user.isAnonymous,
   };
+
+  if (userDataToStore.isAnonymous) {
+    userDataToStore.guestId = nanoid(8);
+    userDataToStore.guestId_lower = userDataToStore.guestId?.toLowerCase();
+  }
 
   try {
     await setDoc(userRef, userDataToStore);
@@ -45,25 +52,44 @@ async function searchUsers(searchTerm, curUserUid) {
   const results = { data: [], error: null };
   if (!searchTerm || searchTerm.trim() == "") return results;
 
-  const lowerCasedSearchTerm = searchTerm.toLowerCase();
   const usersRef = collection(db, "users");
 
+  const lowerCasedSearchTerm = searchTerm.toLowerCase();
   const endSearchTerm = lowerCasedSearchTerm + "\uf8ff";
 
-  const qEmail = query(
+  //Search for users whose email OR guestid starts with the searchterm
+ const qEmail = query(
     usersRef,
     where("email_lower", ">=", lowerCasedSearchTerm),
     where("email_lower", "<=", endSearchTerm)
   );
 
+  const qGuestId = query(
+    usersRef,
+    where("guestId_lower", ">=", lowerCasedSearchTerm),
+    where("guestId_lower", "<=", endSearchTerm)
+  );
   try {
-    const querySnapshot = await getDocs(qEmail);
+    //fetch all docs at the same 
+    const [emailQuerySnapshot,guestIdQuerySnapshot] = await Promise.all([getDocs(qEmail),getDocs(qGuestId)]);
+
     const contacts = await getDocs(
       collection(db, `/users/${curUserUid}/contacts`)
     );
     const contactsUids = new Set(contacts.docs.map((doc) => doc.id));
 
-    querySnapshot.forEach((doc) => {
+    //push data for emails match
+    emailQuerySnapshot.forEach((doc) => {
+      const data = { ...doc.data() };
+      const userUid = data.uid || doc.id;
+
+      if (curUserUid == userUid) return; //exclude current user
+      if (contactsUids.has(userUid)) return; // exclude current contacts
+      results.data.push({ id: doc.id, ...doc.data() });
+    });
+
+    //push data for guestids match
+    guestIdQuerySnapshot.forEach((doc) => {
       const data = { ...doc.data() };
       const userUid = data.uid || doc.id;
 
@@ -89,33 +115,35 @@ async function createNewChatRoom(
 
   const chatCollectionRef = collection(db, "chats");
   const newChatDocRef = doc(chatCollectionRef);
-  const participantsUids = participants.map((participant)=> participant.uid)
-  
-    const chatToStore = {
-      participantsUids: [...participantsUids,currentUser.uid],
-      isGroupChat: isGroupChat,
-      createdAt: serverTimestamp(),
-      lastMessage: "",
-      lastMessageDate: null,
-      lastMessageSenderUid: "",
-      lastMessageSenderDisplayName: "",
-    };
+  const participantsUids = participants.map((participant) => participant.uid);
 
-    if(isGroupChat){//group chat stuff
-      chatToStore.groupName=groupName;
-      chatToStore.adminUids=adminUids || [currentUser.uid]
-      chatToStore.groupProfileURL = null;
-    }
-    else {
-      if (participants.length !== 2) return console.log("DMs must be between two people.");
-    }
-    console.log(participants,chatToStore)
-    try {
-      await runTransaction(db, async (transaction) => {
-        //create chatroom
-        transaction.set(newChatDocRef, chatToStore);
+  const chatToStore = {
+    participantsUids: [...participantsUids],
+    isGroupChat: isGroupChat,
+    createdAt: serverTimestamp(),
+    lastMessage: "",
+    lastMessageDate: null,
+    lastMessageSenderUid: "",
+    lastMessageSenderDisplayName: "",
+  };
 
-        if (!isGroupChat){ //if this is DM and not groupchat create the contacts
+  if (isGroupChat) {
+    //group chat stuff
+    chatToStore.groupName = groupName;
+    chatToStore.adminUids = adminUids || [currentUser.uid];
+    chatToStore.groupProfileURL = null;
+  } else {
+    if (participants.length !== 2)
+      return console.log("DMs must be between two people.");
+  }
+  console.log(participants, chatToStore);
+  try {
+    await runTransaction(db, async (transaction) => {
+      //create chatroom
+      transaction.set(newChatDocRef, chatToStore);
+
+      if (!isGroupChat) {
+        //if this is DM and not groupchat create the contacts
         //create contact for curuser
         transaction.set(
           doc(db, `/users/${currentUser.uid}/contacts/${participants[0].uid}`),
@@ -131,10 +159,10 @@ async function createNewChatRoom(
           }
         );
       }
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    });
+  } catch (error) {
+    console.log(error);
+  }
   return;
 }
 

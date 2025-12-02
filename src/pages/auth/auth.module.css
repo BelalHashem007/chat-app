@@ -55,6 +55,22 @@ header h1 {
 .error{
   color: red;
 }
+.guestLogin{
+  background-color: #f5f5f5;
+    color: #111111;
+    appearance: none;
+    border: none;
+    max-width: fit-content;
+    padding: 10px;
+    align-self: center;
+}
+.guestLogin svg{
+  vertical-align: -5px;
+}
+.guestLogin:hover {
+  background-color: #bae6fd;
+  cursor: pointer;
+}
 
 @media (max-width: 680px) {
   .loginBody,

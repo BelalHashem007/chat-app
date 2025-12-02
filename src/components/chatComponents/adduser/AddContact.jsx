@@ -17,11 +17,17 @@ function AddContact({ showAddContact, setShowAddContact }) {
   async function handleAdd(otherUser) {
     if (otherUser && user) {
       setSearchTerm("");
-      await createNewChatRoom(user, [otherUser,user], false);
+      await createNewChatRoom(user, [otherUser, user], false);
       setContactName(otherUser.displayName);
       setShowPopup(true);
     }
   }
+
+  function handleBack() {
+    setShowAddContact(false);
+    setSearchTerm("");
+  }
+
   return (
     <div
       className={`${styles.addContactWrapper} ${showAddContact && styles.show}`}
@@ -34,13 +40,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
-      <button
-        title="back"
-        className={styles.backBtn}
-        onClick={() => {
-          setShowAddContact(false);
-        }}
-      >
+      <button title="back" className={styles.backBtn} onClick={handleBack}>
         <Icon path={mdiArrowLeft} size={1} />
       </button>
       <ul className={styles.resultWrapper}>
@@ -50,10 +50,15 @@ function AddContact({ showAddContact, setShowAddContact }) {
               {contact.photoURL ? (
                 <img src={contact.photoURL} alt={contact.displayName} />
               ) : (
-                <DefaultImage text={contact.email} />
+                <DefaultImage text={contact.email || contact.displayName} />
               )}
             </div>
-            <div className={styles.userEmail}>{contact.email}</div>
+            <div>
+              <div className={styles.userEmail}>
+                {contact.email || contact.displayName}
+              </div>
+              {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
+            </div>
             <button
               className={styles.addUser}
               onClick={() => {
@@ -65,7 +70,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
           </li>
         ))}
       </ul>
-        
+
       <div
         className={`${styles.notificationWrapper} ${showPopup && styles.show}`}
       >
@@ -85,8 +90,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
   );
 }
 function SearchBar({ setResult, setSearchTerm, searchTerm }) {
-  const { user } = useAuthContext();
-  const { results ,noResult} = useDebouncedSearch(searchTerm, user.uid, 500);
+  const { results, noResult } = useDebouncedSearch(searchTerm, 500);
 
   useEffect(() => {
     setResult(results);
@@ -94,24 +98,24 @@ function SearchBar({ setResult, setSearchTerm, searchTerm }) {
 
   return (
     <>
-    <div className={styles.searchWrapper}>
-      <label htmlFor="contact-search" className={styles.srOnly}>
-        Search for new contacts
-      </label>
-      <input
-        className={styles.searchInp}
-        type="search"
-        name="contact-search"
-        id="contact-search"
-        placeholder="Search"
-        aria-label="Search contacts"
-        value={searchTerm}
-        onChange={(e) => {
-          setSearchTerm(e.target.value);
-        }}
-      />
-    </div>
-    <p>{noResult&& "No results."}</p>
+      <div className={styles.searchWrapper}>
+        <label htmlFor="contact-search" className={styles.srOnly}>
+          Search for new contacts using e-mail or guestId
+        </label>
+        <input
+          className={styles.searchInp}
+          type="search"
+          name="contact-search"
+          id="contact-search"
+          placeholder="Search using e-mail or guestId"
+          aria-label="Search contacts"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
+        />
+      </div>
+      <p>{noResult && "No results."}</p>
     </>
   );
 }

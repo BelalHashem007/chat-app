@@ -20,7 +20,7 @@ function OtherGroupOptions({
       setCreatingChat(true);
       await createNewChatRoom(
         user,
-        selectedContacts,
+        [...selectedContacts,user],
         true,
         groupName,
         adminUids

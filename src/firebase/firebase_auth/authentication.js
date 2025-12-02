@@ -4,8 +4,10 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
+  signInAnonymously,
 } from "firebase/auth";
 import app from "../firebase";
+import { generateRandomName } from "../../util/utilFunctions";
 
 const authErrorMessages = {
   "auth/invalid-credential": "Incorrect email or password. Please try again.",
@@ -78,4 +80,22 @@ async function updateUser(newName) {
   }
 }
 
-export { createUser, signIn, auth, LogOut,updateUser };
+async function guestSignIn() {
+  const result = { user: null, error: null };
+  try {
+    const userCred = await signInAnonymously(auth);
+    result.user = userCred.user;
+    const displayName= generateRandomName();
+    result.user.displayName = displayName;
+    await updateUser(displayName)
+  } catch (error) {
+    console.log(error);
+    result.error =
+      authErrorMessages[error.code] ||
+      "Something went wrong. Please try again.";
+  }
+
+  return result;
+}
+
+export { createUser, signIn, auth, LogOut, updateUser, guestSignIn };

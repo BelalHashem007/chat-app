@@ -24,7 +24,7 @@ function Profile() {
           {user.photoURL ? (
             <img src={user.photoURL} />
           ) : (
-            <DefaultImage text={user.email} />
+            <DefaultImage text={user.email || user.displayName} />
           )}
         </div>
         <div className={styles.nameLabel}>Name:</div>

@@ -40,7 +40,9 @@
 .nameWrapper {
   width: 100%;
 }
-
+.guestId{
+  color: gray;
+}
 .nameDateWrapper {
   display: flex;
   justify-content: space-between;

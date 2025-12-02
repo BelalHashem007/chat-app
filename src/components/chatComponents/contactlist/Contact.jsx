@@ -6,14 +6,16 @@ import { mdiAccountMultiple } from "@mdi/js";
 
 function Contact({ chat, curUserUid }) {
   if (!chat || !curUserUid) return;
-  let name = null;
+  
+  const contact = chat.enrichedParticipants.filter(
+    (user) => curUserUid != user.uid
+  )[0];
+
+  let name = contact.displayName || "New User";
 
   if (chat.isGroupChat) {
     name = chat.groupName;
   }
-  const contact = chat.enrichedParticipants.filter(
-    (user) => curUserUid != user.uid
-  )[0];
 
   const lastMsgSender =
     chat.lastMessage &&
@@ -37,17 +39,14 @@ function Contact({ chat, curUserUid }) {
       ) : (
         <div className={styles.userImg}>
           {" "}
-          <DefaultImage text={contact.email} />
+          <DefaultImage text={contact.email || contact.displayName} />
         </div>
       )}
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
           <div className={styles.name}>
-            {chat.isGroupChat
-              ? name
-              : contact.displayName
-              ? contact.displayName
-              : "New User"}
+            {name}
+            {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
           </div>
           <div className={styles.lastMsgDate} aria-hidden="true">
             {getMessageDate(chat.lastMessageDate)}

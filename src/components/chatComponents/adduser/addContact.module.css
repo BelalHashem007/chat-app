@@ -96,9 +96,10 @@
   min-width: 0;
   overflow-y: auto;
 }
-.addContactWrapper h2 {
-  min-width: 350px;
+.guestId{
+  color: gray;
 }
+
 .notificationWrapper {
   position: absolute;
   bottom: 100px;

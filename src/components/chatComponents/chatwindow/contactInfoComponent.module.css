@@ -41,7 +41,13 @@
 .dot.offline {
   background-color: red;
 }
-
+.chatWindowHeader{
+  display: flex;
+  gap: 5px;
+}
+.guestId{
+  color: gray;
+}
 @media (min-width:2560px) {
   .userImg{
     width: 78px;
