@@ -11,13 +11,16 @@
   z-index: 2;
   background-color: white;
   transform: translateX(-100%);
-  transition: all 0.4s allow-discrete;
-  content-visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.4s,transform 0.4s ;
+  transition-timing-function: ease-out;
 }
 
 .addGroupWrapper.show {
+  opacity: 1;
   transform: translateX(0);
-  content-visibility: visible;
+  
+  transition-timing-function: ease-in;
 }
 
 .backBtn {

@@ -250,7 +250,7 @@ async function sendMessage(msg, chatid, curUser) {
 }
 
 function subscribeToChatMessages(chatid, callback) {
-  if (!chatid) return;
+  if (!chatid) return ()=>{};
 
   const messagesCollectionRef = collection(db, `/chats/${chatid}/messages`);
 
@@ -331,6 +331,22 @@ async function updateUserName(userUid, newName) {
   }
 }
 
+function subscribeToCurrentUser(userUid,callback){
+ if (!userUid) return ()=>{};
+ 
+  const userDoc = doc(db,`/users/${userUid}`);
+
+  const unsubscribe = onSnapshot(userDoc,(snapshot)=>{
+    const userData = snapshot.data();
+    callback(userData);
+    console.log("Hello userdata:",userData)
+  },(error)=>{
+    console.log(error);
+  })
+  
+  return unsubscribe;
+}
+
 export {
   storeNewUserProfile,
   searchUsers,
@@ -339,4 +355,5 @@ export {
   sendMessage,
   subscribeToChatMessages,
   updateUserName,
+  subscribeToCurrentUser,
 };

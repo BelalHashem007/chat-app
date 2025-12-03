@@ -1,16 +1,34 @@
-import { useAuthContext } from "../../../util/context";
 import DefaultImage from "../../../util/DefaultImage";
 import styles from "./profile.module.css";
 import Icon from "@mdi/react";
 import { mdiPencilOutline, mdiCheck } from "@mdi/js";
-import { useState } from "react";
-import { updateUserName } from "../../../firebase/firebase_db/database";
+import { useEffect, useState } from "react";
+import {
+  updateUserName,
+  subscribeToCurrentUser,
+} from "../../../firebase/firebase_db/database";
+import { useAuthContext } from "../../../util/context";
 
 function Profile() {
-  const {user} = useAuthContext();
+  const { user } = useAuthContext();
+  const [userData, setUserData] = useState({});
   const [nameEditable, setNameEditable] = useState(false);
-  const [name, setName] = useState(user.displayName || "New User");
+  const [name, setName] = useState("New User");
 
+  //effects
+  useEffect(() => {
+    if (!user.uid) return;
+    const unsubscribe = subscribeToCurrentUser(user.uid, (fetchedData) => {
+      setUserData(fetchedData);
+      setName(fetchedData.displayName)
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  },[user.uid]);
+
+  //handlers
   async function handleUpdate() {
     setNameEditable(false);
     await updateUserName(user.uid, name);
@@ -21,10 +39,10 @@ function Profile() {
       <h2>Profile</h2>
       <div className={styles.profileDetails}>
         <div className={styles.profilePicture}>
-          {user.photoURL ? (
+          {userData.photoURL ? (
             <img src={user.photoURL} />
           ) : (
-            <DefaultImage text={user.email || user.displayName} />
+            <DefaultImage text={userData.email || userData.displayName} />
           )}
         </div>
         <div className={styles.nameLabel}>Name:</div>
@@ -61,7 +79,7 @@ function Profile() {
         <div className={styles.emailLabel}>E-mail:</div>
         <div className={styles.profileEmail}>
           {" "}
-          <div>{user.email} </div>
+          <div>{userData.email} </div>
         </div>
       </div>
     </div>

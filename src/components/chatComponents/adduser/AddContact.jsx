@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styles from "./addContact.module.css";
 import DefaultImage from "../../../util/DefaultImage.jsx";
 import useDebouncedSearch from "../../../util/useDebouncedSearch.js";
@@ -57,7 +58,9 @@ function AddContact({ showAddContact, setShowAddContact }) {
               <div className={styles.userEmail}>
                 {contact.email || contact.displayName}
               </div>
-              {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
+              {contact.isAnonymous && (
+                <span className={styles.guestId}> #{contact.guestId}</span>
+              )}
             </div>
             <button
               className={styles.addUser}
@@ -71,21 +74,25 @@ function AddContact({ showAddContact, setShowAddContact }) {
         ))}
       </ul>
 
-      <div
-        className={`${styles.notificationWrapper} ${showPopup && styles.show}`}
-      >
-        <button
-          className={styles.closePopup}
-          title="Close popup"
-          onClick={() => {
-            setShowPopup(false);
-          }}
+      {createPortal(
+        <div
+          className={`${styles.notificationWrapper} ${
+            showPopup && styles.show
+          }`}
         >
-          X
-        </button>
-        <p>You have added a new contact.</p>
-        <p>{contactName} is now a contact.</p>
-      </div>
+          <button
+            className={styles.closePopup}
+            title="Close popup"
+            onClick={() => {
+              setShowPopup(false);
+            }}
+          >
+            X
+          </button>
+          <p><strong>{contactName}</strong> is now a contact.</p>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

@@ -44,7 +44,7 @@ function Chat() {
     return () => {
       unsubscribe();
     };
-  }, [user]);
+  }, [user.uid]);
 
   return (
     <div className={styles.chatWrapper}>

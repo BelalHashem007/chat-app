@@ -81,13 +81,13 @@
   top: 0;
   z-index: 2;
   background-color: white;
-  transform: translateX(-100%); 
-  transition: all 0.4s allow-discrete;
-  content-visibility: hidden;
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: opacity 0.4s, transform 0.4s;
 }
-.addContactWrapper.show{
+.addContactWrapper.show {
+  opacity: 1;
   transform: translateX(0);
-  content-visibility:visible;
 }
 
 .resultWrapper {
@@ -96,25 +96,26 @@
   min-width: 0;
   overflow-y: auto;
 }
-.guestId{
+.guestId {
   color: gray;
 }
 
 .notificationWrapper {
   position: absolute;
   bottom: 100px;
-  left: 50%;
+  left: 100px;
   transform: translateX(-250%);
   opacity: 0;
-  width: 300px;
-  padding: 10px;
+  max-width: 300px;
+  padding: 20px;
   border: 1px solid #90caf9;
   box-shadow: 0 1px 4px #bbdefb;
   background-color: #bbdefb;
   transition: transform 0.5s;
+  z-index: 3;
 }
 .notificationWrapper.show {
-  transform: translateX(-50%);
+  transform: translateX(0%);
   opacity: 1;
 }
 .closePopup {
@@ -128,21 +129,21 @@
 .closePopup:hover {
   cursor: pointer;
 }
-.backBtn{
-    position: absolute;
-    top: 0px;
-    left: 10px;
-    background: none;
-    border: none;
-    border-radius: 50%;
-    padding: 10px;
-    font-size: 1.25rem;
+.backBtn {
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 1.25rem;
 }
 .backBtn:hover {
   cursor: pointer;
   background-color: var(--color-hover);
 }
-.srOnly{
+.srOnly {
   position: absolute;
   inset: 0;
   margin: -1px;
