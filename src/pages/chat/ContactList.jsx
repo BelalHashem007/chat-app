@@ -1,4 +1,4 @@
-import { useAuthContext } from "../../util/context";
+import { useAuthContext } from "../../util/context/authContext";
 import styles from "./chat.module.css";
 import Contact from "../../components/chatComponents/contactlist/Contact";
 import OptionsSearchWrapper from "../../components/chatComponents/contactlist/OptionsSearchWrapper";

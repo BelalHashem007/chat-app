@@ -5,11 +5,10 @@ import { createUser } from "../../firebase/firebase_auth/authentication";
 import { useNavigate, Link } from "react-router";
 import { useState } from "react";
 import { storeNewUserProfile } from "../../firebase/firebase_db/database";
-import { useAuthContext } from "../../util/context";
+import { useAuthContext } from "../../util/context/authContext";
 
 function Signup() {
   const navigate = useNavigate();
-
   const [error, setError] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
   const {isAuthenticated} = useAuthContext();

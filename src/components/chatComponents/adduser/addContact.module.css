@@ -100,35 +100,6 @@
   color: gray;
 }
 
-.notificationWrapper {
-  position: absolute;
-  bottom: 100px;
-  left: 100px;
-  transform: translateX(-250%);
-  opacity: 0;
-  max-width: 300px;
-  padding: 20px;
-  border: 1px solid #90caf9;
-  box-shadow: 0 1px 4px #bbdefb;
-  background-color: #bbdefb;
-  transition: transform 0.5s;
-  z-index: 3;
-}
-.notificationWrapper.show {
-  transform: translateX(0%);
-  opacity: 1;
-}
-.closePopup {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: none;
-  border: none;
-  font-size: 20px;
-}
-.closePopup:hover {
-  cursor: pointer;
-}
 .backBtn {
   position: absolute;
   top: 0px;

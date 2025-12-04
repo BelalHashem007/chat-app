@@ -1,6 +1,6 @@
 import styles from "./addGroup.module.css";
 import { useMemo, useState } from "react";
-import { useAuthContext } from "../../../util/context";
+import { useAuthContext } from "../../../util/context/authContext";
 import DefaultImage from "../../../util/DefaultImage";
 import OtherGroupOptions from "./OtherGroupOptions";
 

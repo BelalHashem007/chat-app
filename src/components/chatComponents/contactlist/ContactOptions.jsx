@@ -1,26 +1,37 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./contactOptions.module.css";
 import Icon from "@mdi/react";
-import { mdiAccountMultiplePlusOutline,mdiAccountPlusOutline } from "@mdi/js";
+import { mdiAccountMultiplePlusOutline, mdiAccountPlusOutline } from "@mdi/js";
 
-function ContactOptions({setShowAddContact,setShowAddGroup}) {
+function ContactOptions({ setShowAddContact, setShowAddGroup }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef();
 
   function handleMenuChange() {
     setMenuOpen(!menuOpen);
   }
 
-  function handleContactButton(){
-    setShowAddContact(true)
+  function handleContactButton() {
+    setShowAddContact(true);
     handleMenuChange();
   }
-  function handleGroupButton(){
-    setShowAddGroup(true)
+  function handleGroupButton() {
+    setShowAddGroup(true);
     handleMenuChange();
   }
 
+  //close menu on click outside
+  function handleClickOutside(e){
+    if (menuRef.current && !menuRef.current.contains(e.target))
+      setMenuOpen(false)
+  }
+
+  useEffect(()=>{
+    document.addEventListener("mousedown",handleClickOutside)
+  })
+
   return (
-    <div className={styles.menuWrapper}>
+    <div className={styles.menuWrapper}  ref={menuRef}>
       <button
         className={styles.menuIcon}
         aria-label="Menu"
@@ -39,12 +50,10 @@ function ContactOptions({setShowAddContact,setShowAddGroup}) {
       </button>
       <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}>
         <button className={styles.menuOpion} onClick={handleContactButton}>
-          <Icon path={mdiAccountPlusOutline} size={1} />{" "}
-          New contact
+          <Icon path={mdiAccountPlusOutline} size={1} /> New contact
         </button>
         <button className={styles.menuOpion} onClick={handleGroupButton}>
-          <Icon path={mdiAccountMultiplePlusOutline} size={1} />
-           {" "}New group
+          <Icon path={mdiAccountMultiplePlusOutline} size={1} /> New group
         </button>
       </div>
     </div>

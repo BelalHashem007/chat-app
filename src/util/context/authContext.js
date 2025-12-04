@@ -7,7 +7,6 @@ export const AuthContext = createContext({
   isAuthenticated: null,
 });
 
-
 export function useAuthContext(){
     return useContext(AuthContext)
 }

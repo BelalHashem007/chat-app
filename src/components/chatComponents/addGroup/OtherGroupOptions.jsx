@@ -3,7 +3,8 @@ import { mdiArrowLeft, mdiAccountMultiple, mdiCheck } from "@mdi/js";
 import styles from "./otherGroupOptions.module.css";
 import { useState } from "react";
 import { createNewChatRoom } from "../../../firebase/firebase_db/database";
-import { useAuthContext } from "../../../util/context";
+import { useAuthContext } from "../../../util/context/authContext";
+import { useToastContext } from "../../../util/context/toastContext";
 
 function OtherGroupOptions({
   setShowOptions,
@@ -13,6 +14,8 @@ function OtherGroupOptions({
   const { user } = useAuthContext();
   const [groupName, setGroupName] = useState("");
   const [creatingChat, setCreatingChat] = useState(false);
+  const {showToast}=useToastContext();
+
 
   async function handleSubmit() {
     const adminUids = [user.uid];
@@ -20,11 +23,12 @@ function OtherGroupOptions({
       setCreatingChat(true);
       await createNewChatRoom(
         user,
-        [...selectedContacts,user],
+        [...selectedContacts, user],
         true,
         groupName,
         adminUids
       );
+      showToast(<p>Your group has been created.</p>)
       handleClosingAddGroup();
       setCreatingChat(false);
       setShowOptions(false);

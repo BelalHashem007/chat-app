@@ -1,32 +1,33 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import styles from "./addContact.module.css";
 import DefaultImage from "../../../util/DefaultImage.jsx";
-import useDebouncedSearch from "../../../util/useDebouncedSearch.js";
+import useDebouncedSearch from "../../../util/hooks/useDebouncedSearch.js";
 import { createNewChatRoom } from "../../../firebase/firebase_db/database";
-import { useAuthContext } from "../../../util/context";
+import { useAuthContext } from "../../../util/context/authContext.js";
 import Icon from "@mdi/react";
 import { mdiArrowLeft } from "@mdi/js";
+import { useToastContext } from "../../../util/context/toastContext.js";
 
 function AddContact({ showAddContact, setShowAddContact }) {
   const { user } = useAuthContext();
+  const { showToast } = useToastContext();
   const [result, setResult] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
-  const [contactName, setContactName] = useState("");
 
   async function handleAdd(otherUser) {
     if (otherUser && user) {
       setSearchTerm("");
       await createNewChatRoom(user, [otherUser, user], false);
-      setContactName(otherUser.displayName);
-      setShowPopup(true);
+
+      showToast(<p>{otherUser.displayName} is now a contact.</p>);
     }
   }
 
   function handleBack() {
     setShowAddContact(false);
     setSearchTerm("");
+    showToast("test")
+    showToast("test4")
   }
 
   return (
@@ -73,26 +74,6 @@ function AddContact({ showAddContact, setShowAddContact }) {
           </li>
         ))}
       </ul>
-
-      {createPortal(
-        <div
-          className={`${styles.notificationWrapper} ${
-            showPopup && styles.show
-          }`}
-        >
-          <button
-            className={styles.closePopup}
-            title="Close popup"
-            onClick={() => {
-              setShowPopup(false);
-            }}
-          >
-            X
-          </button>
-          <p><strong>{contactName}</strong> is now a contact.</p>
-        </div>,
-        document.body
-      )}
     </div>
   );
 }

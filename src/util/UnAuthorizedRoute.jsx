@@ -1,5 +1,5 @@
 import { Navigate} from "react-router";
-import { useAuthContext } from "./context";
+import { useAuthContext } from "./context/authContext";
 
 function UnAuthorizedRoute({ children }) {
     const {loading,isAuthenticated}= useAuthContext();

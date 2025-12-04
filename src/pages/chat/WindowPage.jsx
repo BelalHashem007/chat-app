@@ -3,7 +3,7 @@ import { subscribeToChatMessages } from "../../firebase/firebase_db/database";
 import ContactInfoComponent from "../../components/chatComponents/chatwindow/ContactInfoComponent";
 import Window from "../../components/chatComponents/chatwindow/Window";
 import { useState, useEffect } from "react";
-import { useAuthContext } from "../../util/context";
+import { useAuthContext } from "../../util/context/authContext";
 import styles from "./chat.module.css";
 
 function WindowPage({ selectedChat }) {

@@ -4,7 +4,7 @@ import { mdiSendVariantOutline } from "@mdi/js";
 import styles from "./messageInput.module.css";
 import TextareaAutosize from "react-textarea-autosize";
 import { sendMessage } from "../../../firebase/firebase_db/database";
-import { useAuthContext } from "../../../util/context";
+import { useAuthContext } from "../../../util/context/authContext";
 import EmojiPicker from "emoji-picker-react";
 
 function MessageInput({ selectedChat }) {

@@ -46,7 +46,7 @@ function Contact({ chat, curUserUid }) {
         <div className={styles.nameDateWrapper}>
           <div className={styles.name}>
             {name}
-            {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
+            {chat.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
           </div>
           <div className={styles.lastMsgDate} aria-hidden="true">
             {getMessageDate(chat.lastMessageDate)}

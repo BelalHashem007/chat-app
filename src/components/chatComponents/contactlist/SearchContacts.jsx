@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./searchContacts.module.css";
-import { useAuthContext } from "../../../util/context";
+import { useAuthContext } from "../../../util/context/authContext";
 
 function SearchContacts({ chats, setActiveChats }) {
   const { user } = useAuthContext();

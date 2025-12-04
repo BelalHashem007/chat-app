@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { setupCurrentUserPresence } from "../firebase/firebase_RTdb/rtdb";
 import { auth } from "../firebase/firebase_auth/authentication";
-import { AuthContext } from "./context";
+import { AuthContext } from "./context/authContext";
 
 
 

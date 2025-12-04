@@ -7,7 +7,7 @@ import {
   signIn,
   guestSignIn,
 } from "../../firebase/firebase_auth/authentication";
-import { useAuthContext } from "../../util/context";
+import { useAuthContext } from "../../util/context/authContext";
 import Icon from "@mdi/react";
 import { mdiAccountCircle } from "@mdi/js";
 import { storeNewUserProfile } from "../../firebase/firebase_db/database";

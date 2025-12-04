@@ -2,31 +2,17 @@ import DefaultImage from "../../../util/DefaultImage";
 import styles from "./profile.module.css";
 import Icon from "@mdi/react";
 import { mdiPencilOutline, mdiCheck } from "@mdi/js";
-import { useEffect, useState } from "react";
-import {
-  updateUserName,
-  subscribeToCurrentUser,
-} from "../../../firebase/firebase_db/database";
-import { useAuthContext } from "../../../util/context";
+import { useState } from "react";
+import { updateUserName } from "../../../firebase/firebase_db/database";
+import { useAuthContext } from "../../../util/context/authContext";
 
-function Profile() {
+function Profile({ userData }) {
   const { user } = useAuthContext();
-  const [userData, setUserData] = useState({});
+
   const [nameEditable, setNameEditable] = useState(false);
-  const [name, setName] = useState("New User");
+  const [name, setName] = useState(userData.displayName);
 
   //effects
-  useEffect(() => {
-    if (!user.uid) return;
-    const unsubscribe = subscribeToCurrentUser(user.uid, (fetchedData) => {
-      setUserData(fetchedData);
-      setName(fetchedData.displayName)
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  },[user.uid]);
 
   //handlers
   async function handleUpdate() {

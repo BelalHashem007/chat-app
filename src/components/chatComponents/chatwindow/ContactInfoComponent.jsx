@@ -6,7 +6,11 @@ import { mdiAccountMultiple } from "@mdi/js";
 function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
   if (!selectedChat.isGroupChat && !contact) return;
 
-  let name = contact.displayName || "New User";
+  let name = "New User";
+  if (contact) {
+    name = contact.displayName;
+  }
+
   if (selectedChat.isGroupChat) {
     name = selectedChat.groupName;
   }
@@ -34,10 +38,10 @@ function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
           <header className={styles.chatWindowHeader}>
-            <h2 className={styles.name}>
-              {name}
-            </h2>
-            {contact.isAnonymous && <span className={styles.guestId}>#{contact.guestId}</span>}
+            <h2 className={styles.name}>{name}</h2>
+            {selectedChat.isAnonymous && (
+              <span className={styles.guestId}>#{contact.guestId}</span>
+            )}
           </header>
           {!selectedChat.isGroupChat && (
             <div className={styles.onlineStatus}>

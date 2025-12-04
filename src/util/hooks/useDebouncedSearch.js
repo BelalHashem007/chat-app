@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { searchUsers } from "../firebase/firebase_db/database";
-import { useAuthContext } from "./context";
+import { searchUsers } from "../../firebase/firebase_db/database";
+import { useAuthContext } from "../context/authContext";
 
 const useDebouncedSearch = (searchTerm, delay = 500) => {
   const { user } = useAuthContext();
