@@ -38,8 +38,10 @@
 .ScrollWrapper{
   overflow-y: auto;
   flex: 1;
-  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
   min-height: 0;
+  position: relative;
 }
 .flexWrapper{
   padding-top: 20px;
@@ -56,6 +58,11 @@
 .ScrollWrapper::-webkit-scrollbar-thumb {
   background: rgba(0, 0, 0, 0.25);
   border-radius: 10px;
+}
+.layoutWrapper{
+  min-height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .ScrollWrapper::-webkit-scrollbar-track {

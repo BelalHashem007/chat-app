@@ -6,11 +6,11 @@ import { useEffect, useRef } from "react";
 function Window({ messages, selectedChat }) {
   const scrolWrapperRef = useRef(null);
 
-  useEffect(()=>{
-    if (scrolWrapperRef.current){
-      scrolWrapperRef.current.scrollTop = scrolWrapperRef.current.scrollHeight ;
+  useEffect(() => {
+    if (scrolWrapperRef.current) {
+      scrolWrapperRef.current.scrollTop = scrolWrapperRef.current.scrollHeight;
     }
-  },[messages])
+  }, [messages]);
   //get current contact messages
   if (!selectedChat) {
     return (
@@ -22,15 +22,19 @@ function Window({ messages, selectedChat }) {
       </div>
     );
   }
-  console.log(messages)
+  console.log(messages);
   return (
     <div className={`${styles.windowbg} ${styles.active}`}>
       <div className={styles.ScrollWrapper} ref={scrolWrapperRef}>
-        <div className={styles.flexWrapper}>
-          {messages.map((msg) => (
-            <MessageBubble key={msg.id} msg={msg} selectedChat={selectedChat}/>
-          ))}
-        </div>
+          <div className={styles.flexWrapper}>
+            {messages.map((msg) => (
+              <MessageBubble
+                key={msg.id}
+                msg={msg}
+                selectedChat={selectedChat}
+              />
+            ))}
+          </div>
       </div>
       <MessageInput selectedChat={selectedChat} />
     </div>
