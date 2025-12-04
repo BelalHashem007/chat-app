@@ -127,23 +127,3 @@
   clip-path: inset(50%);
 }
 
-@media (min-width: 2560px) {
-  .searchInp {
-    padding-left: 50px;
-  }
-  .searchWrapper::before {
-    top: 15px;
-  }
-  .searchWrapper {
-    max-width: 600px;
-  }
-}
-
-@media (min-width: 3860px) {
-  .searchInp {
-    padding-left: 80px;
-  }
-  .searchWrapper {
-    max-width: 800px;
-  }
-}

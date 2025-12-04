@@ -27,18 +27,7 @@ select {
   font: inherit;
 }
 
-/*media queries*/
-@media (min-width:2560px){
-  html{
-    font-size: 26px;
-  }
-}
 
-@media (min-width:3840px){
-  html{
-    font-size: 40px;
-  }
-}
 
 
 /*Variables declaration*/

@@ -22,7 +22,7 @@ function Window({ messages, selectedChat }) {
       </div>
     );
   }
-
+  console.log(messages)
   return (
     <div className={`${styles.windowbg} ${styles.active}`}>
       <div className={styles.ScrollWrapper} ref={scrolWrapperRef}>

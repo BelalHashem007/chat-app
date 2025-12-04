@@ -65,25 +65,4 @@
   left: 0;
 }
 
-@media (min-width: 2560px) {
-  .sendBtn svg {
-    width: 40px !important;
-    height: 40px !important;
-  }
-  .msgInputWrapper {
-    padding-right: 90px;
-  }
-}
 
-@media (min-width: 3840px) {
-  .sendBtn {
-    bottom: 10px;
-  }
-  .msgInputWrapper {
-    padding-right: 110px;
-  }
-  .sendBtn svg {
-    width: 60px !important;
-    height: 60px !important;
-  }
-}

@@ -26,8 +26,6 @@ function AddContact({ showAddContact, setShowAddContact }) {
   function handleBack() {
     setShowAddContact(false);
     setSearchTerm("");
-    showToast("test")
-    showToast("test4")
   }
 
   return (

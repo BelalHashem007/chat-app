@@ -229,6 +229,7 @@ async function sendMessage(msg, chatid, curUser) {
         senderPhotoURL: curUser.photoURL,
         text: msg,
         timestamp: serverTimestamp(),
+        chatId:chatid,
       };
 
       //add message doc

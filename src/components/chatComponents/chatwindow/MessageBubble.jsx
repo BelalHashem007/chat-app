@@ -6,8 +6,10 @@ import { pickPaletteColor } from "../../../util/utilFunctions";
 
 function MessageBubble({ msg, selectedChat }) {
   const { user } = useAuthContext();
+  if (msg && msg.chatId != selectedChat.id) return <div></div>
+
   let senderEmail = null;
-  let senderDisplayName= null;
+  let senderDisplayName = null;
   let userNameColor = null;
   if (selectedChat.isGroupChat && msg.senderUid != user.uid) {
     const senderDetails = selectedChat.enrichedParticipants.filter(
@@ -17,7 +19,7 @@ function MessageBubble({ msg, selectedChat }) {
     senderDisplayName = senderDetails[0].displayName;
     userNameColor = pickPaletteColor(senderEmail || senderDisplayName);
   }
-  console.log(selectedChat);
+
   return (
     <section
       aria-label="Message"
@@ -37,7 +39,13 @@ function MessageBubble({ msg, selectedChat }) {
         }`}
       >
         {selectedChat.isGroupChat && msg.senderUid != user.uid && (
-          <div  style={{ color: userNameColor, fontSize:"0.875rem", marginBottom:"3px"}}>
+          <div
+            style={{
+              color: userNameColor,
+              fontSize: "0.875rem",
+              marginBottom: "3px",
+            }}
+          >
             {msg.senderDisplayName}
           </div>
         )}

@@ -10,7 +10,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   opacity: 0;
-  z-index: 3;
+  z-index: 6;
   animation: 5s notification-slide-in 1 ease;
 }
 
@@ -45,3 +45,4 @@
 .closePopup:hover {
   cursor: pointer;
 }
+

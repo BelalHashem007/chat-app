@@ -10,7 +10,6 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [showOptions, setShowOptions] = useState(false);
 
-  console.log(chats)
   //calculating ALL contacts the user have
   const baseContacts = useMemo(() => {
     if (chats.length == 0) return [];
@@ -63,7 +62,6 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
     setShowOptions(true);
   }
 
-  console.log(availableContacts)
   return (
     <div className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`}>
       {showOptions ? (

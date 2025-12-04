@@ -10,7 +10,6 @@ main {
   display: flex;
   max-height: 100vh;
 }
-
 .contactList {
   grid-area: contactlist;
   display: flex;
@@ -28,10 +27,14 @@ main {
   display: flex;
   flex-direction: column;
   gap: 15px;
-      flex: 1;
-    min-height: 0;
+  flex: 1;
+  min-height: 0;
 }
-
+.sidebar {
+  grid-area: sidebar;
+  height: 100%;
+  display: flex;
+}
 .chatWindow {
   flex: 1;
   display: flex;
@@ -41,6 +44,12 @@ main {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #e0e0e0;
+  align-items: center;
+}
+.contactBackWrapper{
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
 }
 .window {
   flex: 1;
@@ -48,7 +57,18 @@ main {
   flex-direction: column;
   min-height: 0;
 }
-
+.backToContact{
+  background:none;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: none;
+}
+.backToContact:hover {
+  cursor: pointer;
+  background-color: var(--color-hover);
+}
 .users {
   list-style-type: none;
   padding: 0;
@@ -75,4 +95,41 @@ main {
 
 .activeContact {
   background-color: var(--color-hover);
+}
+
+@media (max-width: 750px) {
+  /*when chat is not selected*/
+  .chatWrapper {
+    grid-template-columns: 1fr;
+    grid-template-areas: "main";
+  }
+  .contactList {
+    grid-area: main;
+  }
+  
+  .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 80px;
+    width: 100%;
+    z-index: 5;
+  }
+  main {
+    display: none;
+  }
+  /*when chat is selected*/
+  main.show {
+    display: flex;
+    grid-area: main;
+  }
+  .contactList.hide{
+    display: none;
+  }
+  .sidebar.hide {
+    display: none;
+  }
+  .backToContact{
+    display: block;
+  }
 }

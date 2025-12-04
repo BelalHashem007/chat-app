@@ -19,7 +19,7 @@ function ContactList({
   const [showAddGroup, setShowAddGroup] = useState(false);
   console.log(chats);
   return (
-    <div className={styles.contactList}>
+    <div className={`${styles.contactList} ${selectedChat && styles.hide}`}>
       <AddContact
         showAddContact={showAddContact}
         setShowAddContact={setShowAddContact}

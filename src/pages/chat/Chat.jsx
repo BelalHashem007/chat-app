@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import Sidebar from "../../components/chatComponents/sidebar/Sidebar";
 import Profile from "../../components/chatComponents/profile/Profile";
 import { useAuthContext } from "../../util/context/authContext";
-import { subscribeToUserChats,subscribeToCurrentUser } from "../../firebase/firebase_db/database";
+import {
+  subscribeToUserChats,
+  subscribeToCurrentUser,
+} from "../../firebase/firebase_db/database";
 
 const dynamicComponents = {
   contactList: ({
@@ -23,7 +26,7 @@ const dynamicComponents = {
       setActiveChats={setActiveChats}
     />
   ),
-  profile: ({userData}) => <Profile userData={userData}/>,
+  profile: ({ userData }) => <Profile userData={userData} />,
 };
 
 function Chat() {
@@ -33,9 +36,10 @@ function Chat() {
   const [activeChats, setActiveChats] = useState([]);
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
-  
-  console.log(user)
+
+  console.log(user);
   const DynamicComponent = dynamicComponents[activeComponent];
+
   //subscribe to chats
   useEffect(() => {
     const unsubscribe = subscribeToUserChats(user.uid, (fetchedChats) => {
@@ -47,7 +51,8 @@ function Chat() {
       unsubscribe();
     };
   }, [user.uid]);
-  //subscribe to userdetails
+
+  //subscribe to user details
   useEffect(() => {
     if (!user.uid) return;
     const unsubscribe = subscribeToCurrentUser(user.uid, (fetchedData) => {
@@ -57,11 +62,13 @@ function Chat() {
     return () => {
       unsubscribe();
     };
-  },[user.uid]);
+  }, [user.uid]);
 
   return (
     <div className={styles.chatWrapper}>
-      <Sidebar setActiveComponent={setActiveComponent} />
+      <div className={`${styles.sidebar} ${selectedChat && styles.hide}`}>
+        <Sidebar setActiveComponent={setActiveComponent} />
+      </div>
       <DynamicComponent
         selectedChat={selectedChat}
         setSelectedChat={setSelectedChat}
@@ -71,7 +78,7 @@ function Chat() {
         setActiveComponent={setActiveComponent}
         userData={userData}
       />
-      <WindowPage selectedChat={selectedChat} />
+      <WindowPage selectedChat={selectedChat} setSelectedChat={setSelectedChat}/>
     </div>
   );
 }
