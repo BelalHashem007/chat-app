@@ -14,28 +14,27 @@ function OtherGroupOptions({
   const { user } = useAuthContext();
   const [groupName, setGroupName] = useState("");
   const [creatingChat, setCreatingChat] = useState(false);
-  const {showToast}=useToastContext();
-
+  const { showToast } = useToastContext();
 
   async function handleSubmit() {
     const adminUids = [user.uid];
-    try {
-      setCreatingChat(true);
-      await createNewChatRoom(
-        user,
-        [...selectedContacts, user],
-        true,
-        groupName,
-        adminUids
-      );
-      showToast(<p>Your group has been created.</p>)
-      handleClosingAddGroup();
-      setCreatingChat(false);
-      setShowOptions(false);
-    } catch (error) {
-      setCreatingChat(false);
-      console.log(error);
+    setCreatingChat(true);
+    const result = await createNewChatRoom(
+      user,
+      [...selectedContacts, user],
+      true,
+      groupName,
+      adminUids
+    );
+    if (result.error) {
+      showToast(<p>Something went wrong. Please try again.</p>);
     }
+    if (result.isChatCreated) {
+      showToast(<p>Your group has been created.</p>);
+      handleClosingAddGroup();
+      setShowOptions(false);
+    }
+    setCreatingChat(false);
   }
   return (
     <>

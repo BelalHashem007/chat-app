@@ -7,11 +7,18 @@ import styles from "./chat.module.css";
 import Icon from "@mdi/react";
 import { mdiArrowLeft } from "@mdi/js";
 import useMessages from "../../util/hooks/useMessages";
+import ChatOptions from "../../components/chatComponents/chatwindow/ChatOptions";
 
-function WindowPage({ selectedChat,setSelectedChat }) {
-  const messages = useMessages(selectedChat)
+function WindowPage({
+  selectedChat,
+  setSelectedChat,
+  isChatLoading,
+  setIsChatLoading,
+}) {
+  const messages = useMessages(selectedChat);
   const { user } = useAuthContext();
   const [contactOnlineStatus, setContactOnlineStatus] = useState(null);
+  // state for chat actions like remove contact/delete group etc..
 
   let contact = null;
 
@@ -47,7 +54,7 @@ function WindowPage({ selectedChat,setSelectedChat }) {
   }, [selectedChat, contact]);
 
   function handleBackOnSmallScreen() {
-    setSelectedChat(null)
+    setSelectedChat(null);
   }
 
   return (
@@ -74,7 +81,15 @@ function WindowPage({ selectedChat,setSelectedChat }) {
                   selectedChat={selectedChat}
                 />
               </div>
-              <div className={styles.options}>unfinished</div>
+              <div className={styles.options}>
+                <ChatOptions
+                  setSelectedChat={setSelectedChat}
+                  selectedChat={selectedChat}
+                  contact={contact}
+                  setIsChatLoading={setIsChatLoading}
+                  isChatLoading={isChatLoading}
+                />
+              </div>
             </div>
           </header>
         )}

@@ -63,7 +63,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
   }
 
   return (
-    <div className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`}>
+    <div inert={!showAddGroup} className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`}>
       {showOptions ? (
         <OtherGroupOptions
           setShowOptions={setShowOptions}

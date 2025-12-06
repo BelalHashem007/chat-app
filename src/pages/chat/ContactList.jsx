@@ -20,11 +20,11 @@ function ContactList({
   console.log(chats);
   return (
     <div className={`${styles.contactList} ${selectedChat && styles.hide}`}>
-      <AddContact
+       <AddContact
         showAddContact={showAddContact}
         setShowAddContact={setShowAddContact}
       />
-      <AddGroup showAddGroup={showAddGroup} setShowAddGroup={setShowAddGroup} chats={chats}/>
+       <AddGroup showAddGroup={showAddGroup} setShowAddGroup={setShowAddGroup} chats={chats}/>
       <header className={styles.logo}>
         <Logo />
       </header>
@@ -38,7 +38,7 @@ function ContactList({
             setShowAddGroup={setShowAddGroup}
           />
         </div>
-        <ul className={styles.users}>
+        <ul className={styles.users} aria-label="contacts">
           {activeChats.map((chat) => (
             <li
               key={chat.id}
@@ -49,6 +49,7 @@ function ContactList({
                 selectedChat &&
                 (selectedChat.id == chat.id ? styles.activeContact : "")
               }`}
+              aria-label="contact"
             >
               {<Contact chat={chat} curUserUid={user.uid} />}
             </li>

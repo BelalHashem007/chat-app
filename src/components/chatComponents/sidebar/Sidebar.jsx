@@ -57,7 +57,7 @@ function Sidebar({ setActiveComponent }) {
           <li className={styles.listItem} title="Log out" aria-label="Log out">
             <button className={styles.logoutBtn} onClick={handleLogout}>
               {" "}
-              <Icon path={mdiLogout} size={1} />
+              <Icon path={mdiLogout} size={1} className={styles.logoutIcon}/>
             </button>
           </li>
         </div>

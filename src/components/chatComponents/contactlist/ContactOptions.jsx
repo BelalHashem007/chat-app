@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import {  useState } from "react";
 import styles from "./contactOptions.module.css";
 import Icon from "@mdi/react";
 import { mdiAccountMultiplePlusOutline, mdiAccountPlusOutline } from "@mdi/js";
+import useClickOutside from "../../../util/hooks/useClickOutside";
 
 function ContactOptions({ setShowAddContact, setShowAddGroup }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef();
+  const menuRef = useClickOutside(setMenuOpen);
 
   function handleMenuChange() {
     setMenuOpen(!menuOpen);
@@ -20,18 +21,10 @@ function ContactOptions({ setShowAddContact, setShowAddGroup }) {
     handleMenuChange();
   }
 
-  //close menu on click outside
-  function handleClickOutside(e){
-    if (menuRef.current && !menuRef.current.contains(e.target))
-      setMenuOpen(false)
-  }
 
-  useEffect(()=>{
-    document.addEventListener("mousedown",handleClickOutside)
-  })
 
   return (
-    <div className={styles.menuWrapper}  ref={menuRef}>
+    <div className={styles.menuWrapper} ref={menuRef} onClick={(e)=>{e.stopPropagation()}}>
       <button
         className={styles.menuIcon}
         aria-label="Menu"

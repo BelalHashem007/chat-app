@@ -56,4 +56,11 @@ function generateRandomName() {
   return `${adjective}${animal}${num}`;
 }
 
-export { pickPaletteColor,generateRandomName };
+function otherAdminsExist(chat,userUid){
+  const availableAdmins = chat.adminUids.filter((aUid)=> aUid != userUid);
+  if (availableAdmins.length == 0) return false;
+
+  return true;
+}
+
+export { pickPaletteColor,generateRandomName,otherAdminsExist };

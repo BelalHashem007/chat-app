@@ -35,7 +35,7 @@
 .listItem .logoutBtn:hover{
     background-color: var(--color-logout);
 }
-.chatsIcon,.profileIcon{
+.chatsIcon,.profileIcon,.logoutIcon{
   vertical-align: -5px;
 }
 

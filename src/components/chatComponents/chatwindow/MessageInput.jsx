@@ -6,21 +6,24 @@ import TextareaAutosize from "react-textarea-autosize";
 import { sendMessage } from "../../../firebase/firebase_db/database";
 import { useAuthContext } from "../../../util/context/authContext";
 import EmojiPicker from "emoji-picker-react";
+import useClickOutside from "../../../util/hooks/useClickOutside";
 
 function MessageInput({ selectedChat }) {
   const [msg, setMsg] = useState("");
   const { user } = useAuthContext();
   const [openEmoji, setOpenEmoji] = useState(false);
+  const emojiRef = useClickOutside(setOpenEmoji);
 
   async function handleSubmit(e) {
     e.preventDefault();
     if (!msg || !msg.trim() || !user || !selectedChat) return;
     setMsg("");
+    setOpenEmoji(false);
     await sendMessage(msg, selectedChat.id, user);
   }
 
-  function handleEmoji(emojieData){
-    setMsg((msg)=>msg+emojieData.emoji)
+  function handleEmoji(emojieData) {
+    setMsg((msg) => msg + emojieData.emoji);
   }
 
   return (
@@ -38,6 +41,7 @@ function MessageInput({ selectedChat }) {
         <button
           className={styles.emojiBtn}
           title="Emoji"
+          aria-label="Emoji"
           onClick={() => {
             setOpenEmoji(!openEmoji);
           }}
@@ -45,8 +49,14 @@ function MessageInput({ selectedChat }) {
         >
           🙂
         </button>
-        <div className={styles.emojiWrapper}>
-          <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji}/>
+        <div
+          ref={emojiRef}
+          className={styles.emojiWrapper}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+        >
+          <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} />
         </div>
         <TextareaAutosize
           value={msg}

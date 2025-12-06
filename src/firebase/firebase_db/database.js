@@ -1,4 +1,5 @@
 import app from "../firebase";
+import { otherAdminsExist } from "../../util/utilFunctions";
 import { updateUser } from "../firebase_auth/authentication";
 import {
   getFirestore,
@@ -14,6 +15,8 @@ import {
   limit,
   updateDoc,
   runTransaction,
+  arrayRemove,
+  getDoc,
 } from "firebase/firestore";
 import { auth } from "../firebase_auth/authentication";
 import { nanoid } from "nanoid";
@@ -58,7 +61,7 @@ async function searchUsers(searchTerm, curUserUid) {
   const endSearchTerm = lowerCasedSearchTerm + "\uf8ff";
 
   //Search for users whose email OR guestid starts with the searchterm
- const qEmail = query(
+  const qEmail = query(
     usersRef,
     where("email_lower", ">=", lowerCasedSearchTerm),
     where("email_lower", "<=", endSearchTerm)
@@ -70,8 +73,11 @@ async function searchUsers(searchTerm, curUserUid) {
     where("guestId_lower", "<=", endSearchTerm)
   );
   try {
-    //fetch all docs at the same 
-    const [emailQuerySnapshot,guestIdQuerySnapshot] = await Promise.all([getDocs(qEmail),getDocs(qGuestId)]);
+    //fetch all docs at the same
+    const [emailQuerySnapshot, guestIdQuerySnapshot] = await Promise.all([
+      getDocs(qEmail),
+      getDocs(qGuestId),
+    ]);
 
     const contacts = await getDocs(
       collection(db, `/users/${curUserUid}/contacts`)
@@ -111,20 +117,26 @@ async function createNewChatRoom(
   groupName,
   adminUids
 ) {
-  if (!currentUser || !participants) return;
+  const result = { isChatCreated: false, error: null };
+
+  if (!currentUser || !participants) {
+    result.error = "Missing data.";
+    return result;
+  }
 
   const chatCollectionRef = collection(db, "chats");
   const newChatDocRef = doc(chatCollectionRef);
   const participantsUids = participants.map((participant) => participant.uid);
 
   const chatToStore = {
-    participantsUids: [...participantsUids],
+    allTimeParticipantsUids: [...participantsUids],
     isGroupChat: isGroupChat,
     createdAt: serverTimestamp(),
     lastMessage: "",
     lastMessageDate: null,
     lastMessageSenderUid: "",
     lastMessageSenderDisplayName: "",
+    activeParticipantsUids: [...participantsUids],
   };
 
   if (isGroupChat) {
@@ -143,7 +155,6 @@ async function createNewChatRoom(
       transaction.set(newChatDocRef, chatToStore);
 
       if (!isGroupChat) {
-        //if this is DM and not groupchat create the contacts
         //create contact for curuser
         transaction.set(
           doc(db, `/users/${currentUser.uid}/contacts/${participants[0].uid}`),
@@ -160,10 +171,14 @@ async function createNewChatRoom(
         );
       }
     });
+
+    result.isChatCreated = true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    result.error = error;
   }
-  return;
+  console.log(result);
+  return result;
 }
 
 function subscribeToUserChats(currentUserUid, callback) {
@@ -172,7 +187,7 @@ function subscribeToUserChats(currentUserUid, callback) {
   const chatsCollectionRef = collection(db, "chats");
   const q = query(
     chatsCollectionRef,
-    where("participantsUids", "array-contains", currentUserUid),
+    where("activeParticipantsUids", "array-contains", currentUserUid),
     orderBy("lastMessageDate", "desc")
   );
   const unsubscribe = onSnapshot(
@@ -188,7 +203,7 @@ function subscribeToUserChats(currentUserUid, callback) {
 
       const allUids = new Set();
       userChats.forEach((chat) => {
-        chat.participantsUids.forEach((uid) => {
+        chat.allTimeParticipantsUids.forEach((uid) => {
           if (uid !== currentUserUid) {
             allUids.add(uid);
           }
@@ -196,7 +211,7 @@ function subscribeToUserChats(currentUserUid, callback) {
       });
       const participantDetails = await getParticipantDetails(allUids);
       const enrichedChats = userChats.map((chat) => {
-        const enrichedParticipants = chat.participantsUids.map((uid) => {
+        const enrichedParticipants = chat.allTimeParticipantsUids.map((uid) => {
           return (
             participantDetails.get(uid) || {
               uid: uid,
@@ -217,41 +232,60 @@ function subscribeToUserChats(currentUserUid, callback) {
   return unsubscribe;
 }
 
-async function sendMessage(msg, chatid, curUser) {
+async function sendMessage(
+  msg,
+  chatid,
+  curUser,
+  isSystem,
+  existingTransaction
+) {
   if (!msg || !msg.trim() || !chatid || !curUser) return;
-  try {
-    await runTransaction(db, async (transaction) => {
-      const newMessageRef = doc(collection(db, `/chats/${chatid}/messages`));
 
-      const msgToStore = {
-        senderUid: curUser.uid,
-        senderDisplayName: curUser.displayName,
-        senderPhotoURL: curUser.photoURL,
-        text: msg,
-        timestamp: serverTimestamp(),
-        chatId:chatid,
-      };
+  const performOperations = async (transaction) => {
+    const newMessageRef = doc(collection(db, `/chats/${chatid}/messages`));
 
-      //add message doc
-      transaction.set(newMessageRef, msgToStore);
+    const msgToStore = {
+      senderUid: curUser.uid,
+      senderDisplayName: curUser.displayName,
+      senderPhotoURL: curUser.photoURL,
+      text: msg,
+      timestamp: serverTimestamp(),
+      chatId: chatid,
+    };
 
-      //update chat details
-      transaction.update(doc(db, `/chats/${chatid}`), {
-        lastMessage: msg,
-        lastMessageDate: serverTimestamp(),
-        lastMessageSenderUid: curUser.uid,
-        lastMessageSenderDisplayName: curUser.displayName,
-      });
+    if (isSystem) {
+      msgToStore.isSystem = isSystem;
+      msgToStore.senderUid = "system";
+      msgToStore.senderDisplayName = "System";
+      msgToStore.senderPhotoURL = null;
+    }
+
+    //add message doc
+    transaction.set(newMessageRef, msgToStore);
+
+    //update chat details
+    transaction.update(doc(db, `/chats/${chatid}`), {
+      lastMessage: msg,
+      lastMessageDate: serverTimestamp(),
+      lastMessageSenderUid: curUser.uid,
+      lastMessageSenderDisplayName: curUser.displayName,
     });
+  };
 
-    console.log("Message sent successfully");
+  try {
+    if (existingTransaction) {
+      await performOperations(existingTransaction);
+    } else {
+      await runTransaction(db, performOperations);
+    }
+    console.log("Message operations completed successfully.");
   } catch (error) {
-    console.error("Error sending message:", error);
+    console.error("Error in message operations:", error);
   }
 }
 
 function subscribeToChatMessages(chatid, callback) {
-  if (!chatid) return ()=>{};
+  if (!chatid) return () => {};
 
   const messagesCollectionRef = collection(db, `/chats/${chatid}/messages`);
 
@@ -332,20 +366,157 @@ async function updateUserName(userUid, newName) {
   }
 }
 
-function subscribeToCurrentUser(userUid,callback){
- if (!userUid) return ()=>{};
- 
-  const userDoc = doc(db,`/users/${userUid}`);
+function subscribeToCurrentUser(userUid, callback) {
+  if (!userUid) return () => {};
 
-  const unsubscribe = onSnapshot(userDoc,(snapshot)=>{
-    const userData = snapshot.data();
-    callback(userData);
-    console.log("Hello userdata:",userData)
-  },(error)=>{
-    console.log(error);
-  })
-  
+  const userDoc = doc(db, `/users/${userUid}`);
+
+  const unsubscribe = onSnapshot(
+    userDoc,
+    (snapshot) => {
+      const userData = snapshot.data();
+      callback(userData);
+      console.log("Hello userdata:", userData);
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+
   return unsubscribe;
+}
+
+async function removeContact(chatId, curUserUid, contactUid) {
+  if (!chatId || !curUserUid || !contactUid) return console.log("Missing data");
+
+  const result = { isRemoved: false, error: null };
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      console.log("test");
+      //delete chat
+      transaction.delete(doc(db, `/chats/${chatId}`));
+
+      //delete contact for curUser
+      transaction.delete(
+        doc(db, `/users/${curUserUid}/contacts/${contactUid}`)
+      );
+
+      //delete curUser for contact
+      transaction.delete(
+        doc(db, `/users/${contactUid}/contacts/${curUserUid}`)
+      );
+    });
+
+    result.isRemoved = true;
+  } catch (error) {
+    console.log(error);
+    result.error = error;
+  }
+  return result;
+}
+
+async function leaveGroup(chat, userUid) {
+  const result = { didLeave: false, error: null };
+  if (!chat || !userUid) {
+    result.error = "Missing data.";
+    return result;
+  }
+
+  try {
+    const userSnapShot = await getDoc(doc(db, `/users/${userUid}`));
+    if (!userSnapShot.exists()) {
+      result.error = "User doesn`t exist.";
+      return result;
+    }
+
+    const adminsExist = otherAdminsExist(chat, userUid);
+    let newAdmin = null;
+
+    let objectToUpdateChat = { activeParticipantsUids: arrayRemove(userUid) };
+    console.log(objectToUpdateChat);
+    if (!adminsExist) {
+      const newArrayWithoutCurrentUser = chat.activeParticipantsUids.filter(
+        (uid) => userUid != uid
+      );
+      const randomIndex = Math.floor(
+        Math.random() * chat.activeParticipantsUids.length
+      );
+      newAdmin = newArrayWithoutCurrentUser[randomIndex];
+      objectToUpdateChat.adminUids = [newAdmin];
+    }
+
+    console.log(objectToUpdateChat);
+
+    const user = { ...userSnapShot.data() };
+
+    await runTransaction(db, async (transaction) => {
+      const newChatSnapShot = await transaction.get(
+        doc(db, `/chats/${chat.id}`)
+      );
+      if (!newChatSnapShot.exists()) throw Error("Chat doesn`t exist.");
+      const newChat = { ...newChatSnapShot.data() };
+
+      if (newChat.activeParticipantsUids.length == 1) {
+        throw Error("You can`t leave when you are the only one in the group.")
+      }
+
+      transaction.update(doc(db, `/chats/${chat.id}`), objectToUpdateChat);
+
+      sendMessage(
+        `${user.displayName} Has left the group.`,
+        chat.id,
+        user,
+        true,
+        transaction
+      );
+    });
+
+    result.didLeave = true;
+  } catch (error) {
+    console.error(error);
+    result.error = error;
+  }
+
+  return result;
+}
+
+async function deleteGroup(chat,userUid){
+
+  const result = {isDeleted:false,error:null};
+
+  if (!chat || !userUid) {
+    result.error="Missing data";
+    return result;
+  }
+
+  try {
+    await runTransaction(db,async (transaction)=>{
+      const chatSnapshot = await transaction.get(doc(db,`/chats/${chat.id}`));
+      if (!chatSnapshot.exists()) {
+        throw Error("Chat doesn`t exist.")
+      }
+
+      const chatData = {...chatSnapshot.data()};
+
+      if (!chatData.adminUids.includes(userUid)){
+        throw Error("You are not an admin in this group.")
+      }
+
+      //delete chat
+      transaction.delete(doc(db,`/chats/${chat.id}`));
+        
+    })
+
+    result.isDeleted = true;
+    
+  } catch (error) {
+    result.error=error;
+    console.error(error);
+  }
+
+  return result;
+
 }
 
 export {
@@ -357,4 +528,7 @@ export {
   subscribeToChatMessages,
   updateUserName,
   subscribeToCurrentUser,
+  removeContact,
+  leaveGroup,
+  deleteGroup,
 };

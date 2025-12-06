@@ -36,8 +36,8 @@ function Chat() {
   const [activeChats, setActiveChats] = useState([]);
   const { user } = useAuthContext();
   const [userData, setUserData] = useState({});
+  const [isChatLoading, setIsChatLoading] = useState(false);
 
-  console.log(user);
   const DynamicComponent = dynamicComponents[activeComponent];
 
   //subscribe to chats
@@ -78,7 +78,12 @@ function Chat() {
         setActiveComponent={setActiveComponent}
         userData={userData}
       />
-      <WindowPage selectedChat={selectedChat} setSelectedChat={setSelectedChat}/>
+      <WindowPage
+        selectedChat={selectedChat}
+        setSelectedChat={setSelectedChat}
+        setIsChatLoading={setIsChatLoading}
+        isChatLoading={isChatLoading}
+      />
     </div>
   );
 }

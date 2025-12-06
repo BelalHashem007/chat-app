@@ -17,9 +17,13 @@ function AddContact({ showAddContact, setShowAddContact }) {
   async function handleAdd(otherUser) {
     if (otherUser && user) {
       setSearchTerm("");
-      await createNewChatRoom(user, [otherUser, user], false);
+      const result = await createNewChatRoom(user, [otherUser, user], false);
 
-      showToast(<p>{otherUser.displayName} is now a contact.</p>);
+      if (result.error)
+        showToast(<p>Something went wrong. Please try again.</p>);
+      if (result.isChatCreated)
+        showToast(<p>{otherUser.displayName} is now a contact.</p>);
+        
     }
   }
 
@@ -30,8 +34,12 @@ function AddContact({ showAddContact, setShowAddContact }) {
 
   return (
     <div
+      inert={!showAddContact}
       className={`${styles.addContactWrapper} ${showAddContact && styles.show}`}
     >
+      <button title="back" className={styles.backBtn} onClick={handleBack}>
+        <Icon path={mdiArrowLeft} size={1} />
+      </button>
       <header>
         <h2>Search for new Contacts</h2>
       </header>
@@ -40,9 +48,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
         searchTerm={searchTerm}
         setSearchTerm={setSearchTerm}
       />
-      <button title="back" className={styles.backBtn} onClick={handleBack}>
-        <Icon path={mdiArrowLeft} size={1} />
-      </button>
+
       <ul className={styles.resultWrapper}>
         {result.map((contact) => (
           <li className={styles.searchResult} key={contact.uid}>

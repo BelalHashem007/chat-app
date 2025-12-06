@@ -16,8 +16,8 @@ function Window({ messages, selectedChat }) {
     return (
       <div className={`${styles.windowbg} ${styles.notActive}`}>
         <div className={styles.notActiveWrapper}>
-          <div>You haven`t started a chat yet!</div>
-          <div>Click on a contact to start chatting.</div>
+          <p>You haven`t started a chat yet!</p>
+          <p>Click on a contact/group to start chatting.</p>
         </div>
       </div>
     );
