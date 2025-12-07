@@ -21,9 +21,8 @@ function Login() {
     e.preventDefault();
     const formData = new FormData(e.target);
     const data = Object.fromEntries(formData.entries());
-
     setDisableLoginBtn(true);
-    const result = await signIn(data.mail, data.password);
+    const result = await signIn(data.mail.trim(), data.password.trim());
     if (result.user) {
       navigate("/chat");
     } else {

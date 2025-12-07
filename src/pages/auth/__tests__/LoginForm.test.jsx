@@ -17,6 +17,7 @@ describe("LoginFrom Component", () => {
       await user.type(screen.getByLabelText("Email"), "belal.hashem@gmail.com");
       await user.type(screen.getByLabelText("Password"), "123456");
 
+
       await user.click(button);
 
       expect(submitForm).toHaveBeenCalledOnce();
