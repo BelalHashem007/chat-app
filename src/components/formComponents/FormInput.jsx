@@ -3,7 +3,7 @@ function FormInput(props) {
   return (
     <>
       <label htmlFor={props.name} className={styles.inpLabel}>
-        {props.label}:
+        {props.label}
       </label>
       <input
         type={props.type}

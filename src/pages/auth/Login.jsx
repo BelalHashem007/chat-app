@@ -7,7 +7,6 @@ import {
   signIn,
   guestSignIn,
 } from "../../firebase/firebase_auth/authentication";
-import { useAuthContext } from "../../util/context/authContext";
 import Icon from "@mdi/react";
 import { mdiAccountCircle } from "@mdi/js";
 import { storeNewUserProfile } from "../../firebase/firebase_db/database";
@@ -17,13 +16,6 @@ function Login() {
   const [error, setError] = useState(null);
   const [disableLoginBtn, setDisableLoginBtn] = useState(false);
   const [disableGuestBtn, setDisableGuestBtn] = useState(false);
-  const { isAuthenticated } = useAuthContext();
-
-  if (isAuthenticated) {
-    // if user already logged in navigate to chat page
-    navigate("/chat");
-    return null; // stop rendering the login page
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -75,6 +67,7 @@ function Login() {
           className={styles.guestLogin}
           onClick={handleGuestLogin}
           disabled={disableGuestBtn}
+          data-testid="guestBtn"
         >
           <Icon path={mdiAccountCircle} size={1} />{" "}
           {disableGuestBtn ? "Logging in..." : "Continue as Guest"}
@@ -89,9 +82,9 @@ function Login() {
   );
 }
 
-function LoginForm({ onSubmit, error, disableLoginBtn }) {
+export function LoginForm({ onSubmit, error, disableLoginBtn }) {
   return (
-    <form onSubmit={onSubmit} className={styles.form}>
+    <form onSubmit={onSubmit} className={styles.form} aria-label="Login form">
       <div className={styles.inpContainer}>
         <FormInput
           type="email"
@@ -113,7 +106,7 @@ function LoginForm({ onSubmit, error, disableLoginBtn }) {
         type="Submit"
         disableBtn={disableLoginBtn}
       />
-      <div className={styles.error}>{error}</div>
+      {error && <div className={styles.error}>{error}</div>}
     </form>
   );
 }
