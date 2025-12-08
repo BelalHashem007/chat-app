@@ -12,8 +12,6 @@ function Profile({ userData }) {
   const [nameEditable, setNameEditable] = useState(false);
   const [name, setName] = useState(userData.displayName);
 
-  //effects
-
   //handlers
   async function handleUpdate() {
     setNameEditable(false);
@@ -26,7 +24,7 @@ function Profile({ userData }) {
       <div className={styles.profileDetails}>
         <div className={styles.profilePicture}>
           {userData.photoURL ? (
-            <img src={user.photoURL} />
+            <img src={userData.photoURL} />
           ) : (
             <DefaultImage text={userData.email || userData.displayName} />
           )}
@@ -35,6 +33,9 @@ function Profile({ userData }) {
         <div className={styles.profileName}>
           {nameEditable ? (
             <>
+              <label htmlFor="name" className={styles.srOnly}>
+                Edit name
+              </label>
               <input
                 type="text"
                 name="name"
@@ -45,7 +46,12 @@ function Profile({ userData }) {
                   setName(e.target.value);
                 }}
               />
-              <button onClick={handleUpdate}>
+              <button
+                onClick={handleUpdate}
+                title="update name"
+                aria-label="update name"
+                data-testid="updateBtn"
+              >
                 <Icon path={mdiCheck} size={1} />
               </button>
             </>
@@ -56,17 +62,30 @@ function Profile({ userData }) {
                 onClick={() => {
                   setNameEditable(true);
                 }}
+                data-testid="editBtn"
+                aria-label="edit name"
+                title="edit name"
               >
                 <Icon path={mdiPencilOutline} size={1} />
               </button>
             </>
           )}
         </div>
-        <div className={styles.emailLabel}>E-mail:</div>
-        <div className={styles.profileEmail}>
-          {" "}
-          <div>{userData.email} </div>
-        </div>
+        {!userData.isAnonymous ? (
+          <>
+            <div className={styles.emailLabel}>E-mail:</div>
+            <div className={styles.profileEmail}>
+              <div>{userData.email} </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className={styles.emailLabel}>Guest id:</div>
+            <div className={styles.profileEmail}>
+              <div>{userData.guestId}</div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
