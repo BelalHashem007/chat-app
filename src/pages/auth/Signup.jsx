@@ -5,18 +5,11 @@ import { createUser } from "../../firebase/firebase_auth/authentication";
 import { useNavigate, Link } from "react-router";
 import { useState } from "react";
 import { storeNewUserProfile } from "../../firebase/firebase_db/database";
-import { useAuthContext } from "../../util/context/authContext";
 
 function Signup() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [disableBtn, setDisableBtn] = useState(false);
-  const {isAuthenticated} = useAuthContext();
-  
-  if (isAuthenticated) { // if user already logged in navigate to chat page
-    navigate("/chat")
-    return null; // stop rendering the login page
-  } 
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -65,7 +58,7 @@ function Signup() {
   );
 }
 
-function SignupForm({ onSubmit, error, disableBtn }) {
+export function SignupForm({ onSubmit, error, disableBtn }) {
   return (
     <form onSubmit={onSubmit} className={styles.form}>
       <div className={styles.inpContainer}>
