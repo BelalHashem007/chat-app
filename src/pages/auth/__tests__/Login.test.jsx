@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import Login from "../Login";
@@ -14,8 +14,8 @@ vi.mock("react-router", async () => {
   };
 });
 
-const mockSignin = vi.fn((email,pass) =>
-  Promise.resolve({ user: {email,pass}, error: null })
+const mockSignin = vi.fn((email, pass) =>
+  Promise.resolve({ user: { email, pass }, error: null })
 );
 
 const mockGuestSignin = vi.fn(() =>
@@ -29,7 +29,7 @@ vi.mock("../../../firebase/firebase_auth/authentication", async () => {
   return {
     ...actual,
     guestSignIn: () => mockGuestSignin(),
-    signIn: (email,pass) => mockSignin(email,pass),
+    signIn: (email, pass) => mockSignin(email, pass),
   };
 });
 
@@ -57,37 +57,35 @@ const testRoute = [
 ];
 
 describe("Login Component", () => {
+  beforeEach(() => {
+    const router = createMemoryRouter(testRoute, {
+      initialEntries: ["/login"],
+    });
+
+    render(<RouterProvider router={router} />);
+  });
+
   describe("Login button", () => {
+    beforeEach(async () => {});
+
     it("on submit, Read form data. Call sign in function and navigate to chat if successful.", async () => {
-      const router = createMemoryRouter(testRoute, {
-        initialEntries: ["/login"],
-      });
-
-      render(<RouterProvider router={router} />);
-
       const user = userEvent.setup();
       const button = screen.getByRole("button", { name: "Log in" });
-      const test ='123456'
 
       await user.type(screen.getByLabelText("Email"), "belal.hashem@gmail.com");
-      await user.type(screen.getByLabelText("Password"), test);
+      await user.type(screen.getByLabelText("Password"), "123456aa");
       await user.click(button);
-
-      screen.debug();
 
       expect(mockSignin).toHaveBeenCalledOnce();
       expect(mockNavigate).toHaveBeenCalledWith("/chat");
-      expect(mockSignin).toHaveBeenCalledExactlyOnceWith("belal.hashem@gmail.com","123456")
+      expect(mockSignin).toHaveBeenCalledExactlyOnceWith(
+        "belal.hashem@gmail.com",
+        "123456aa"
+      );
     });
 
     it("on submit, display error if login is unsuccessful", async () => {
       mockSignin.mockResolvedValueOnce({ user: null, error: "This is error" });
-
-      const router = createMemoryRouter(testRoute, {
-        initialEntries: ["/login"],
-      });
-
-      render(<RouterProvider router={router} />);
 
       const user = userEvent.setup();
       const button = screen.getByRole("button", { name: "Log in" });
@@ -105,12 +103,6 @@ describe("Login Component", () => {
 
   describe("Guest button", () => {
     it("on guest submit sucess, navigate to chat and store the user details", async () => {
-      const router = createMemoryRouter(testRoute, {
-        initialEntries: ["/login"],
-      });
-
-      render(<RouterProvider router={router} />);
-
       const user = userEvent.setup();
       const button = screen.getByTestId("guestBtn");
 
@@ -118,7 +110,7 @@ describe("Login Component", () => {
 
       expect(mockGuestSignin).toHaveBeenCalledOnce();
       expect(mockStoreNewUserProfile).toHaveBeenCalledOnce();
-      expect(mockNavigate).toHaveBeenCalledWith("/chat")
+      expect(mockNavigate).toHaveBeenCalledWith("/chat");
     });
 
     it("on guest submit failure, show error message", async () => {
@@ -126,12 +118,6 @@ describe("Login Component", () => {
         user: null,
         error: "error Test",
       });
-
-      const router = createMemoryRouter(testRoute, {
-        initialEntries: ["/login"],
-      });
-
-      render(<RouterProvider router={router} />);
 
       const user = userEvent.setup();
       const button = screen.getByTestId("guestBtn");
