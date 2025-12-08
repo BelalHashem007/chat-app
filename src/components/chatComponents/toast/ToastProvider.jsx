@@ -8,7 +8,6 @@ function ToastProvider({ children }) {
   function showToast(content, duration = 5000) {
     const id = Date.now();
 
-    console.log(id)
     setToasts((prev) => [...prev, { id, content }]);
 
     setTimeout(() => {
