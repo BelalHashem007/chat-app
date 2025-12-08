@@ -4,17 +4,19 @@ import styles from "./sidebar.module.css";
 import { LogOut } from "../../../firebase/firebase_auth/authentication";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import {useToastContext} from "../../../util/context/toastContext"
 
 function Sidebar({ setActiveComponent }) {
   const navigate = useNavigate();
   const [clickedElement, setClickedElement] = useState("");
+  const {showToast} = useToastContext();
 
   async function handleLogout() {
     const result = await LogOut();
     if (result === true) {
       navigate("/login");
     } else {
-      console.log("Sign out failed!");
+      showToast(<p>Sign out failed!</p>)
     }
   }
 
@@ -22,19 +24,20 @@ function Sidebar({ setActiveComponent }) {
     <nav aria-label="Sidebar" className={styles.sidebar}>
       <ul className={styles.list}>
         <div className={styles.top}>
-          <li
-            aria-label="Chats"
-            className={`${styles.listItem}`}
-          >
+          <li aria-label="Chats" className={`${styles.listItem}`} title="Chats">
             <button
+              data-testid="chatsBtn"
               className={`${clickedElement == "chats" && styles.clicked}`}
               onClick={() => {
                 setActiveComponent("contactList");
                 setClickedElement("chats");
               }}
-              title="Chats"
             >
-              <Icon path={mdiMessageText} size={1} className={styles.chatsIcon}/>
+              <Icon
+                path={mdiMessageText}
+                size={1}
+                className={styles.chatsIcon}
+              />
             </button>
           </li>
           <li
@@ -43,21 +46,26 @@ function Sidebar({ setActiveComponent }) {
             className={`${styles.listItem}`}
           >
             <button
+              data-testid="profileBtn"
               className={`${clickedElement == "profile" && styles.clicked}`}
               onClick={() => {
                 setActiveComponent("profile");
                 setClickedElement("profile");
               }}
             >
-              <Icon path={mdiAccount} size={1} className={styles.profileIcon}/>
+              <Icon path={mdiAccount} size={1} className={styles.profileIcon} />
             </button>
           </li>
         </div>
         <div className={styles.bottom}>
           <li className={styles.listItem} title="Log out" aria-label="Log out">
-            <button className={styles.logoutBtn} onClick={handleLogout}>
+            <button
+              data-testid="logoutBtn"
+              className={styles.logoutBtn}
+              onClick={handleLogout}
+            >
               {" "}
-              <Icon path={mdiLogout} size={1} className={styles.logoutIcon}/>
+              <Icon path={mdiLogout} size={1} className={styles.logoutIcon} />
             </button>
           </li>
         </div>
