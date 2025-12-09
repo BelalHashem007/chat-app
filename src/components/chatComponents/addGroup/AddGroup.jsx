@@ -92,6 +92,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                   className={styles.selectedWrapper}
                   aria-label={contact.displayName}
                   data-testid="selectedWrapper"
+                  key={contact.uid}
                 >
                   <div className={styles.selectedImg} data-testid="selectedImg">
                     <DefaultImage text={contact.email || contact.displayName} />
@@ -105,7 +106,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                     onClick={() => {
                       handleRemovingSelected(contact);
                     }}
-                    data-testId="selectedRemoveBtn"
+                    data-testid="selectedRemoveBtn"
                   >
                     X
                   </button>
@@ -132,8 +133,8 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
             className={styles.nextBtn}
             disabled={selectedContacts.length == 0}
             title={
-              selectedContacts.length == 0 &&
-              "You must select at least 1 contact"
+              selectedContacts.length == 0 ?
+              "You must select at least 1 contact":"Next"
             }
             aria-label={
               selectedContacts.length == 0

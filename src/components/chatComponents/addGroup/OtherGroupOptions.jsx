@@ -36,6 +36,7 @@ function OtherGroupOptions({
     }
     setCreatingChat(false);
   }
+
   return (
     <>
       <button
@@ -44,6 +45,7 @@ function OtherGroupOptions({
         onClick={() => {
           setShowOptions(false);
         }}
+        data-testid="backBtn"
       >
         <Icon path={mdiArrowLeft} size={1} />
       </button>
@@ -78,12 +80,17 @@ function OtherGroupOptions({
         }
         disabled={groupName.length == 0 || creatingChat}
         title={
-          groupName.length == 0 && "You have to write a name for the group"
+          groupName.length == 0
+            ? "You have to write a name for the group"
+            : "submit"
         }
+        data-testid="submitBtn"
       >
         <Icon path={mdiCheck} size={1.25} />
       </button>
-      {creatingChat && <p>Creating group...</p>}
+      {creatingChat && (
+        <p data-testid="loadingForCreatingChat">Creating group...</p>
+      )}
     </>
   );
 }

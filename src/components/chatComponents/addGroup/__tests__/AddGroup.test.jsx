@@ -314,7 +314,7 @@ describe("AddGroup Component", () => {
       ).toBeInTheDocument();
     });
 
-    it.only("doesn`t show contacts that don`t have the search term", async () => {
+    it("doesn`t show contacts that don`t have the search term", async () => {
       const user = userEvent.setup();
 
       await user.type(
