@@ -63,7 +63,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
   }
 
   return (
-    <div inert={!showAddGroup} className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`}>
+    <div inert={!showAddGroup} className={`${styles.addGroupWrapper} ${showAddGroup && styles.show}`} data-testid="AddGroupWrapper">
       {showOptions ? (
         <OtherGroupOptions
           setShowOptions={setShowOptions}
@@ -76,6 +76,8 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
             title="close"
             className={styles.backBtn}
             onClick={handleClosingAddGroup}
+            aria-label="close"
+            data-testid="closeBtn"
           >
             X
           </button>
@@ -89,11 +91,12 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                 <li
                   className={styles.selectedWrapper}
                   aria-label={contact.displayName}
+                  data-testid="selectedWrapper"
                 >
-                  <div className={styles.selectedImg}>
+                  <div className={styles.selectedImg} data-testId="selectedImg">
                     <DefaultImage text={contact.email || contact.displayName} />
                   </div>
-                  <div className={styles.selectedName}>
+                  <div className={styles.selectedName} data-testId="selectedName">
                     {contact.displayName}
                   </div>
                   <button
@@ -102,6 +105,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                     onClick={() => {
                       handleRemovingSelected(contact);
                     }}
+                    data-testId="selectedRemoveBtn"
                   >
                     X
                   </button>
@@ -148,13 +152,14 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                     onClick={() => {
                       handleAddingSelected(contact);
                     }}
+                    data-testid="addContactToGroup"
                   >
-                    <div className={styles.contactImg}>
+                    <div className={styles.contactImg} data-testid="contactImg">
                       <DefaultImage text={contact.email || contact.displayName} />
                     </div>
-                    <div className={styles.contactName}>
+                    <div className={styles.contactName} data-testid="contactName">
                       {contact.displayName}
-                      {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
+                      {contact.isAnonymous && <span className={styles.guestId} data-testid="guestId">#{contact.guestId}</span>}
                     </div>
                   </button>
                 </li>

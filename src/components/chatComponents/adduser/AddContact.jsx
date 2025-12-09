@@ -36,6 +36,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
     <div
       inert={!showAddContact}
       className={`${styles.addContactWrapper} ${showAddContact && styles.show}`}
+      data-testid="AddContactWrapper"
     >
       <button title="back" aria-label="back" className={styles.backBtn} onClick={handleBack}>
         <Icon path={mdiArrowLeft} size={1} />
@@ -60,11 +61,11 @@ function AddContact({ showAddContact, setShowAddContact }) {
               )}
             </div>
             <div>
-              <div className={styles.userEmail}>
+              <div className={styles.userEmail} data-testid="userEmail">
                 {contact.email || contact.displayName}
               </div>
               {contact.isAnonymous && (
-                <span className={styles.guestId}> #{contact.guestId}</span>
+                <span className={styles.guestId} data-testid="guestId"> #{contact.guestId}</span>
               )}
             </div>
             <button

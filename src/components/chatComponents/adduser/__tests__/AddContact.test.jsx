@@ -5,8 +5,15 @@ import userEvent from "@testing-library/user-event";
 import ToastProvider from "../../toast/ToastProvider";
 
 const fakeUser = { uid: 123, displayName: "Ahmed", email: "ahmed@test.com" };
+const fakeGuestUser = {
+  uid: 1234,
+  displayName: "mohamed",
+  email: null,
+  isAnonymous: true,
+  guestId: "rr44",
+};
 
-const fakeSearchResults = [fakeUser];
+const fakeSearchResults = [fakeUser,fakeGuestUser];
 
 const mockUseDebouncedSearch = vi.fn(() => ({
   results: fakeSearchResults,
@@ -39,9 +46,7 @@ vi.mock("../../../../firebase/firebase_db/database", () => {
 describe("AddContact Component", () => {
   describe("Rendering", () => {
     beforeEach(() => {
-      render(
-        <AddContact setShowAddContact={() => {}} showAddContact={true} />
-      );
+      render(<AddContact setShowAddContact={() => {}} showAddContact={true} />);
     });
 
     it("renders back button", () => {
@@ -53,20 +58,24 @@ describe("AddContact Component", () => {
       expect(screen.getByTestId("resultWrapper")).toBeInTheDocument();
     });
 
-    it("render searchBar",()=>{
-        expect(screen.getByRole("searchbox",{name:"Search contacts"})).toBeInTheDocument();
+    it("render searchBar", () => {
+      expect(
+        screen.getByRole("searchbox", { name: "Search contacts" })
+      ).toBeInTheDocument();
     });
 
     it("renders results if it exists", () => {
-      expect(screen.getByText("ahmed@test.com")).toBeInTheDocument();
-      expect(screen.getByTestId("userPic")).toBeInTheDocument();
-      expect(screen.getByRole("button", { name: "Add" })).toBeInTheDocument();
+      expect(screen.getAllByTestId("userEmail")).toHaveLength(2);
+      expect(screen.getAllByTestId("userPic")).toHaveLength(2);
+      expect(screen.getAllByRole("button", { name: "Add" })).toHaveLength(2);
     });
 
-    
+    it("renders guestid when user is anonymous", () => {
+      expect(screen.getByTestId("guestId")).toBeInTheDocument();
+    });
   });
 
-  describe("when clicking add button", () => {
+  describe("When clicking add button", () => {
     beforeEach(async () => {
       render(
         <ToastProvider>
@@ -81,25 +90,33 @@ describe("AddContact Component", () => {
       await user.type(searchInp, "ahmed");
     });
 
-    it("empty search input",async()=>{
-        expect(screen.getByRole("searchbox", {name: "Search contacts",})).toHaveValue("ahmed");
+    it("empty search input", async () => {
+      expect(
+        screen.getByRole("searchbox", { name: "Search contacts" })
+      ).toHaveValue("ahmed");
 
-        const user = userEvent.setup();
-        await user.click(screen.getByRole("button", { name: "Add" }));
+      const user = userEvent.setup();
+      await user.click(screen.getAllByRole("button", { name: "Add" })[0]);
 
-        expect(screen.getByRole("searchbox", {name: "Search contacts",})).toHaveValue("");
+      expect(
+        screen.getByRole("searchbox", { name: "Search contacts" })
+      ).toHaveValue("");
     });
 
-    it("calls createNewChatRoom with correct arguments",async()=>{
-        const user = userEvent.setup();
+    it("calls createNewChatRoom with correct arguments", async () => {
+      const user = userEvent.setup();
 
-        await user.click(screen.getByRole("button",{name:"Add"}));
+      await user.click(screen.getAllByRole("button", { name: "Add" })[0]);
 
-        expect(mockCreateNewChatRoom).toHaveBeenCalledExactlyOnceWith(fakeUser,[fakeUser,fakeUser],false);
-    })
+      expect(mockCreateNewChatRoom).toHaveBeenCalledExactlyOnceWith(
+        fakeUser,
+        [fakeUser, fakeUser],
+        false
+      );
+    });
   });
 
-  describe("when adding a contact is successfull", () => {
+  describe("When adding a contact is successfull", () => {
     beforeEach(async () => {
       render(
         <ToastProvider>
@@ -107,7 +124,7 @@ describe("AddContact Component", () => {
         </ToastProvider>
       );
       const user = userEvent.setup();
-      const addBtn = screen.getByRole("button", { name: "Add" });
+      const addBtn = screen.getAllByRole("button", { name: "Add" })[0];
 
       await user.click(addBtn);
     });
@@ -117,7 +134,7 @@ describe("AddContact Component", () => {
     });
   });
 
-  describe("when adding a contact fails", () => {
+  describe("When adding a contact fails", () => {
     beforeEach(async () => {
       render(
         <ToastProvider>
@@ -130,7 +147,7 @@ describe("AddContact Component", () => {
       });
 
       const user = userEvent.setup();
-      const addBtn = screen.getByRole("button", { name: "Add" });
+      const addBtn = screen.getAllByRole("button", { name: "Add" })[0];
 
       await user.click(addBtn);
     });
@@ -140,15 +157,40 @@ describe("AddContact Component", () => {
     });
   });
 
-  describe("when back button is clicked", () => {
-    it("calls setShowAddContact with (false) argument",async()=>{
-        const mockSetShowAddContact = vi.fn()
-        render(<AddContact setShowAddContact={mockSetShowAddContact} showAddContact={true}/>)
+  describe("When back button is clicked", () => {
+    it("calls setShowAddContact with (false) argument", async () => {
+      const mockSetShowAddContact = vi.fn();
+      render(
+        <AddContact
+          setShowAddContact={mockSetShowAddContact}
+          showAddContact={true}
+        />
+      );
 
-        const user = userEvent.setup();
-        await user.click(screen.getByRole("button",{name:"back"}));
+      const user = userEvent.setup();
+      await user.click(screen.getByRole("button", { name: "back" }));
 
-        expect(mockSetShowAddContact).toHaveBeenCalledExactlyOnceWith(false);
+      expect(mockSetShowAddContact).toHaveBeenCalledExactlyOnceWith(false);
     });
   });
+
+  describe("When showAddContact set to false",()=>{
+    beforeEach(()=>{
+      render(<AddContact setShowAddContact={() => {}} showAddContact={false} />);
+    });
+
+    it("has inert attribute",()=>{
+      expect(screen.getByTestId("AddContactWrapper")).toHaveAttribute("inert")
+    })
+  })
+
+  describe("When showAddContact set to true",()=>{
+    beforeEach(()=>{
+      render(<AddContact setShowAddContact={() => {}} showAddContact={true} />);
+    });
+
+    it("doesn`t have  inert attribute",()=>{
+      expect(screen.getByTestId("AddContactWrapper")).not.toHaveAttribute("inert")
+    })
+  })
 });
