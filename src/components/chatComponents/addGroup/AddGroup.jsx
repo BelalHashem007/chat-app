@@ -93,10 +93,10 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                   aria-label={contact.displayName}
                   data-testid="selectedWrapper"
                 >
-                  <div className={styles.selectedImg} data-testId="selectedImg">
+                  <div className={styles.selectedImg} data-testid="selectedImg">
                     <DefaultImage text={contact.email || contact.displayName} />
                   </div>
-                  <div className={styles.selectedName} data-testId="selectedName">
+                  <div className={styles.selectedName} data-testid="selectedName">
                     {contact.displayName}
                   </div>
                   <button
@@ -140,6 +140,7 @@ function AddGroup({ showAddGroup, setShowAddGroup, chats }) {
                 ? "You must select at least 1 contact"
                 : ""
             }
+            data-testid="NextBtn"
           >
             Next
           </button>
