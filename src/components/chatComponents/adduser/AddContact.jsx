@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "./addContact.module.css";
 import DefaultImage from "../../../util/DefaultImage.jsx";
-import useDebouncedSearch from "../../../util/hooks/useDebouncedSearch.js";
 import { createNewChatRoom } from "../../../firebase/firebase_db/database";
 import { useAuthContext } from "../../../util/context/authContext.js";
 import Icon from "@mdi/react";
 import { mdiArrowLeft } from "@mdi/js";
 import { useToastContext } from "../../../util/context/toastContext.js";
+import { SearchBar } from "./SearchBar.jsx";
 
 function AddContact({ showAddContact, setShowAddContact }) {
   const { user } = useAuthContext();
@@ -17,13 +17,13 @@ function AddContact({ showAddContact, setShowAddContact }) {
   async function handleAdd(otherUser) {
     if (otherUser && user) {
       setSearchTerm("");
+
       const result = await createNewChatRoom(user, [otherUser, user], false);
 
       if (result.error)
-        showToast(<p>Something went wrong. Please try again.</p>);
+        showToast(<p data-testid="failedMessage">Something went wrong. Please try again.</p>);
       if (result.isChatCreated)
-        showToast(<p>{otherUser.displayName} is now a contact.</p>);
-        
+        showToast(<p data-testid="successMessage">{otherUser.displayName} is now a contact.</p>);
     }
   }
 
@@ -37,7 +37,7 @@ function AddContact({ showAddContact, setShowAddContact }) {
       inert={!showAddContact}
       className={`${styles.addContactWrapper} ${showAddContact && styles.show}`}
     >
-      <button title="back" className={styles.backBtn} onClick={handleBack}>
+      <button title="back" aria-label="back" className={styles.backBtn} onClick={handleBack}>
         <Icon path={mdiArrowLeft} size={1} />
       </button>
       <header>
@@ -49,10 +49,10 @@ function AddContact({ showAddContact, setShowAddContact }) {
         setSearchTerm={setSearchTerm}
       />
 
-      <ul className={styles.resultWrapper}>
+      <ul className={styles.resultWrapper} data-testid="resultWrapper">
         {result.map((contact) => (
           <li className={styles.searchResult} key={contact.uid}>
-            <div className={styles.userPic}>
+            <div className={styles.userPic} data-testid="userPic">
               {contact.photoURL ? (
                 <img src={contact.photoURL} alt={contact.displayName} />
               ) : (
@@ -79,36 +79,6 @@ function AddContact({ showAddContact, setShowAddContact }) {
         ))}
       </ul>
     </div>
-  );
-}
-function SearchBar({ setResult, setSearchTerm, searchTerm }) {
-  const { results, noResult } = useDebouncedSearch(searchTerm, 500);
-
-  useEffect(() => {
-    setResult(results);
-  }, [results, setResult]);
-
-  return (
-    <>
-      <div className={styles.searchWrapper}>
-        <label htmlFor="contact-search" className={styles.srOnly}>
-          Search for new contacts using e-mail or guestId
-        </label>
-        <input
-          className={styles.searchInp}
-          type="search"
-          name="contact-search"
-          id="contact-search"
-          placeholder="Search using e-mail or guestId"
-          aria-label="Search contacts"
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-          }}
-        />
-      </div>
-      <p>{noResult && "No results."}</p>
-    </>
   );
 }
 
