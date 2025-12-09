@@ -28,14 +28,11 @@
   transform: translate(0, -6px) rotate(45deg);
 }
 .menu {
-  display: none;
   background-color: white;
   white-space: nowrap;
   padding: var(--space-md) var(--space-sm);
   border-radius: 10px;
-}
-.menuOpen {
-  display: flex;
+    display: flex;
   flex-direction: column;
   gap: 10px;
   position: absolute;

@@ -41,14 +41,14 @@ function ContactOptions({ setShowAddContact, setShowAddGroup }) {
           className={`${styles.bar3} ${menuOpen ? styles.bar3Open : ""}`}
         ></div>
       </button>
-      <div className={`${styles.menu} ${menuOpen ? styles.menuOpen : ""}`}>
+      {menuOpen && <div className={`${styles.menu}`}>
         <button className={styles.menuOpion} onClick={handleContactButton}>
           <Icon path={mdiAccountPlusOutline} size={1} /> New contact
         </button>
         <button className={styles.menuOpion} onClick={handleGroupButton}>
           <Icon path={mdiAccountMultiplePlusOutline} size={1} /> New group
         </button>
-      </div>
+      </div>}
     </div>
   );
 }
