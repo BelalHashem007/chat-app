@@ -265,10 +265,10 @@ async function sendMessage(
 
     //update chat details
     transaction.update(doc(db, `/chats/${chatid}`), {
-      lastMessage: msg,
+      lastMessage: msgToStore.text,
       lastMessageDate: serverTimestamp(),
-      lastMessageSenderUid: curUser.uid,
-      lastMessageSenderDisplayName: curUser.displayName,
+      lastMessageSenderUid: msgToStore.senderUid,
+      lastMessageSenderDisplayName: msgToStore.senderDisplayName,
     });
   };
 
@@ -463,7 +463,7 @@ async function leaveGroup(chat, userUid) {
       transaction.update(doc(db, `/chats/${chat.id}`), objectToUpdateChat);
 
       sendMessage(
-        `${user.displayName} Has left the group.`,
+        `${user.displayName} has left the group.`,
         chat.id,
         user,
         true,

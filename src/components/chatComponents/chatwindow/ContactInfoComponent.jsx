@@ -4,7 +4,7 @@ import Icon from "@mdi/react";
 import { mdiAccountMultiple } from "@mdi/js";
 
 function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
-  if (!selectedChat.isGroupChat && !contact) return;
+  if (!selectedChat || (!selectedChat.isGroupChat && !contact)) return;
 
   let name = "New User";
   if (contact) {
@@ -16,9 +16,9 @@ function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
   }
 
   return (
-    <div className={styles.userContactWrapper}>
+    <div className={styles.userContactWrapper} data-testid="contactInfoWrapper">
       {selectedChat.isGroupChat ? (
-        <div className={styles.userImg}>
+        <div className={styles.userImg} data-testid="groupImg">
           <div className={styles.groupImg}>
             <Icon path={mdiAccountMultiple} />
           </div>
@@ -30,21 +30,21 @@ function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
           className={styles.userImg}
         />
       ) : (
-        <div className={styles.userImg}>
+        <div className={styles.userImg} data-testid="contactImg">
           {" "}
           <DefaultImage text={contact.email || contact.displayName} />
         </div>
       )}
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
-          <header className={styles.chatWindowHeader}>
+          <header className={styles.chatWindowHeader} data-testid="contactName">
             <h2 className={styles.name}>{name}</h2>
-            {selectedChat.isAnonymous && (
+            {contact && contact.isAnonymous && (
               <span className={styles.guestId}>#{contact.guestId}</span>
             )}
           </header>
           {!selectedChat.isGroupChat && (
-            <div className={styles.onlineStatus}>
+            <div className={styles.onlineStatus} data-testid="contactStatus">
               <span
                 className={`${styles.dot} ${
                   contactOnlineStatus && contactOnlineStatus.state === "online"

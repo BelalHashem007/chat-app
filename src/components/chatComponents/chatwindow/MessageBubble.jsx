@@ -6,7 +6,7 @@ import { pickPaletteColor } from "../../../util/utilFunctions";
 
 function MessageBubble({ msg, selectedChat }) {
   const { user } = useAuthContext();
-  if (msg && msg.chatId != selectedChat.id) return <div></div>;
+  if (msg && msg.chatId != selectedChat.id) return null;
 
   let senderEmail = null;
   let senderDisplayName = null;
@@ -31,11 +31,11 @@ function MessageBubble({ msg, selectedChat }) {
       } ${msg.isSystem && styles.systemWrapper}`}
     >
       {msg.isSystem ? (
-        <div className={styles.systemMsg}>{msg.text}</div>
+        <div className={styles.systemMsg} data-testid="systemMsg">{msg.text}</div>
       ) : (
         <>
           {selectedChat.isGroupChat && msg.senderUid != user.uid && (
-            <div className={styles.userImg}>
+            <div className={styles.userImg} data-testid="senderImg">
               <DefaultImage text={senderEmail || senderDisplayName} />
             </div>
           )}
@@ -52,13 +52,14 @@ function MessageBubble({ msg, selectedChat }) {
                     fontSize: "0.875rem",
                     marginBottom: "3px",
                   }}
+                  data-testid="senderName"
                 >
                   {msg.senderDisplayName}
                 </div>
               )}
-              <p className={`${styles.message} `}>{msg.text}</p>
+              <p className={`${styles.message} `} data-testid="userMsg">{msg.text}</p>
             </div>
-            <div className={styles.messageDate}>
+            <div className={styles.messageDate} data-testid="userMsgDate">
               {getMessageDate(msg.timestamp, { forChatWindow: true })}
             </div>
           </div>
