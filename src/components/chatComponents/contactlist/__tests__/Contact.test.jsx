@@ -105,8 +105,6 @@ describe("Contact Component", () => {
     });
 
     it("renders guest id with the name", () => {
-      screen.debug();
-
       const name = screen.getByTestId("contactName");
       expect(name).toBeInTheDocument();
       expect(name).toHaveTextContent("Beta #rr44");

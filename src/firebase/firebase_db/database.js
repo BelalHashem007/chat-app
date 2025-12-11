@@ -393,7 +393,6 @@ async function removeContact(chatId, curUserUid, contactUid) {
 
   try {
     await runTransaction(db, async (transaction) => {
-      console.log("test");
       //delete chat
       transaction.delete(doc(db, `/chats/${chatId}`));
 

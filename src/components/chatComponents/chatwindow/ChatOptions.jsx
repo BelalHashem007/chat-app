@@ -25,7 +25,6 @@ function ChatOptions(props) {
 
   async function handleRemoveContact() {
     props.setIsChatLoading(true);
-    console.log(props.selectedChat.id, user.uid, props.contact.uid);
     const result = await removeContact(
       props.selectedChat.id,
       user.uid,
@@ -83,6 +82,7 @@ function ChatOptions(props) {
         title="chat options"
         aria-label="chat options"
         onClick={handleOptionsBtn}
+        data-testid="optionsBtn"
       >
         <div className={styles.dot}></div>
         <div className={styles.dot}></div>
@@ -90,15 +90,15 @@ function ChatOptions(props) {
       </button>
       <div className={`${styles.optionsBody} ${isOptionOpen && styles.open}`}>
         {showDeleteGroup && (
-          <button disabled={props.isChatLoading} onClick={handleDeleteGroup}>Delete group</button>
+          <button disabled={props.isChatLoading} onClick={handleDeleteGroup} data-testid="DeleteGroupBtn">Delete group</button>
         )}
         {!props.selectedChat.isGroupChat && (
-          <button onClick={handleRemoveContact} disabled={props.isChatLoading}>
+          <button onClick={handleRemoveContact} disabled={props.isChatLoading} data-testid="RemoveContactBtn">
             Remove contact
           </button>
         )}
         {props.selectedChat.isGroupChat && props.selectedChat.activeParticipantsUids.length > 1 && (
-          <button disabled={props.isChatLoading} onClick={handleLeaveGroup}>
+          <button disabled={props.isChatLoading} onClick={handleLeaveGroup} data-testid="LeaveGroupBtn">
             Leave group
           </button>
         )}
