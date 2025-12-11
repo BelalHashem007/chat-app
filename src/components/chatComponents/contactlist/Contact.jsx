@@ -23,9 +23,9 @@ function Contact({ chat, curUserUid }) {
       ? "You"
       : chat.lastMessageSenderDisplayName || "New User");
   return (
-    <button className={styles.userContactWrapper}>
+    <button className={styles.userContactWrapper} data-testid="contactWrapper">
       {chat.isGroupChat ? (
-        <div className={styles.userImg}>
+        <div className={styles.userImg} data-testid="userImgGroup">
           <div className={styles.groupImg}>
           <Icon path={mdiAccountMultiple}/>
           </div>
@@ -37,22 +37,22 @@ function Contact({ chat, curUserUid }) {
           className={styles.userImg}
         />
       ) : (
-        <div className={styles.userImg}>
+        <div className={styles.userImg} data-testid="userImgDm">
           {" "}
           <DefaultImage text={contact.email || contact.displayName} />
         </div>
       )}
       <div className={styles.nameWrapper}>
         <div className={styles.nameDateWrapper}>
-          <div className={styles.name}>
+          <div className={styles.name} data-testid="contactName">
             {name}
-            {chat.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
+            {contact.isAnonymous && <span className={styles.guestId}> #{contact.guestId}</span>}
           </div>
-          <div className={styles.lastMsgDate} aria-hidden="true">
+          <div className={styles.lastMsgDate} aria-hidden="true" data-testid="lastMsgDate">
             {getMessageDate(chat.lastMessageDate)}
           </div>
         </div>
-        <div className={styles.lastMsg} aria-hidden="true">
+        <div className={styles.lastMsg} aria-hidden="true" data-testid="lastMsg">
           {chat.lastMessage && lastMsgSender + ": " + chat.lastMessage}
         </div>
       </div>

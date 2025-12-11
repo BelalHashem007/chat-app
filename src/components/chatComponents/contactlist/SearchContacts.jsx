@@ -12,29 +12,31 @@ function SearchContacts({ chats, setActiveChats }) {
       return;
     }
     const newChats = chats.filter((chat) => {
-      return chat.enrichedParticipants.some((participate) => {
+      if (chat.isGroupChat){
+        return chat.groupName.toLowerCase().includes(searchTerm.toLowerCase())
+      }
+      else {return chat.enrichedParticipants.some((participate) => {
         // check if displayname starts with the search term
         if (participate.uid == user.uid) return false;
         return participate.displayName
           .toLowerCase()
           .includes(searchTerm.toLowerCase());
       });
-    });
+    }});
     setActiveChats(newChats);
   }, [searchTerm, chats, user, setActiveChats]);
 
   return (
     <div className={styles.searchWrapper}>
-      <label htmlFor="contact-search" className={styles.srOnly}>
+      <label htmlFor="contact-filter" className={styles.srOnly}>
         Search contacts
       </label>
       <input
         className={styles.searchInp}
-        type="search"
-        name="contact-search"
-        id="contact-search"
+        type="test"
+        name="contact-filter"
+        id="contact-filter"
         placeholder="Search"
-        aria-label="Search contacts"
         value={searchTerm}
         onChange={(e) => {
           setSearchTerm(e.target.value);
