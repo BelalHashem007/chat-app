@@ -56,7 +56,7 @@ function MessageInput({ selectedChat }) {
             e.stopPropagation();
           }}
         >
-          <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} />
+          <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} width={"280px"}/>
         </div>
         <TextareaAutosize
           value={msg}

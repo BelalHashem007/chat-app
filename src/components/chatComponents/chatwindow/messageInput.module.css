@@ -23,7 +23,7 @@
   resize: none;
   padding-bottom: 5px;
   line-height: 1.5;
-  padding-right: 20px;
+  padding-right: 5px;
 }
 .sendBtn:hover {
   cursor: pointer;
@@ -65,4 +65,8 @@
   left: 0;
 }
 
-
+@media (max-width:350px) {
+  .msgInput{
+    max-width: 160px;
+  }
+}
