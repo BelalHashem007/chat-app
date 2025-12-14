@@ -18,6 +18,7 @@ function DefaultImage({ text }) {
         alignItems:"center",
         fontWeight:"700",
       }}
+      data-testid="defaultImg"
     >
       {firstLetter}
     </div>
