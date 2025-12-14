@@ -1,53 +1,49 @@
-.optionsWrapper{
-    position: relative;
+.optionsWrapper {
+  position: relative;
 }
 
 .optionsBtn {
-    display: flex;
-    gap: 2px;
-    flex-direction: column;
-    margin-right: 20px;
-    padding: 10px;
-    background: none;
-    border: none;
-    
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  margin-right: 20px;
+  padding: 10px;
+  background: none;
+  border: none;
 }
-.optionsBtn:hover{
-    cursor: pointer;
-    background-color: var(--color-hover);
+.optionsBtn:hover {
+  cursor: pointer;
+  background-color: var(--color-hover);
 }
 .dot {
-    width: 4px;
-    height: 4px;
-    background-color: black;
-    border-radius: 50%;
+  width: 4px;
+  height: 4px;
+  background-color: black;
+  border-radius: 50%;
 }
-.optionsBody{
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 10px;
-    background-color: white;
-    z-index: 4;
-    transform: translateX(-100%);
-    padding: 20px;
-    box-shadow: 1px 1px 6px #0000007a;
-    border-radius: 10px;
-}
-.optionsBody.open{
-    display: flex;
-    gap: 15px;
+.optionsBody {
+  display: flex;
+  gap: 15px;
+  flex-direction: column;
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  background-color: white;
+  z-index: 4;
+  transform: translateX(-100%);
+  padding: 20px;
+  box-shadow: 1px 1px 6px #0000007a;
+  border-radius: 10px;
 }
 .optionsBody button {
-    background: none;
-    border: none;
-    text-wrap: nowrap;
+  background: none;
+  border: none;
+  text-wrap: nowrap;
 }
 .optionsBody button:hover {
-    background-color: var(--color-logout);
-    cursor: pointer;
+  background-color: var(--color-logout);
+  cursor: pointer;
 }
-.optionsBody button:disabled{
-    cursor: not-allowed;
+.optionsBody button:disabled {
+  cursor: not-allowed;
 }

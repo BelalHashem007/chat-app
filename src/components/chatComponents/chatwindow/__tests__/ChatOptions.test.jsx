@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import ChatOptions from "../ChatOptions";
 import userEvent from "@testing-library/user-event";
 import ToastProvider from "../../toast/ToastProvider";
@@ -432,4 +432,30 @@ describe("ChatOptions Component", () => {
       })
     });
   });
+
+  describe("when clicked twice",()=>{
+    beforeEach(async()=>{
+      render(<ChatOptions selectedChat={fakeDmChat} />);
+      const user = userEvent.setup();
+
+      await user.click(screen.getByTestId("optionsBtn"))
+      await user.click(screen.getByTestId("optionsBtn"))
+    })
+    it("closes",()=>{
+      expect(screen.queryByTestId("RemoveContactBtn")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("when clicked outside of the body",()=>{
+    beforeEach(async()=>{
+      render(<ChatOptions selectedChat={fakeDmChat} />);
+      const user = userEvent.setup();
+
+      await user.click(screen.getByTestId("optionsBtn"))
+      fireEvent.mouseDown(document)
+    })
+    it("closes",()=>{
+      expect(screen.queryByTestId("RemoveContactBtn")).not.toBeInTheDocument();
+    });
+  })
 });

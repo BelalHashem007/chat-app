@@ -88,7 +88,7 @@ function ChatOptions(props) {
         <div className={styles.dot}></div>
         <div className={styles.dot}></div>
       </button>
-      <div className={`${styles.optionsBody} ${isOptionOpen && styles.open}`}>
+      {isOptionOpen && <div className={`${styles.optionsBody}`}>
         {showDeleteGroup && (
           <button disabled={props.isChatLoading} onClick={handleDeleteGroup} data-testid="DeleteGroupBtn">Delete group</button>
         )}
@@ -102,7 +102,7 @@ function ChatOptions(props) {
             Leave group
           </button>
         )}
-      </div>
+      </div>}
     </div>
   );
 }
