@@ -4,8 +4,6 @@ import { setupCurrentUserPresence } from "../firebase/firebase_RTdb/rtdb";
 import { auth } from "../firebase/firebase_auth/authentication";
 import { AuthContext } from "./context/authContext";
 
-
-
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(null);

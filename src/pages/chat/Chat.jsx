@@ -54,7 +54,6 @@ function Chat() {
 
   //subscribe to user details
   useEffect(() => {
-    if (!user.uid) return;
     const unsubscribe = subscribeToCurrentUser(user.uid, (fetchedData) => {
       setUserData(fetchedData);
     });
