@@ -18,7 +18,6 @@ function WindowPage({
   const messages = useMessages(selectedChat);
   const { user } = useAuthContext();
   const [contactOnlineStatus, setContactOnlineStatus] = useState(null);
-  // state for chat actions like remove contact/delete group etc..
 
   let contact = null;
 
@@ -37,18 +36,14 @@ function WindowPage({
       return;
     }
 
-    console.log(`Setting up status listener for contact: ${contact.uid}`);
-
     const unsubscribeStatus = listenToUserOnlineStatus(
       contact.uid,
       (status) => {
-        console.log(`Contact ${contact.uid} status update:`, status);
         setContactOnlineStatus(status);
       }
     );
 
     return () => {
-      console.log(`Cleaning up status listener for contact: ${contact.uid}`);
       unsubscribeStatus();
     };
   }, [selectedChat, contact]);
