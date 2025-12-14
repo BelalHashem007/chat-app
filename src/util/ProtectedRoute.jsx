@@ -6,7 +6,7 @@ function ProtectedRoute({ children }) {
     const {loading,isAuthenticated}= useAuthContext();
 
   if (loading) {
-    return <div></div>;
+    return null;
   }
 
   if (isAuthenticated) {//user logged in 
