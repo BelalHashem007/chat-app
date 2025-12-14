@@ -29,6 +29,7 @@ function MessageBubble({ msg, selectedChat }) {
       className={`${styles.chatBubble} ${
         msg.senderUid == user.uid ? styles.curUser : ""
       } ${msg.isSystem && styles.systemWrapper}`}
+      data-testid="Message-Section"
     >
       {msg.isSystem ? (
         <div className={styles.systemMsg} data-testid="systemMsg">{msg.text}</div>
