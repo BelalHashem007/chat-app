@@ -55,6 +55,7 @@ function MessageInput({ selectedChat }) {
           onClick={(e) => {
             e.stopPropagation();
           }}
+          data-testid="emojiPicker"
         >
           <EmojiPicker open={openEmoji} onEmojiClick={handleEmoji} width={"280px"}/>
         </div>
@@ -67,8 +68,9 @@ function MessageInput({ selectedChat }) {
           maxRows={5}
           className={styles.msgInput}
           placeholder="Message"
+          aria-label="Message"
         />
-        <button className={styles.sendBtn} type="submit" title="Send">
+        <button className={styles.sendBtn} type="submit" title="Send" aria-label="Send">
           <Icon path={mdiSendVariantOutline} size={"30px"} color={"white"} />
         </button>
       </form>

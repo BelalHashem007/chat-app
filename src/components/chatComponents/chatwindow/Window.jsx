@@ -15,16 +15,15 @@ function Window({ messages, selectedChat }) {
   if (!selectedChat) {
     return (
       <div className={`${styles.windowbg} ${styles.notActive}`}>
-        <div className={styles.notActiveWrapper}>
+        <div className={styles.notActiveWrapper} data-testid="notActiveWrapper">
           <p>You haven`t started a chat yet!</p>
           <p>Click on a contact/group to start chatting.</p>
         </div>
       </div>
     );
   }
-  console.log(messages);
   return (
-    <div className={`${styles.windowbg} ${styles.active}`}>
+    <div className={`${styles.windowbg} ${styles.active}`} data-testid="WindowWrapper">
       <div className={styles.ScrollWrapper} ref={scrolWrapperRef}>
           <div className={styles.flexWrapper}>
             {messages.map((msg) => (

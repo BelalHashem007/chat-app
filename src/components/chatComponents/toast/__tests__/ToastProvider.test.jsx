@@ -15,9 +15,9 @@ vi.mock("../../../../util/context/toastContext", () => {
 });
 
 describe("ToastProvider Component", () => {
-    beforeEach(()=>{
-        vi.useFakeTimers();
-    })
+  beforeEach(()=>{
+    vi.useFakeTimers()
+  })
   it("renders children component", () => {
     render(
       <ToastProvider>
@@ -30,18 +30,22 @@ describe("ToastProvider Component", () => {
   });
 
   it("renders a message on the screen when passed the message via showToast and disappers after a timeout", async () => {
+    
     render(<ToastProvider />);
 
     const { showToast } = mockToastContext.mock.calls[0][0];
     const message = "Show this message";
     const duration = 5000;
 
-    act(()=>showToast(message));
+    act(()=>showToast(message,duration))
+ 
 
     expect(screen.getByText(message)).toBeInTheDocument();
 
-    act(()=>vi.advanceTimersByTime(duration))
+    
+    act(()=>vi.advanceTimersByTime(5000))
+    
 
-    expect(screen.queryByText(message)).not.toBeInTheDocument();
+   expect(screen.queryByText(message)).not.toBeInTheDocument()
   });
 });
