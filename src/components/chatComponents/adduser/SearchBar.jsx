@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import useDebouncedSearch from "../../../util/hooks/useDebouncedSearch";
 
 export function SearchBar({ setResult, setSearchTerm, searchTerm }) {
-  const { results, noResult } = useDebouncedSearch(searchTerm, 500);
+  const { results, noResult,error } = useDebouncedSearch(searchTerm, 500);
 
   useEffect(() => {
     setResult(results);
@@ -28,7 +28,8 @@ export function SearchBar({ setResult, setSearchTerm, searchTerm }) {
           }}
         />
       </div>
-      {noResult &&<p data-testid="noResult"> "No results."</p>}
+      {noResult &&<p data-testid="noResult">No results.</p>}
+      {error &&<p data-testid="error">{error}</p>}
     </>
   );
 }

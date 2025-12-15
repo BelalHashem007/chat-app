@@ -8,7 +8,6 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
     results: [],
     isLoading: false,
     error: null,
-    showResultsArea: false,
     noResult: false,
   });
 
@@ -23,7 +22,6 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
         results: [],
         isLoading: false,
         error: null,
-        showResultsArea: false,
         noResult: false,
       });
       return;
@@ -35,11 +33,9 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
         updateSearchState({
           results: [],
           isLoading: true,
-          showResultsArea: true,
           error: null,
         });
         const searchResult = await searchUsers(searchTerm, user.uid);
-
         if (searchResult.error) {
           updateSearchState({
             error: searchResult.error,
@@ -76,7 +72,6 @@ const useDebouncedSearch = (searchTerm, delay = 500) => {
     results: searchState.results,
     isLoading: searchState.isLoading,
     error: searchState.error,
-    showResultsArea: searchState.showResultsArea,
     noResult: searchState.noResult,
   };
 };
