@@ -72,4 +72,14 @@ describe("useDebouncedSearch Hook", () => {
       });
     });
   });
+
+  describe("On cleanup",()=>{
+    const clearSpy  =vi.spyOn(globalThis,"clearTimeout");
+    it("calls clearTimeout",()=>{
+        const { unmount } = renderHook(() => useDebouncedSearch("ahmed"));
+        unmount();
+
+        expect(clearSpy).toHaveBeenCalledTimes(1);
+    })
+  })
 });
