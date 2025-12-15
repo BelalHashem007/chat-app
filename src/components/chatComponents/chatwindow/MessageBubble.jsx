@@ -1,6 +1,6 @@
 import styles from "./messageBubble.module.css";
 import { useAuthContext } from "../../../util/context/authContext";
-import getMessageDate from "../../../util/getMessageDate";
+import { getMessageDate } from "../../../util/utilFunctions";
 import DefaultImage from "../../../util/DefaultImage";
 import { pickPaletteColor } from "../../../util/utilFunctions";
 

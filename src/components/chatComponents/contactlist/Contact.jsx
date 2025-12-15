@@ -1,6 +1,6 @@
 import styles from "./contact.module.css";
 import DefaultImage from "../../../util/DefaultImage";
-import getMessageDate from "../../../util/getMessageDate";
+import { getMessageDate } from "../../../util/utilFunctions";
 import Icon from "@mdi/react";
 import { mdiAccountMultiple } from "@mdi/js";
 
