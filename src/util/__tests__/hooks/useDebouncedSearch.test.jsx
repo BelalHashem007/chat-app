@@ -14,10 +14,13 @@ const fakeUsers = [
   { uid: 223, displayName: "Ahmed" },
 ];
 
-const mockSearchUsers = vi.fn(() =>
-  new Promise((resolve)=> setTimeout(() => {
-    resolve({data:fakeUsers,error:null})
-  }, 200))
+const mockSearchUsers = vi.fn(
+  () =>
+    new Promise((resolve) =>
+      setTimeout(() => {
+        resolve({ data: fakeUsers, error: null });
+      }, 200)
+    )
 );
 
 vi.mock("../../context/authContext", () => {
@@ -40,13 +43,13 @@ describe("useDebouncedSearch Hook", () => {
     });
   });
 
-  describe("When searching",()=>{
-    it("sets isLoading to true and then false after finishing the search",async()=>{
-        const { result } = renderHook(() => useDebouncedSearch("ahmed"));
-        await waitFor(() => expect(result.current.isLoading).toBe(true));
-        await waitFor(() => expect(result.current.isLoading).toBe(false));
-    })
-  })
+  describe("When searching", () => {
+    it("sets isLoading to true and then false after finishing the search", async () => {
+      const { result } = renderHook(() => useDebouncedSearch("ahmed"));
+      await waitFor(() => expect(result.current.isLoading).toBe(true));
+      await waitFor(() => expect(result.current.isLoading).toBe(false));
+    });
+  });
 
   describe("When Search succeeds", () => {
     it("returns the correct states(data,error=null,isLoading=false,noResult=false)", async () => {
@@ -62,7 +65,10 @@ describe("useDebouncedSearch Hook", () => {
 
   describe("When Search fails", () => {
     it("returns the correct states(data=[],error=Error,isLoading=false,noResult=false)", async () => {
-        mockSearchUsers.mockResolvedValueOnce({data:[],error:"error happened"})
+      mockSearchUsers.mockResolvedValueOnce({
+        data: [],
+        error: "error happened",
+      });
       const { result } = renderHook(() => useDebouncedSearch("ahmed"));
       await waitFor(() => {
         expect(result.current.results).toEqual([]);
@@ -73,13 +79,14 @@ describe("useDebouncedSearch Hook", () => {
     });
   });
 
-  describe("On cleanup",()=>{
-    const clearSpy  =vi.spyOn(globalThis,"clearTimeout");
-    it("calls clearTimeout",()=>{
-        const { unmount } = renderHook(() => useDebouncedSearch("ahmed"));
-        unmount();
+  describe("On cleanup", () => {
+    const clearSpy = vi.spyOn(globalThis, "clearTimeout");
+    it("calls clearTimeout", () => {
+      const { unmount } = renderHook(() => useDebouncedSearch("ahmed"));
+      clearSpy.mockClear();
+      unmount();
 
-        expect(clearSpy).toHaveBeenCalledTimes(1);
-    })
-  })
+      expect(clearSpy).toHaveBeenCalledTimes(1);
+    });
+  });
 });
