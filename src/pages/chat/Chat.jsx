@@ -82,6 +82,7 @@ function Chat() {
         setSelectedChat={setSelectedChat}
         setIsChatLoading={setIsChatLoading}
         isChatLoading={isChatLoading}
+        userData={userData}
       />
     </div>
   );

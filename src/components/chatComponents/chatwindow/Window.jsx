@@ -3,7 +3,7 @@ import MessageBubble from "./MessageBubble";
 import styles from "./window.module.css";
 import { useEffect, useRef } from "react";
 
-function Window({ messages, selectedChat }) {
+function Window({ messages, selectedChat,userData }) {
   const scrolWrapperRef = useRef(null);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function Window({ messages, selectedChat }) {
             ))}
           </div>
       </div>
-      <MessageInput selectedChat={selectedChat} />
+      <MessageInput selectedChat={selectedChat} userData={userData}/>
     </div>
   );
 }

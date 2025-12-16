@@ -4,22 +4,20 @@ import { mdiSendVariantOutline } from "@mdi/js";
 import styles from "./messageInput.module.css";
 import TextareaAutosize from "react-textarea-autosize";
 import { sendMessage } from "../../../firebase/firebase_db/database";
-import { useAuthContext } from "../../../util/context/authContext";
 import EmojiPicker from "emoji-picker-react";
 import useClickOutside from "../../../util/hooks/useClickOutside";
 
-function MessageInput({ selectedChat }) {
+function MessageInput({ selectedChat,userData }) {
   const [msg, setMsg] = useState("");
-  const { user } = useAuthContext();
   const [openEmoji, setOpenEmoji] = useState(false);
   const emojiRef = useClickOutside(setOpenEmoji);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!msg || !msg.trim() || !user || !selectedChat) return;
+    if (!msg || !msg.trim() || !userData || !selectedChat) return;
     setMsg("");
     setOpenEmoji(false);
-    await sendMessage(msg, selectedChat.id, user);
+    await sendMessage(msg, selectedChat.id, userData);
   }
 
   function handleEmoji(emojieData) {

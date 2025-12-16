@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { screen, render } from "@testing-library/react";
 import ContactInfoComponent from "../ContactInfoComponent";
 
@@ -21,7 +21,17 @@ const fakeGroupChat = {
   id: "1234",
   isGroupChat: true,
   groupName: "test",
+  enrichedParticipants: [
+    { uid: "11", displayName: "Test" },
+    { uid: "22", displayName: "Ola" },
+  ],
 };
+
+vi.mock("../../../../util/context/authContext",()=>{
+  return {
+    useAuthContext:()=>({user:{uid:"55"}})
+  }
+})
 
 describe("ContactInfoComponent", () => {
   describe("Rendering", () => {
@@ -73,6 +83,7 @@ describe("ContactInfoComponent", () => {
         expect(screen.getByTestId("contactName")).toHaveTextContent(
           fakeGroupChat.groupName
         );
+        expect(screen.getByText(fakeGroupChat.enrichedParticipants[0].displayName)).toBeInTheDocument();
       });
 
       it("doesn`t render status", () => {

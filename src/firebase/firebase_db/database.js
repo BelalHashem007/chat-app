@@ -307,7 +307,7 @@ function subscribeToChatMessages(chatid, callback) {
           ...doc.data({ serverTimestamps: "estimate" }),
         });
       });
-
+      console.log(messages)
       callback(messages);
     },
     (error) => {

@@ -14,6 +14,7 @@ function WindowPage({
   setSelectedChat,
   isChatLoading,
   setIsChatLoading,
+  userData
 }) {
   const messages = useMessages(selectedChat);
   const { user } = useAuthContext();
@@ -89,7 +90,7 @@ function WindowPage({
           </header>
         )}
         <div className={styles.window}>
-          <Window messages={messages} selectedChat={selectedChat} />
+          <Window messages={messages} selectedChat={selectedChat} userData={userData}/>
         </div>
       </div>
     </main>
