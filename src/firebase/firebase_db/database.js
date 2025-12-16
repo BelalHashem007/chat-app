@@ -46,8 +46,10 @@ async function storeNewUserProfile(user) {
   try {
     await setDoc(userRef, userDataToStore);
     console.log("Stored user data successfully.");
+    return userDataToStore;
   } catch (error) {
     console.log(error);
+    return error;
   }
 }
 
@@ -83,14 +85,15 @@ async function searchUsers(searchTerm, curUserUid) {
       collection(db, `/users/${curUserUid}/contacts`)
     );
     const contactsUids = new Set(contacts.docs.map((doc) => doc.id));
-
     //push data for emails match
     emailQuerySnapshot.forEach((doc) => {
       const data = { ...doc.data() };
       const userUid = data.uid || doc.id;
+      
 
       if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
+      
       results.data.push({ id: doc.id, ...doc.data() });
     });
 
@@ -101,6 +104,7 @@ async function searchUsers(searchTerm, curUserUid) {
 
       if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
+      console.log(doc.data())
       results.data.push({ id: doc.id, ...doc.data() });
     });
   } catch (error) {
@@ -190,6 +194,7 @@ function subscribeToUserChats(currentUserUid, callback) {
     where("activeParticipantsUids", "array-contains", currentUserUid),
     orderBy("lastMessageDate", "desc")
   );
+  
   const unsubscribe = onSnapshot(
     q,
     async (querySnapshot) => {
@@ -200,13 +205,10 @@ function subscribeToUserChats(currentUserUid, callback) {
           ...doc.data({ serverTimestamps: "estimate" }),
         });
       });
-
       const allUids = new Set();
       userChats.forEach((chat) => {
         chat.allTimeParticipantsUids.forEach((uid) => {
-          if (uid !== currentUserUid) {
             allUids.add(uid);
-          }
         });
       });
       const participantDetails = await getParticipantDetails(allUids);

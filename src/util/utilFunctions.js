@@ -42,7 +42,7 @@ const animals = [
 
 function pickPaletteColor(str) {
   let hash = 0;
-  if (!(typeof str == "string") || !(str instanceof String)) return palette[0];
+  if (!(typeof str == "string") && !(str instanceof String)) return palette[0];
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + 31 * hash;
   }
