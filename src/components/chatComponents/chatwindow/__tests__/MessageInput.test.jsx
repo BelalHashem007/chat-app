@@ -32,7 +32,7 @@ vi.mock("../../../../util/context/authContext", () => {
 describe("MessageInput Component", () => {
   describe("Rendering", () => {
     beforeEach(() => {
-      render(<MessageInput />);
+      render(<MessageInput selectedChat={fakeChat} disableBtn={false} userData={fakeUser}/>);
     });
 
     it("renders a form with textarea, submit btn and emojie picker", () => {
@@ -49,7 +49,7 @@ describe("MessageInput Component", () => {
 
   describe("When submitting a message", () => {
     beforeEach(() => {
-      render(<MessageInput selectedChat={fakeChat} />);
+      render(<MessageInput selectedChat={fakeChat} disableBtn={false} userData={fakeUser}/>);
     });
 
     it("does nothing if msg is empty", async () => {
