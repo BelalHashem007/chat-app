@@ -19,7 +19,6 @@
 }
 .userEmail {
   word-break: break-all;
-  min-width: 200px;
 }
 .addUser {
   background: none;

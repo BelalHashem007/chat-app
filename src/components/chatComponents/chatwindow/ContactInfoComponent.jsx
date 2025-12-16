@@ -2,8 +2,11 @@ import styles from "./contactInfoComponent.module.css";
 import DefaultImage from "../../../util/DefaultImage";
 import Icon from "@mdi/react";
 import { mdiAccountMultiple } from "@mdi/js";
+import { useAuthContext } from "../../../util/context/authContext";
 
 function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
+  const { user } = useAuthContext();
+
   if (!selectedChat || (!selectedChat.isGroupChat && !contact)) return;
 
   let name = "New User";
@@ -43,6 +46,30 @@ function ContactInfoComponent({ contact, contactOnlineStatus, selectedChat }) {
               <span className={styles.guestId}>#{contact.guestId}</span>
             )}
           </header>
+          {selectedChat.isGroupChat && (
+            <div className={styles.groupParticipants}>
+              <div className={styles.groupParticipantsTitle}>
+              {selectedChat.enrichedParticipants.map((participant,index) => {
+                return (
+                  <span>
+                    {participant.uid == user.uid
+                      ? "You"
+                      : participant.displayName}
+                      {index==selectedChat.enrichedParticipants.length-1 ? ".":", "}
+                  </span>
+                );
+              })}</div>
+              <div className={styles.groupParticipantsNames}>{selectedChat.enrichedParticipants.map((participant) => {
+                return (
+                  <div>
+                    {participant.uid == user.uid
+                      ? participant.displayName+" (You)"
+                      : participant.displayName}
+                  </div>
+                );
+              })}</div>
+            </div>
+          )}
           {!selectedChat.isGroupChat && (
             <div className={styles.onlineStatus} data-testid="contactStatus">
               <span

@@ -9,17 +9,20 @@
   display: flex;
   align-items: center;
 }
+.nameWrapper {
+  max-width: 150px;
+}
 .name {
   font-size: 1rem;
   font-weight: 600;
 }
-.userImg{
+.userImg {
   width: 50px;
   height: 50px;
   display: flex;
 }
-.groupImg{
-    display: flex;
+.groupImg {
+  display: flex;
   flex: 1;
   border-radius: 50%;
   border: 1px solid #9e9e9e80;
@@ -27,7 +30,7 @@
   background-color: #eeeeee;
   color: #000000a8;
 }
-.dot{
+.dot {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -36,15 +39,40 @@
   margin-top: 3px;
 }
 .dot.online {
-  background-color: #4CAF50;
+  background-color: #4caf50;
 }
 .dot.offline {
   background-color: red;
 }
-.chatWindowHeader{
+.chatWindowHeader {
   display: flex;
   gap: 5px;
 }
-.guestId{
+.guestId {
   color: gray;
+}
+.groupParticipants {
+  font-size: var(--font-sm);
+
+  margin-top: 5px;
+  position: relative;
+}
+.groupParticipantsTitle {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.groupParticipants:hover .groupParticipantsNames {
+  display: flex;
+}
+.groupParticipantsNames {
+  display: none;
+  position: absolute;
+  background-color: #707991b0;
+  z-index: 5;
+  flex-direction: column;
+  gap: 5px;
+  color: white;
+  padding: 5px;
+  border-radius: 10px;
 }
