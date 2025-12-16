@@ -89,11 +89,10 @@ async function searchUsers(searchTerm, curUserUid) {
     emailQuerySnapshot.forEach((doc) => {
       const data = { ...doc.data() };
       const userUid = data.uid || doc.id;
-      
 
       if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
-      
+
       results.data.push({ id: doc.id, ...doc.data() });
     });
 
@@ -104,7 +103,7 @@ async function searchUsers(searchTerm, curUserUid) {
 
       if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
-      console.log(doc.data())
+      console.log(doc.data());
       results.data.push({ id: doc.id, ...doc.data() });
     });
   } catch (error) {
@@ -194,7 +193,7 @@ function subscribeToUserChats(currentUserUid, callback) {
     where("activeParticipantsUids", "array-contains", currentUserUid),
     orderBy("lastMessageDate", "desc")
   );
-  
+
   const unsubscribe = onSnapshot(
     q,
     async (querySnapshot) => {
@@ -208,7 +207,7 @@ function subscribeToUserChats(currentUserUid, callback) {
       const allUids = new Set();
       userChats.forEach((chat) => {
         chat.allTimeParticipantsUids.forEach((uid) => {
-            allUids.add(uid);
+          allUids.add(uid);
         });
       });
       const participantDetails = await getParticipantDetails(allUids);
@@ -307,7 +306,7 @@ function subscribeToChatMessages(chatid, callback) {
           ...doc.data({ serverTimestamps: "estimate" }),
         });
       });
-      console.log(messages)
+      console.log(messages);
       callback(messages);
     },
     (error) => {
@@ -388,24 +387,35 @@ function subscribeToCurrentUser(userUid, callback) {
   return unsubscribe;
 }
 
-async function removeContact(chatId, curUserUid, contactUid) {
-  if (!chatId || !curUserUid || !contactUid) return console.log("Missing data");
+async function removeContact(chatId, curUser, contactUid) {
+  if (!chatId || !curUser || !contactUid) return console.log("Missing data");
 
   const result = { isRemoved: false, error: null };
 
   try {
     await runTransaction(db, async (transaction) => {
+      transaction.set(doc(collection(db, `/chats/${chatId}/messages`)), {
+        senderUid: "system",
+        senderDisplayName: "System",
+        senderPhotoURL: null,
+        text: `${curUser.displayName} has removed you from contacts`,
+        timestamp: serverTimestamp(),
+        chatId,
+        isSystem: true,
+        isContactRemoval: true,
+      });
+
       //delete chat
       transaction.delete(doc(db, `/chats/${chatId}`));
 
       //delete contact for curUser
       transaction.delete(
-        doc(db, `/users/${curUserUid}/contacts/${contactUid}`)
+        doc(db, `/users/${curUser.uid}/contacts/${contactUid}`)
       );
 
       //delete curUser for contact
       transaction.delete(
-        doc(db, `/users/${contactUid}/contacts/${curUserUid}`)
+        doc(db, `/users/${contactUid}/contacts/${curUser.uid}`)
       );
     });
 
@@ -435,19 +445,17 @@ async function leaveGroup(chat, userUid) {
     let newAdmin = null;
 
     let objectToUpdateChat = { activeParticipantsUids: arrayRemove(userUid) };
-    console.log(objectToUpdateChat);
     if (!adminsExist) {
       const newArrayWithoutCurrentUser = chat.activeParticipantsUids.filter(
         (uid) => userUid != uid
       );
       const randomIndex = Math.floor(
-        Math.random() * chat.activeParticipantsUids.length
+        Math.random() * (newArrayWithoutCurrentUser.length - 1)
       );
+      console.log(newArrayWithoutCurrentUser);
       newAdmin = newArrayWithoutCurrentUser[randomIndex];
       objectToUpdateChat.adminUids = [newAdmin];
     }
-
-    console.log(objectToUpdateChat);
 
     const user = { ...userSnapShot.data() };
 
@@ -459,8 +467,10 @@ async function leaveGroup(chat, userUid) {
       const newChat = { ...newChatSnapShot.data() };
 
       if (newChat.activeParticipantsUids.length == 1) {
-        throw Error("You can`t leave when you are the only one in the group.")
+        throw Error("You can`t leave when you are the only one in the group.");
       }
+
+      console.log(objectToUpdateChat);
 
       transaction.update(doc(db, `/chats/${chat.id}`), objectToUpdateChat);
 
@@ -482,42 +492,48 @@ async function leaveGroup(chat, userUid) {
   return result;
 }
 
-async function deleteGroup(chat,userUid){
+async function deleteGroup(chat, curUser) {
+  const result = { isDeleted: false, error: null };
 
-  const result = {isDeleted:false,error:null};
-
-  if (!chat || !userUid) {
-    result.error="Missing data";
+  if (!chat || !curUser) {
+    result.error = "Missing data";
     return result;
   }
 
   try {
-    await runTransaction(db,async (transaction)=>{
-      const chatSnapshot = await transaction.get(doc(db,`/chats/${chat.id}`));
+    await runTransaction(db, async (transaction) => {
+      const chatSnapshot = await transaction.get(doc(db, `/chats/${chat.id}`));
       if (!chatSnapshot.exists()) {
-        throw Error("Chat doesn`t exist.")
+        throw Error("Chat doesn`t exist.");
       }
 
-      const chatData = {...chatSnapshot.data()};
+      const chatData = { ...chatSnapshot.data() };
 
-      if (!chatData.adminUids.includes(userUid)){
-        throw Error("You are not an admin in this group.")
+      if (!chatData.adminUids.includes(curUser.uid)) {
+        throw Error("You are not an admin in this group.");
       }
 
+      transaction.set(doc(collection(db, `/chats/${chat.id}/messages`)), {
+        senderUid: "system",
+        senderDisplayName: "System",
+        senderPhotoURL: null,
+        text: `${curUser.displayName} has deleted the group`,
+        timestamp: serverTimestamp(),
+        chatId:chat.id,
+        isSystem: true,
+        isGroupDeleted:true,
+      });
       //delete chat
-      transaction.delete(doc(db,`/chats/${chat.id}`));
-        
-    })
+      transaction.delete(doc(db, `/chats/${chat.id}`));
+    });
 
     result.isDeleted = true;
-    
   } catch (error) {
-    result.error=error;
+    result.error = error;
     console.error(error);
   }
 
   return result;
-
 }
 
 export {

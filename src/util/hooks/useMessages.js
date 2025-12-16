@@ -8,7 +8,6 @@ function useMessages(selectedChat) {
   useEffect(() => {
     if (!selectedChat) return;
 
-
     const unsubscribe = subscribeToChatMessages(
       selectedChat.id,
       (fetchedMessages) => {

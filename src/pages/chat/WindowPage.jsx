@@ -53,6 +53,7 @@ function WindowPage({
     setSelectedChat(null);
   }
 
+
   return (
     <main
       aria-label={`${contact ? `Chat with ${contact.email}` : "Empty chat"}`}
@@ -84,6 +85,7 @@ function WindowPage({
                   contact={contact}
                   setIsChatLoading={setIsChatLoading}
                   isChatLoading={isChatLoading}
+                  userData={userData}
                 />
               </div>
             </div>

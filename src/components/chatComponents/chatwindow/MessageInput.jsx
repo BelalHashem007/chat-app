@@ -7,7 +7,7 @@ import { sendMessage } from "../../../firebase/firebase_db/database";
 import EmojiPicker from "emoji-picker-react";
 import useClickOutside from "../../../util/hooks/useClickOutside";
 
-function MessageInput({ selectedChat,userData }) {
+function MessageInput({ selectedChat,userData,disableBtn }) {
   const [msg, setMsg] = useState("");
   const [openEmoji, setOpenEmoji] = useState(false);
   const emojiRef = useClickOutside(setOpenEmoji);
@@ -32,7 +32,7 @@ function MessageInput({ selectedChat,userData }) {
         onSubmit={handleSubmit}
         onKeyDown={(e) => {
           if (e.key == "Enter" && !e.shiftKey) {
-            handleSubmit(e);
+            !disableBtn && handleSubmit(e);
           }
         }}
       >
@@ -68,7 +68,7 @@ function MessageInput({ selectedChat,userData }) {
           placeholder="Message"
           aria-label="Message"
         />
-        <button className={styles.sendBtn} type="submit" title="Send" aria-label="Send">
+        <button className={styles.sendBtn} type="submit" title="Send" aria-label="Send" disabled={disableBtn}>
           <Icon path={mdiSendVariantOutline} size={"30px"} color={"white"} />
         </button>
       </form>

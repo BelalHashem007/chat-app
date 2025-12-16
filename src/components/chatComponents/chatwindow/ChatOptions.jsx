@@ -27,7 +27,7 @@ function ChatOptions(props) {
     props.setIsChatLoading(true);
     const result = await removeContact(
       props.selectedChat.id,
-      user.uid,
+      props.userData,
       props.contact.uid
     );
 
@@ -62,7 +62,7 @@ function ChatOptions(props) {
   async function handleDeleteGroup(){
      props.setIsChatLoading(true);
 
-    const result = await deleteGroup(props.selectedChat, user.uid);
+    const result = await deleteGroup(props.selectedChat, props.userData);
     if (result.error) {
       showToast(<p style={{ color: "red" }}>Failed to delete group.</p>);
     }
