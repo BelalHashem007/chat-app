@@ -5,7 +5,7 @@
 ## Summary
 Making a chat web application using react, react router, react testing library and firebase.
 
-## Features that exist
+## Features
 - Authentication(email/pass).
 - Guest login.
 - Live chat using observers from firestore.
