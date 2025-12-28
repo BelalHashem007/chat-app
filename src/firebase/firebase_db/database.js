@@ -45,10 +45,9 @@ async function storeNewUserProfile(user) {
 
   try {
     await setDoc(userRef, userDataToStore);
-    console.log("Stored user data successfully.");
     return userDataToStore;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return error;
   }
 }
@@ -103,11 +102,10 @@ async function searchUsers(searchTerm, curUserUid) {
 
       if (curUserUid == userUid) return; //exclude current user
       if (contactsUids.has(userUid)) return; // exclude current contacts
-      console.log(doc.data());
       results.data.push({ id: doc.id, ...doc.data() });
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     results.error = "Something went wrong. Please try again.";
   }
   return results;
@@ -149,9 +147,8 @@ async function createNewChatRoom(
     chatToStore.groupProfileURL = null;
   } else {
     if (participants.length !== 2)
-      return console.log("DMs must be between two people.");
+      return;
   }
-  console.log(participants, chatToStore);
   try {
     await runTransaction(db, async (transaction) => {
       //create chatroom
@@ -180,7 +177,6 @@ async function createNewChatRoom(
     console.error(error);
     result.error = error;
   }
-  console.log(result);
   return result;
 }
 
@@ -279,7 +275,6 @@ async function sendMessage(
     } else {
       await runTransaction(db, performOperations);
     }
-    console.log("Message operations completed successfully.");
   } catch (error) {
     console.error("Error in message operations:", error);
   }
@@ -306,11 +301,10 @@ function subscribeToChatMessages(chatid, callback) {
           ...doc.data({ serverTimestamps: "estimate" }),
         });
       });
-      console.log(messages);
       callback(messages);
     },
     (error) => {
-      console.log(error);
+      console.error(error);
     }
   );
 
@@ -361,7 +355,6 @@ async function updateUserName(userUid, newName) {
       displayName: newName,
       updatedAt: serverTimestamp(),
     });
-    console.log("Updated user displayname in cloud firestore.");
   } catch (error) {
     console.error(error);
   }
@@ -377,10 +370,9 @@ function subscribeToCurrentUser(userUid, callback) {
     (snapshot) => {
       const userData = snapshot.data();
       callback(userData);
-      console.log("Hello userdata:", userData);
     },
     (error) => {
-      console.log(error);
+      console.error(error);
     }
   );
 
@@ -388,7 +380,7 @@ function subscribeToCurrentUser(userUid, callback) {
 }
 
 async function removeContact(chatId, curUser, contactUid) {
-  if (!chatId || !curUser || !contactUid) return console.log("Missing data");
+  if (!chatId || !curUser || !contactUid) return;
 
   const result = { isRemoved: false, error: null };
 
@@ -421,7 +413,7 @@ async function removeContact(chatId, curUser, contactUid) {
 
     result.isRemoved = true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     result.error = error;
   }
   return result;
@@ -452,7 +444,6 @@ async function leaveGroup(chat, userUid) {
       const randomIndex = Math.floor(
         Math.random() * (newArrayWithoutCurrentUser.length - 1)
       );
-      console.log(newArrayWithoutCurrentUser);
       newAdmin = newArrayWithoutCurrentUser[randomIndex];
       objectToUpdateChat.adminUids = [newAdmin];
     }
@@ -470,7 +461,6 @@ async function leaveGroup(chat, userUid) {
         throw Error("You can`t leave when you are the only one in the group.");
       }
 
-      console.log(objectToUpdateChat);
 
       transaction.update(doc(db, `/chats/${chat.id}`), objectToUpdateChat);
 

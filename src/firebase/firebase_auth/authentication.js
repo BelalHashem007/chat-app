@@ -31,10 +31,8 @@ async function createUser(email, password) {
       email,
       password
     );
-    console.log(result.user);
     result.user = userCred.user;
   } catch (error) {
-    console.log(error);
     result.error =
       authErrorMessages[error.code] ||
       "Something went wrong. Please try again.";
@@ -58,10 +56,9 @@ async function signIn(email, password) {
 async function LogOut() {
   try {
     await signOut(auth);
-    console.log("User signed out successfully");
     return true;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return false;
   }
 }
@@ -74,9 +71,8 @@ async function updateUser(newName) {
     await updateProfile(auth.currentUser, {
       displayName: newName,
     });
-    console.log("DisplayName updated!");
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -89,7 +85,6 @@ async function guestSignIn() {
     result.user.displayName = displayName;
     await updateUser(displayName)
   } catch (error) {
-    console.log(error);
     result.error =
       authErrorMessages[error.code] ||
       "Something went wrong. Please try again.";

@@ -17,7 +17,6 @@ function ContactList({
   const { user } = useAuthContext();
   const [showAddContact, setShowAddContact] = useState(false);
   const [showAddGroup, setShowAddGroup] = useState(false);
-  console.log(chats);
   return (
     <div className={`${styles.contactList} ${selectedChat && styles.hide}`}>
        <AddContact

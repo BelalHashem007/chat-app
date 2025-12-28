@@ -27,11 +27,7 @@ const getOnlineState = () => ({
 
 const handleConnectionStatusChange = (connected) => {
   if (connected) {
-    // We are connected. If a user is active, ensure their onDisconnect is set
-    // and then explicitly mark them online.
     if (currentUid && currentStatusRef) {
-      console.log(`Connected. Setting presence for ${currentUid}`);
-      // Cancel any previous onDisconnect and set a new one for current user
       if (currentOnDisconnectInstance) {
         currentOnDisconnectInstance.cancel();
       }
@@ -44,9 +40,8 @@ const handleConnectionStatusChange = (connected) => {
   }
 };
 
-// Global listener for .info/connected, established once when the module loads
-// This listener will react to connection changes and then call the handler for the *currently tracked user*.
-if (!connectedStateListenerUnsubscribe) { // Ensure listener is only set up once
+
+if (!connectedStateListenerUnsubscribe) { 
     connectedStateListenerUnsubscribe = onValue(ref(rtdb, ".info/connected"), (snapshot) => {
         handleConnectionStatusChange(snapshot.val() === true);
     });
@@ -56,10 +51,8 @@ async function setupCurrentUserPresence(user) {
   //cleanup previous user instance
   if (currentUid && currentUid !== (user ? user.uid : null)) {
     if (currentStatusRef) {
-      //make up the last user offline
       set(currentStatusRef, getOfflineState());
     }
-    //cancel the ondisconnect instance
     if (currentOnDisconnectInstance) {
       currentOnDisconnectInstance.cancel();
     }
@@ -77,7 +70,6 @@ async function setupCurrentUserPresence(user) {
     currentStatusRef = userStatusDatabaseRef;
 
 
-    // if user is connected go update his presence state
      onValue(ref(rtdb, ".info/connected"), (snapshot) => {
         const connected = snapshot.val() === true;
         handleConnectionStatusChange(connected);
