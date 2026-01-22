@@ -1,6 +1,6 @@
 # chat-app
 
- [Live-Demo](https://zaptalk007.netlify.app/chat)
+ [Live-Demo](zaptalk007.netlify.app)
 
 ## Summary
 Making a chat web application using react, react router, react testing library and firebase.
