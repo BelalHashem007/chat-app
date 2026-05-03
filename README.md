@@ -1,28 +1,52 @@
-# chat-app
+# ZapTalk
 
- [Live-Demo](https://zaptalk007.netlify.app)
+[Live-Demo](https://zaptalk007.netlify.app)
 
-## Summary
-Making a chat web application using react, react router, react testing library and firebase.
+A real-time chat application with authentication, contact management, and group messaging, built using React and Firebase. Supports live updates, online status tracking, and a responsive mobile-first UI.
+
+![chat app in action](/public/chatapp.gif)
+
+![chat app in action](/public/mobile.gif)
 
 ## Features
-- Authentication(email/pass).
-- Guest login.
-- Live chat using observers from firestore.
-- Adding contacts(via email and guestId).
-- Searching/filtering contacts(via name).
-- online/offline status using RealTime Database from firestore.
-- Updating profile details(only name for now).
-- Group chat.
-- Responsive UI for mobile users.
-- Testing UI.
+
+- Authentication (Email/Password + Guest login)
+- Real-time messaging (Firestore observers).
+- Add & manage contacts (email or guest ID).
+- Search & filter contacts.
+- Online/offline presence (Realtime Database).
+- Profile updates.
+- Group chats.
+- Fully responsive UI.
+- UI testing with React Testing Library.
 - Setting up security rules (for firebase).
 
-
-
 ## Tech Stack
-- React: Javascript framework
-- CSS Modules: Styling
-- Context API: State management
-- Firebase: Backend as a Service (BaaS)
-- React Testing Library/Vitest: Testing
+
+- **Frontend:** React, React Router
+- **State Management:** Context API
+- **Backend:** Firebase (Auth, Firestore, Realtime DB)
+- **Styling:** CSS Modules
+- **Testing:** React Testing Library, Vitest
+
+## Setup
+
+```bash
+git clone https://github.com/your-username/chat-app.git
+cd chat-app
+npm install
+npm run dev
+```
+
+**Enviroment Variables**  
+Create a `.env` file and fill all of these using your firebase configurations:
+
+```bash
+VITE_FIREBASE_API_KEY="..."
+VITE_FIREBASE_AUTH_DOMAIN="..."
+VITE_FIREBASE_PRODUCT_ID="..."
+VITE_FIREBASE_STORAGE_BUCKET="..."
+VITE_FIREBASE_MESSAGING_SENDER_ID="..."
+VITE_FIREBASE_APP_ID="..."
+VITE_FIREBASE_DATABASE_URL="..."
+```
